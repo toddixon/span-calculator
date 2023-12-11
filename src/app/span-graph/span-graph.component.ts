@@ -106,7 +106,7 @@ export class SpanGraphComponent implements OnChanges, OnInit, OnDestroy{
                   label += ': ';
                 };
                 if (context.parsed.y !== null) {
-                  label += `${context.parsed.y}mA`
+                  label += `${context.parsed.y}V`
                 }
                 if (context.parsed.x !== null) {
                   label += `${context.parsed.x}psi`
