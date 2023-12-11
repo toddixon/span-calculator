@@ -1,0 +1,125 @@
+
+<mat-toolbar color="primary">
+  <span>Span Calculator</span>
+</mat-toolbar>
+
+<mat-grid-list cols="2" rowHeight="300px">
+		<mat-grid-tile
+      class="ioGrid"
+			colspan="1"
+			rowspan="1"
+		>
+<!-- Input ranges form -->
+    <!-- Signal select -->
+    <mat-form-field class="field-margin field-width ">
+      <mat-label>Select Signal</mat-label>
+      <mat-select #sel (valueChange)="this.switchSignal(sel.value)">
+        <mat-option *ngFor="let item of this.sigKeys" [value]="item">{{item}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    
+    <form [formGroup]="inputRangesForm">
+
+      <!-- Input -->
+      <mat-form-field class="field field-margin field-width">
+        <mat-label>Input</mat-label>
+        <input matInput type="number" #input>
+      </mat-form-field>
+      <br/>
+      <!-- LRV_in -->
+      <mat-form-field class="field field-margin field-width">
+        <mat-label>Lower Range Value</mat-label>
+        <input matInput type="number" #lrvIn formControlName="lrv">
+      </mat-form-field>
+  
+      <!-- URV_in -->
+      <mat-form-field class="field field-margin field-width">
+        <mat-label>Upper Range Value</mat-label>
+        <input matInput type="number" #urvIn formControlName="urv">
+      </mat-form-field>
+  
+      <!-- LRV_in - URV_in slider -->
+      <div>
+        <mat-slider
+          class="span-slider"
+          [min]="inMin"
+          [max]="inMax"
+          discrete
+        >
+          <input matSliderStartThumb formControlName="lrvSl">
+          <input matSliderEndThumb formControlName="urvSl">
+        </mat-slider>
+      </div>
+
+    </form>
+    
+		</mat-grid-tile>
+
+
+<!-- Span calculation output container -->
+
+<mat-grid-tile
+  class="outputGrid"
+  colspan="1"
+  rowspan="2"
+>
+<app-span-graph [points]="points"></app-span-graph>
+</mat-grid-tile>
+
+<!-- Span calculation output container -->
+
+
+<!-- Output ranges form -->
+		<mat-grid-tile
+      class="ioGrid"
+			colspan="1"
+			rowspan="1"
+		>
+    <!-- Signal select -->
+    <mat-form-field class="field-margin field-width ">
+      <mat-label>Select Signal</mat-label>
+      <mat-select #sel (valueChange)="this.switchSignal(sel.value)">
+        <mat-option *ngFor="let item of this.sigKeys" [value]="item">{{item}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    
+    <form [formGroup]="outputRangesForm">
+
+      <!-- Input -->
+      <mat-form-field class="field field-margin field-width">
+        <mat-label>Output</mat-label>
+        <input matInput type="number" #input>
+      </mat-form-field>
+      
+      <!-- LRV_in -->
+      <mat-form-field class="field field-margin field-width">
+        <mat-label>Lower Range Value</mat-label>
+        <input matInput type="number" #lrvIn formControlName="lrv">
+      </mat-form-field>
+  
+      <!-- URV_in -->
+      <mat-form-field class="field field-margin field-width">
+        <mat-label>Upper Range Value</mat-label>
+        <input matInput type="number" #urvIn formControlName="urv">
+      </mat-form-field>
+  
+      <!-- LRV_in - URV_in slider -->
+      <div>
+        <mat-slider
+          class="span-slider"
+          [min]="outMin"
+          [max]="outMax"
+          discrete
+        >
+          <input matSliderStartThumb formControlName="lrvSl">
+          <input matSliderEndThumb formControlName="urvSl">
+        </mat-slider>
+      </div>
+
+    </form>
+
+
+		</mat-grid-tile>
+  </mat-grid-list>
+  
+<router-outlet></router-outlet>

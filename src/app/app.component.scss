@@ -1,0 +1,54 @@
+$sliderW: 300px;
+$fieldH: 90px;
+$gridRowH: 200px;
+
+
+mat-grid-tile {
+  border-width: 3px;
+  border-style: solid;
+  border-color: #3f51b5;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+mat-slider {
+  width: $sliderW;
+}
+.outputGrid{
+  height: 80%;
+  width: 100%;
+}
+
+
+input {
+  font-size: 1em;
+  padding: .5rem;
+}
+
+
+.field-button {
+  margin-top: 20px;
+  margin-right: .5rem;
+  padding: 1.5rem;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+.field{
+  justify-content: space-between;
+}
+.field-margin {
+  margin: 8px;
+}
+.field-width {
+  max-width: 180px;
+  width: 100%;
+}
+.field-height {
+  max-height: $fieldH;
+  height: 100%;
+}
+
+
+
+
+
+
