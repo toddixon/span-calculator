@@ -6,17 +6,17 @@ import { point } from './point';
 @Injectable({
   providedIn: 'root'
 })
-export class CalcSpanService implements OnInit, OnDestroy{
+export class CalcSpanService {
   signalTypes: { [sigId: string]: range; }={};
   
   constructor() {
 
-    this.signalTypes["ma0"] = {lrv: 4, urv:20}
+    this.signalTypes["milliamps"] = {lrv: 4, urv:20}
     this.signalTypes["ma1"] = {lrv: 0, urv:20}
-    this.signalTypes["v0"] = {lrv: 0, urv:10}
+    this.signalTypes["voltage"] = {lrv: 0, urv:10}
     this.signalTypes["v1"] = {lrv: 2, urv:10}
   }
-  
+
   // Returns an array of keys from this.signalTypes dictionary
   getSigTypes(): String[] {
     return Object.keys(this.signalTypes)
@@ -36,23 +36,12 @@ export class CalcSpanService implements OnInit, OnDestroy{
     let primaryRng: range;
     let secondaryRng: range;
 
-    switch(inputPrim){
-      // @ts-ignore
-      case true: 
-        primaryRng = input;
-        secondaryRng = output;
-      // @ts-ignore
-      case false: 
-        primaryRng = output;
-        secondaryRng = input;
-      default:
-        primaryRng = input;
-        secondaryRng = output;
-    };
+    // Ternary operator that switches the primary signal (y) based on inputPrim (controlled by input/output radio static buttons in app.component) 
+    inputPrim ? [primaryRng, secondaryRng] = [input, output] : [primaryRng, secondaryRng] = [output, input]
 
     let primaryPts: Array<number> = [];
     let secondaryPts: Array<number> = [];
-    let points: Array<point> = [];
+    let points: Array<point> = [];// points = [{x: secondaryPts[i], y: primaryPts[i]}, ...]
     
     secondaryPts = this.interpolateSecondaryRng(secondaryRng, pointCount);
     primaryPts = this.calcPrimaryPoints(primaryRng, secondaryRng, secondaryPts);//this.getPrimaryPts(primaryRng, secondaryPts);
@@ -63,7 +52,7 @@ export class CalcSpanService implements OnInit, OnDestroy{
       let y = this.roundNum(secondaryPts[i]);
       return {x: x, y: y};
     })
-    console.log(points);
+    //console.log(points);
     return points;
   };
 
@@ -82,7 +71,7 @@ export class CalcSpanService implements OnInit, OnDestroy{
 
     for (let i = 0; i < secondaryPoints.length; i++) {
       primaryPts.push(
-        ((((secondaryPoints[i] - secondaryRng.lrv)/slopeSec) * slopePri) + primaryRng.lrv)
+        (((secondaryPoints[i] - secondaryRng.lrv)/slopeSec) * slopePri) + primaryRng.lrv
       )
     }
 
@@ -93,7 +82,6 @@ export class CalcSpanService implements OnInit, OnDestroy{
   private interpolateSecondaryRng(range: range, pointCount: number): Array<number>{
     let rngStart: number = range.lrv;
     let rngEnd: number = range.urv;
-
     let secondaryPts: Array<number> = [];
 
     for (let i=0; i < pointCount; i++){
@@ -104,15 +92,4 @@ export class CalcSpanService implements OnInit, OnDestroy{
   
     return secondaryPts;
   }
-
-
-  ngOnInit(): void {
-      
-  }
-
-  ngOnDestroy(): void {
-      
-  }
-
-
 }

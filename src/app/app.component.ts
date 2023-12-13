@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { CalcSpanService } from './calc-span.service';
-import { FormControl, FormGroup, AbstractControl, FormBuilder, Validators, ValidatorFn, ValidationErrors } from '@angular/forms';
+import { FormControl, FormGroup, AbstractControl, Validators, ValidatorFn, ValidationErrors, Form } from '@angular/forms';
 import { Observable, Subject, debounceTime } from 'rxjs';
 
 import { range } from './range';
@@ -20,12 +20,15 @@ export class AppComponent implements OnInit {
   inMax: number = 10;
   outMin: number = 0;
   outMax: number = 10;
-
+  inputPrim: boolean = true;
   sigKeys: String[] = [];// String[] === Array<String>
 
+  spanCalcForm: FormGroup;
   inputRangesForm: FormGroup;
   outputRangesForm: FormGroup;
-  last: AbstractControl;
+  selectPrimary: FormControl;
+
+  //last: AbstractControl;
   lrvLast: boolean;// whether the LRV input box/slider was the last control adjusted or one of the URV controls
 
   private readonly debounceTime = 300;
@@ -33,91 +36,92 @@ export class AppComponent implements OnInit {
 
   updateSpan: Subject<void> = new Subject<void>();
 
-  constructor(private calcSpanService: CalcSpanService, private fb: FormBuilder){
+  constructor(private calcSpanService: CalcSpanService) {
     // First form group for Input controls
     this.inputRangesForm = new FormGroup({
       lrv: new FormControl(this.inMin, Validators.required),
       lrvSl: new FormControl(this.inMin, Validators.required),
       urv: new FormControl(this.inMax, Validators.required),
       urvSl: new FormControl(this.inMax, Validators.required),
-    }, this.checkRanges());
+    }, this.checkRanges()),
+
+      // Second form group for Output controls
+      this.outputRangesForm = new FormGroup({
+        lrv: new FormControl(this.inMin, Validators.required),
+        lrvSl: new FormControl(this.inMin, Validators.required),
+        urv: new FormControl(this.inMax, Validators.required),
+        urvSl: new FormControl(this.inMax, Validators.required),
+      }, this.checkRanges())
+
+    this.selectPrimary = new FormControl(true, Validators.requiredTrue);
+
+    // Nest input and output formgroups into spanCalcForm
+    this.spanCalcForm = new FormGroup({
+      inputRangesForm: this.inputRangesForm,
+      outputRangesForm: this.outputRangesForm,
+      selectPrimary: this.selectPrimary,
+    })
 
     let [lIn, lSlIn, uIn, uSlIn] = this.getInputControls();
 
-    lSlIn.statusChanges.subscribe(s => {
-      console.log(`LRV input slider status changed!\n Current status: ${s}`)
-    })
-    uSlIn.statusChanges.subscribe(s => {
-      console.log(`URV input slider status changed!\n Current status: ${s}`)
-    })
-
-
-    this.last = lIn;
-    this.lrvLast = true;
+    this.lrvLast = true;// Input validation/error checking for sliders
 
     lIn?.valueChanges.subscribe((v) => {
-      lSlIn?.setValue(v, {emitEvent: false});
+      lSlIn?.setValue(v, { emitEvent: false });
       this.onSpanChange();
       this.lrvLast = true;
     });
     lSlIn?.valueChanges.subscribe((v) => {
-      lIn?.setValue(v, {emitEvent: false});
+      lIn?.setValue(v, { emitEvent: false });
       this.onSpanChange();
       this.lrvLast = true;
     });
     uIn?.valueChanges.subscribe((v) => {
-      uSlIn?.setValue(v, {emitEvent: false});
+      uSlIn?.setValue(v, { emitEvent: false });
       this.onSpanChange();
       this.lrvLast = false;
     });
     uSlIn?.valueChanges.subscribe((v) => {
-      uIn?.setValue(v, {emitEvent: false});
+      uIn?.setValue(v, { emitEvent: false });
       this.onSpanChange();
       this.lrvLast = false
     });
 
-    // Second form group for Output controls
-    this.outputRangesForm = new FormGroup({
-      lrv: new FormControl(this.inMin, Validators.required),
-      lrvSl: new FormControl(this.inMin, Validators.required),
-      urv: new FormControl(this.inMax, Validators.required),
-      urvSl: new FormControl(this.inMax, Validators.required),
-    }, this.checkRanges());
-
     let [lOut, lSlOut, uOut, uSlOut] = this.getOutputControls();
-    
-    this.last = lOut;
-    this.lrvLast = true;// Input validation/error checking for sliders
 
     lOut?.valueChanges.subscribe((v) => {
-      lSlOut?.setValue(v, {emitEvent: false});
+      lSlOut?.setValue(v, { emitEvent: false });
       this.onSpanChange();
       this.lrvLast = true;
     });
     lSlOut?.valueChanges.subscribe((v) => {
-      lOut?.setValue(v, {emitEvent: false});
+      lOut?.setValue(v, { emitEvent: false });
       this.onSpanChange();
       this.lrvLast = true;
     });
     uOut?.valueChanges.subscribe((v) => {
-      uSlOut?.setValue(v, {emitEvent: false});
+      uSlOut?.setValue(v, { emitEvent: false });
       this.onSpanChange();
       this.lrvLast = false;
     });
     uSlOut?.valueChanges.subscribe((v) => {
-      uOut?.setValue(v, {emitEvent: false});
+      uOut?.setValue(v, { emitEvent: false });
       this.onSpanChange();
       this.lrvLast = false
     });
+
+    this.selectPrimary.valueChanges.subscribe((s) => {
+      this.onSpanChange();
+    })
   }
 
-    ngOnInit(): void {
-      this.sigKeys = this.calcSpanService.getSigTypes();
+  ngOnInit(): void {
+    this.sigKeys = this.calcSpanService.getSigTypes();
 
-      this.updateSpan.pipe(debounceTime(this.debounceTime)).subscribe(
-        (_) => {this.calculateSpan()}
-      )
-    }
+    this.updateSpan.pipe(debounceTime(this.debounceTime)).subscribe(
+      (_) => { this.calculateSpan() }
+    )
+  }
 
   // Have each form control call this function with the 
   private onSpanChange() {
@@ -131,27 +135,27 @@ export class AppComponent implements OnInit {
       const urvControl = control.get('urv')!;
       // Error if LRV == URV && LRV was the last control changed
       if (this.lrvLast && (lrvControl.value == urvControl.value)) {
-        lrvControl.setErrors({equal: true});
+        lrvControl.setErrors({ equal: true });
         lrvControl.setValue(urvControl.value - 1);
-        return {'equal': true};
+        return { 'equal': true };
       }
       // Error if LRV == URV && URV was the last control changed
       else if (!this.lrvLast && (lrvControl.value == urvControl.value)) {
-        urvControl.setErrors({equal: true});
-        //urvControl.setValue(urvControl.value + 1);
-        return {'equal': true};
+        urvControl.setErrors({ equal: true });
+        urvControl.setValue(urvControl.value + 1);
+        return { 'equal': true };
       }
       // Error if LRV < inMin
-      else if(lrvControl.value < this.inMin){
-        //lrvControl.setValue(this.inMin)
-        lrvControl.setErrors({OutRangeMin: true});
-        return {'OutRangeMin': true};
+      else if (lrvControl.value < this.inMin) {
+        lrvControl.setValue(this.inMin)
+        lrvControl.setErrors({ OutRangeMin: true });
+        return { 'OutRangeMin': true };
       }
       // Error if URV > inMax
-      else if(urvControl.value > this.inMax){
-        //urvControl.setValue(this.inMax)
-        urvControl.setErrors({OutRangeMax: true});
-        return {'OutRangeMax': true};
+      else if (urvControl.value > this.inMax) {
+        urvControl.setValue(this.inMax)
+        urvControl.setErrors({ OutRangeMax: true });
+        return { 'OutRangeMax': true };
       }
       // Otherwise no errors
       else {
@@ -161,55 +165,56 @@ export class AppComponent implements OnInit {
     }
   }
 
-  switchSignal(sKey: string){
+  switchSignal(sKey: string) {
     let rng = this.calcSpanService.getSignalParams(sKey);
     this.inMin = rng.lrv;
     this.inMax = rng.urv;
-    this.inputRangesForm.setValue({lrvInput: rng.lrv, urvInput: rng.urv});
+    this.inputRangesForm.setValue({ lrvInput: rng.lrv, urvInput: rng.urv });
   };
 
   // Changes the sliders min/max based on the signal preset selected
-  getSpan(sliderVal: string, t: string){
+  getSpan(sliderVal: string, t: string) {
     let val: number = +sliderVal;
     this.calcSpanService.getSpan(val, t);
   };
-  
-  getControlVals(): [range, range] {
+
+  getControlVals(): [boolean, range, range] {
     let inputRng: range = {
       lrv: this.inputRangesForm.controls['lrv'].value,
       urv: this.inputRangesForm.controls['urv'].value
     };
     let outputRng: range = {
-      lrv: this.outputRangesForm.controls['lrv'].value, 
+      lrv: this.outputRangesForm.controls['lrv'].value,
       urv: this.outputRangesForm.controls['urv'].value
     };
-
-    return [inputRng, outputRng]
+    let inputPrim: boolean = this.spanCalcForm.controls['selectPrimary'].value;
+    return [inputPrim, inputRng, outputRng]
   };
 
   // Gather all the group form controls for the Input section  
-  private getInputControls(): [AbstractControl<any, any>, AbstractControl<any, any>, AbstractControl<any, any>, AbstractControl<any, any>] {
+  private getInputControls(): [AbstractControl<any, any>, AbstractControl<any, any>, AbstractControl<any, any>, AbstractControl<any, any>, AbstractControl<any, any>] {
     const lIn = this.inputRangesForm.controls['lrv'];
     const lSlIn = this.inputRangesForm.controls['lrvSl'];
     const uIn = this.inputRangesForm.controls['urv'];
     const uSlIn = this.inputRangesForm.controls['urvSl'];
-    return [lIn, lSlIn, uIn, uSlIn];
+    const inPrim = this.inputRangesForm.controls['inPrim'];
+    return [lIn, lSlIn, uIn, uSlIn, inPrim];
   };
   // Gather all the group form controls for the Output section
-  private getOutputControls(): [AbstractControl<any, any>, AbstractControl<any, any>, AbstractControl<any, any>, AbstractControl<any, any>] {
+  private getOutputControls(): [AbstractControl<any, any>, AbstractControl<any, any>, AbstractControl<any, any>, AbstractControl<any, any>, AbstractControl<any, any>] {
     const lOut = this.outputRangesForm.controls['lrv'];
-     const lSlOut = this.outputRangesForm.controls['lrvSl'];
+    const lSlOut = this.outputRangesForm.controls['lrvSl'];
     const uOut = this.outputRangesForm.controls['urv'];
-     const uSlOut = this.outputRangesForm.controls['urvSl'];
-    return [lOut, lSlOut, uOut, uSlOut];
+    const uSlOut = this.outputRangesForm.controls['urvSl'];
+    const outPrim = this.outputRangesForm.controls['outPrim'];
+    return [lOut, lSlOut, uOut, uSlOut, outPrim];
   };
 
-// Should only call this function after passing the debounce delay
+  // Should only call this function after passing the debounce delay
   calculateSpan(): void {
-    let inputPrim: boolean = true
-    let [input, output] = this.getControlVals();
+    let [prim, input, output] = this.getControlVals();
     let pointCount = 10;
-    this.points = this.calcSpanService.calcSpan(input, output, inputPrim, pointCount);
+    this.points = this.calcSpanService.calcSpan(input, output, prim, pointCount);
   };
 
 };
