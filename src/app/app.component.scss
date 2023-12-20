@@ -1,61 +1,102 @@
-$sliderW: 300px;
+$sliderW_max: 500px;
+$sliderW_min: 80%;
 $fieldH: 90px;
 $gridRowH: 200px;
+$lrvUrvW: 150px;
+$inputMargin: 10px;
 
+mat-grid-list {
+  height: 600px;
+}
 
-.grid-tile-border {
+.toolbar {
+  &__title {
+  }
+  &__separator {
+    width: 100%;
+  }
+  &__print-button {
+  }
+  &__theme-button {
+    margin-left: 10px;
+  }
+}
+
+// Selects each grid tile
+.input-tile,
+.output-tile,
+.graph-tile {
+  left: 40px;
   border-width: 4px;
   border-style: solid;
   border-color: #3f51b5;
-  border-radius: 10px;
+  border-radius: 2px;
+  //background-color: #dadada;
+  // display: flex;
+  // flex-direction: column;
+  // justify-content: flex-start;
+
+  &__output-select,
+  &__input-select {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display: flex;
+  }
+
+  &__input_lrv-urv,
+  &__output_lrv-urv {
+  }
+
+  &__select--margin-left {
+    margin-left: $inputMargin;
+  }
+
+  //Selects all number input boxes
+  &__input,
+  &__output,
+  &__select {
+    justify-content: space-between;
+    height: 100%;
+  }
+
+  &__lrv {
+    width: $lrvUrvW;
+  }
+
+  &__urv {
+    margin-left: $inputMargin;
+    width: $lrvUrvW;
+  }
+
+  &__slider {
+    left: 25px;
+    right: 25px;
+    bottom: 10px;
+    display: flex;
+    justify-content: center;
+    position: absolute;
+
+    &--wide {
+      width: 100%;
+    }
+  }
 }
-.span-slider {
-  width: $sliderW;
-}
 
-.input-output-tile {
-  display: flex;
-  align-items: baseline;
-  justify-content: flex-end;
-}
+// @media print {
+//   .input-tile{
+//     //display: none;
+//     //border: none;
+//   }
+//   .output-tile {
+//     //display: none;
+//     //border: none;
+//   }
+//   .graph-tile {
+//     //border: none;
+//   }
+//   .toolbar {
+//     //display: none;
+//   }
 
-#signalSelect {
-  position: absolute;
-  display: block;
-  top: 0px;
-  position: relative;
-}
-
-input {
-  font-size: 1em;
-  padding: .5rem;
-}
-
-.field-button {
-  margin-top: 20px;
-  margin-right: .5rem;
-  padding: 1.5rem;
-  border-radius: 4px;
-  font-size: 1rem;
-}
-.field{
-  justify-content: space-between;
-}
-.field-margin {
-  margin: 8px;
-}
-.field-width {
-  max-width: 180px;
-  width: 100%;
-}
-.field-height {
-  max-height: $fieldH;
-  height: 100%;
-}
-
-
-
-
-
-
-
+// }

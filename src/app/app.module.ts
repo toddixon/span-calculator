@@ -24,11 +24,15 @@ import { MatSelectModule } from '@angular/material/select';
 
 import { NgChartsModule } from 'ng2-charts';
 import { SpanGraphComponent } from './span-graph/span-graph.component';
+import { PrintLayoutComponent } from './print-layout/print-layout.component';
+import { GraphPrintComponent } from './graph-print/graph-print.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    SpanGraphComponent
+    SpanGraphComponent,
+    PrintLayoutComponent,
+    GraphPrintComponent
   ],
   imports: [
     BrowserModule,

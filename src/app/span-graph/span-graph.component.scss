@@ -1,21 +1,13 @@
-$chartW: 600px;
-$chartH: 600px;
+$chartW: 100vh;
+$chartH: 50vh;
 
-#divSpanPlot {
-  display: block;
-  align-items: start;
-  width: 100%;
-  height: 70%;
-}
+.span-calc-output {
+  &__span-plot {
+    width: $chartW;
+    height: $chartH;
+  }
+  &__input {
+    width: $chartW;
+  }
 
-#spanPlot {
-
-  width: $chartW;
-  height: $chartH;
-}
-
-.divInputBox {
-
-   width: $chartW;
-  // height: $chartH;
 }

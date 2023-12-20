@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { OnInit } from '@angular/core';
-import { CalcSpanService } from './calc-span.service';
 import { FormControl, FormGroup, AbstractControl, Validators, ValidatorFn, ValidationErrors, Form } from '@angular/forms';
-import { Observable, Subject, debounceTime } from 'rxjs';
+import { Subject, debounceTime } from 'rxjs';
+
+import { CalcSpanService } from './calc-span.service';
+import { PrintService } from './print.service';
 
 import { range } from './range';
 import { point } from './point';
-import { thresholdScott } from 'd3';
 
-let points: point[];
 
 @Component({
   selector: 'app-root',
@@ -20,7 +20,11 @@ export class AppComponent implements OnInit {
   inMax: number = 10;
   outMin: number = 0;
   outMax: number = 10;
-  inputPrim: boolean = true;
+
+  rowHeight_grid: string | number = "fit"; // Used in template for <mat-grid-list> element 
+  gutterSize_grid: string = "3px"; // Sets gutter size between neighboring <mat-grid-tile> elements
+
+  inputPrim: boolean = true;// Whether input is the primary signal else output
   sigKeys: String[] = [];// String[] === Array<String>
 
   spanCalcForm: FormGroup;
@@ -36,9 +40,13 @@ export class AppComponent implements OnInit {
 
   updateSpan: Subject<void> = new Subject<void>();
 
-  constructor(private calcSpanService: CalcSpanService) {
+  constructor(
+    private calcSpanService: CalcSpanService, 
+    private printService: PrintService
+    ) {
     // First form group for Input controls
     this.inputRangesForm = new FormGroup({
+      input: new FormControl(''),
       lrv: new FormControl(this.inMin, Validators.required),
       lrvSl: new FormControl(this.inMin, Validators.required),
       urv: new FormControl(this.inMax, Validators.required),
@@ -47,6 +55,7 @@ export class AppComponent implements OnInit {
 
       // Second form group for Output controls
       this.outputRangesForm = new FormGroup({
+        output: new FormControl(''),
         lrv: new FormControl(this.inMin, Validators.required),
         lrvSl: new FormControl(this.inMin, Validators.required),
         urv: new FormControl(this.inMax, Validators.required),
@@ -62,7 +71,7 @@ export class AppComponent implements OnInit {
       selectPrimary: this.selectPrimary,
     })
 
-    let [lIn, lSlIn, uIn, uSlIn] = this.getInputControls();
+    let [input, lIn, lSlIn, uIn, uSlIn] = this.getInputControls();
 
     this.lrvLast = true;// Input validation/error checking for sliders
 
@@ -87,7 +96,7 @@ export class AppComponent implements OnInit {
       this.lrvLast = false
     });
 
-    let [lOut, lSlOut, uOut, uSlOut] = this.getOutputControls();
+    let [output, lOut, lSlOut, uOut, uSlOut] = this.getOutputControls();
 
     lOut?.valueChanges.subscribe((v) => {
       lSlOut?.setValue(v, { emitEvent: false });
@@ -111,22 +120,41 @@ export class AppComponent implements OnInit {
     });
 
     this.selectPrimary.valueChanges.subscribe((s) => {
+      if(s) {
+        input.enable();
+        output.disable();
+        output.setValue(null, {emitEvent: false})
+      }
+      else {
+        input.disable();
+        output.enable();
+        input.setValue(null, {emitEvent: false})
+      }
+
       this.onSpanChange();
     })
   }
 
   ngOnInit(): void {
+    window.addEventListener("beforeprint", (event) => {
+      console.log("beforePrint")
+    })
     this.sigKeys = this.calcSpanService.getSigTypes();
-
+    this.selectPrimary.setValue(true);
     this.updateSpan.pipe(debounceTime(this.debounceTime)).subscribe(
       (_) => { this.calculateSpan() }
-    )
+    );
   }
 
   // Have each form control call this function with the 
   private onSpanChange() {
     this.updateSpan.next();
   }
+
+  // When user clicks print button
+  onPrintGraph() {
+    this.printService.printGraph();
+  };
 
   // Custom validator function to check if: LRV == URV
   public checkRanges(): ValidatorFn {
@@ -192,22 +220,24 @@ export class AppComponent implements OnInit {
   };
 
   // Gather all the group form controls for the Input section  
-  private getInputControls(): [AbstractControl<any, any>, AbstractControl<any, any>, AbstractControl<any, any>, AbstractControl<any, any>, AbstractControl<any, any>] {
+  private getInputControls(): [AbstractControl<any, any>, AbstractControl<any, any>, AbstractControl<any, any>, AbstractControl<any, any>, AbstractControl<any, any>, AbstractControl<any, any>] {
+    const input = this.inputRangesForm.controls['input'];
     const lIn = this.inputRangesForm.controls['lrv'];
     const lSlIn = this.inputRangesForm.controls['lrvSl'];
     const uIn = this.inputRangesForm.controls['urv'];
     const uSlIn = this.inputRangesForm.controls['urvSl'];
     const inPrim = this.inputRangesForm.controls['inPrim'];
-    return [lIn, lSlIn, uIn, uSlIn, inPrim];
+    return [input, lIn, lSlIn, uIn, uSlIn, inPrim];
   };
   // Gather all the group form controls for the Output section
-  private getOutputControls(): [AbstractControl<any, any>, AbstractControl<any, any>, AbstractControl<any, any>, AbstractControl<any, any>, AbstractControl<any, any>] {
+  private getOutputControls(): [AbstractControl<any, any>, AbstractControl<any, any>, AbstractControl<any, any>, AbstractControl<any, any>, AbstractControl<any, any>, AbstractControl<any, any>] {
+    const output = this.outputRangesForm.controls['output'];
     const lOut = this.outputRangesForm.controls['lrv'];
     const lSlOut = this.outputRangesForm.controls['lrvSl'];
     const uOut = this.outputRangesForm.controls['urv'];
     const uSlOut = this.outputRangesForm.controls['urvSl'];
     const outPrim = this.outputRangesForm.controls['outPrim'];
-    return [lOut, lSlOut, uOut, uSlOut, outPrim];
+    return [output, lOut, lSlOut, uOut, uSlOut, outPrim];
   };
 
   // Should only call this function after passing the debounce delay

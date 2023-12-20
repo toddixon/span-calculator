@@ -24,6 +24,9 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-.mat-typography{
-  margin-left: 15px;
+
+
+@media print {
+  app-root > * {display: none;} // Selects all (*) elements that are children to the app-root
+  app-root app-print-layout {display: block;}
 }
