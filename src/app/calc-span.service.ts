@@ -1,34 +1,26 @@
-import { Injectable, OnDestroy, OnInit } from '@angular/core';
-
+import { Injectable } from '@angular/core';
 import { range } from './range';
 import { point } from './point';
+import { signalPresets } from './signal-presets';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CalcSpanService {
-  signalTypes: { [sigId: string]: range; }={};
-  
-  constructor() {
+  constructor() {}
 
-    this.signalTypes["milliamps"] = {lrv: 4, urv:20}
-    this.signalTypes["ma1"] = {lrv: 0, urv:20}
-    this.signalTypes["voltage"] = {lrv: 0, urv:10}
-    this.signalTypes["v1"] = {lrv: 2, urv:10}
-  }
-
-  // Returns an array of keys from this.signalTypes dictionary
+  // Returns an array of keys from this.signalPresets dictionary
   getSigTypes(): String[] {
-    return Object.keys(this.signalTypes)
+    return Object.keys(signalPresets)
   }
 
   // Returns range interface object with 2 parameters {lrv: number, urv: number} 
   getSignalParams(key: string): range {
-    return this.signalTypes[key]
+    return signalPresets[key]
   }
 
   getSpan(input: number, type: string){
-    let m = this.signalTypes[type]
+    let m = signalPresets[type]
   }
 
   calcSpan(input: range, output: range, inputPrim: boolean, pointCount: number = 10): Array<point> {
@@ -52,7 +44,7 @@ export class CalcSpanService {
       let y = this.roundNum(secondaryPts[i]);
       return {x: x, y: y};
     })
-    //console.log(points);
+    console.log(points);
     return points;
   };
 
@@ -62,7 +54,6 @@ export class CalcSpanService {
   };
 
   private calcPrimaryPoints(primaryRng: range, secondaryRng: range, secondaryPoints: Array<number>): Array<number> {
-    // primaryPoint = (((secondaryPoint - LRV_out)/slopeSec) * slopePri) + LRV_in
     
     let primaryPts: Array<number> = [];
 
@@ -74,17 +65,15 @@ export class CalcSpanService {
         (((secondaryPoints[i] - secondaryRng.lrv)/slopeSec) * slopePri) + primaryRng.lrv
       )
     }
-
     return primaryPts
   }
-
 
   private interpolateSecondaryRng(range: range, pointCount: number): Array<number>{
     let rngStart: number = range.lrv;
     let rngEnd: number = range.urv;
     let secondaryPts: Array<number> = [];
 
-    for (let i=0; i < pointCount; i++){
+    for (let i=0; i <= pointCount; i++){
       secondaryPts.push(
         (rngStart + (rngEnd - rngStart) * (i / (pointCount)))
       )

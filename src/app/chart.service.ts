@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Chart, ChartData} from 'chart.js';
-import { PrintService } from './print.service';
+import { Chart, ChartData } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { point } from './point';
+import { point, chartData } from './point';
 
 // This service is in charge of managing the chart created in span-graph.component as the span values change.
 
@@ -11,18 +10,15 @@ import { point } from './point';
 })
 export class ChartService {
 
-  constructor(private printService: PrintService) { }
+  constructor() { }
 
-  updateChart(chart: Chart, points: point[]) {
-
+  updateChart(chart: Chart, chartData: chartData) {
     this.removeData(chart);
-
-    let chartDataSet = this.buildDataSet(points);
-    
+    let chartDataSet = this.buildDataSet(chartData.points);
     this.addData(chart, chartDataSet);
-    this.setOptions(chart);
+    this.setOptions(chart, chartData.unitsX, chartData.unitsY);
 
-    this.chart.update('none'); // Update line chart with no animation
+    this.chart.update(); // Update line chart with no animation
   };
 
   private buildDataSet(points: point[]): ChartData<"line", point[], unknown> {
@@ -40,7 +36,7 @@ export class ChartService {
   };
 
   // Removes dataset from previous span calculation
-  private removeData(chart: Chart): void {
+  removeData(chart: Chart<any>): void {
     chart.data.datasets.forEach((dataset) => {
       dataset.data.pop()
     })
@@ -51,12 +47,11 @@ export class ChartService {
     chart.data = newData
   };
 
-  private setOptions(chart: Chart, rot: number = 0, sizePts: number = 12, titleX: string = 'psi', titleY: string = 'mA', sizeTitle: number = 15): void {
+  private setOptions(chart: Chart,  titleX: string = 'Output', titleY: string = 'Input', rot: number = 0, sizePts: number = 12, sizeTitle: number = 15): void {
     chart.options = {
       responsive: true,
       maintainAspectRatio: false,
       scales: {
-
         x: {
           title: {
             display: true,
@@ -68,6 +63,7 @@ export class ChartService {
           },
           display: true,
           type: 'linear',
+          //grace: '5%',
           grid: {
             drawTicks: true
           }
@@ -116,7 +112,11 @@ export class ChartService {
         tooltip: {
           enabled: false
         }
-      }
+      },
+      // animation: {
+      // duration: 1000,
+      // easing: 'easeInCubic'
+      // }
     }
 
     return
@@ -124,21 +124,22 @@ export class ChartService {
 
   public chart: Chart = null!;
 
-  createChart(points: point[]): Chart {
+  createChart(points: point[] | any, name: string = "MyChart"): Chart {
     Chart.register(ChartDataLabels)
-    this.chart = new Chart("MyChart", {
+    this.chart = new Chart(name, {
       type: 'line',
       data: this.buildDataSet(points),
     })
     this.setOptions(this.chart);
-
+    //this.chart.resize(900, 800)
     return this.chart
   };
 
-  // calls BehaviorSubject's next method, giving it a new value
-  printGraph(): void {
-    this.printService.getChart(this.chart);
+  getChart(): Chart {
+    return this.chart;
   }
-
+  getChartStr(): string {
+    return this.chart.toBase64Image(); 
+  }
 
 }

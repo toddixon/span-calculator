@@ -22,11 +22,18 @@
 // }
 
 
-html, body { height: 100%; }
+html, body { 
+  height: 100%;
+  max-width: 1800px;
+  min-width: 900px;
+}
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-
 @media print {
-  app-root > * {display: none;} // Selects all (*) elements that are children to the app-root
-  app-root app-print-layout {display: block;}
+  app-print-layout{
+    display: block;
+  }
+  .span-calc-form{
+    display: none;
+  }
 }

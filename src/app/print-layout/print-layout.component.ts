@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { PrintService } from '../print.service';
 
 // Route: `/(print:print)`
 @Component({
@@ -8,11 +7,10 @@ import { PrintService } from '../print.service';
   styleUrls: ['./print-layout.component.scss']
 })
 export class PrintLayoutComponent implements OnInit {
-
   constructor() {}
 
   ngOnInit(): void {
-
   }
 
 }
+  

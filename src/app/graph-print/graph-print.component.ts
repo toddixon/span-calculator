@@ -1,9 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { PrintService } from '../print.service';
-
+import { Component } from '@angular/core';
 import { SpanGraphComponent } from '../span-graph/span-graph.component';
-import { Chart } from 'chart.js';
+import { PrintService } from '../print.service';
 
 @Component({
   selector: 'app-graph-print',
@@ -11,21 +8,8 @@ import { Chart } from 'chart.js';
   styleUrls: ['./graph-print.component.scss'],
   providers: [SpanGraphComponent]
 })
-export class GraphPrintComponent implements OnInit {
-  chart?: Chart;
-
-  // The data varaible will include: chartjs graph, input: lrv, urv, output: lrv, urv
+export class GraphPrintComponent {
   constructor(
-    route: ActivatedRoute,
-    private printService: PrintService,
-    private spanGraphComponent: SpanGraphComponent) {
-    //this.data = route.snapshot.params['data'];
+    public printService: PrintService) {
   }
-
-  ngOnInit(): void {
-    this.printService.graphData$.subscribe(chart => this.chart = chart!)
-
-    
-  }
-
 }

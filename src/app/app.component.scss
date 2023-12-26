@@ -2,27 +2,41 @@ $sliderW_max: 500px;
 $sliderW_min: 80%;
 $fieldH: 90px;
 $gridRowH: 200px;
-$lrvUrvW: 150px;
+$lrvUrvW: 200px;
 $inputMargin: 10px;
+
+//Min and max widths for grid tiles
+$inputOutputTileMinW: 300px;
+$inputOutputTileMaxW: 600px;
+$graphTileMinW: 600px;
+$graphTileMaxW: 1200px;
 
 mat-grid-list {
   height: 600px;
 }
 
+app-span-graph {
+  height: 100%;
+  width: 100%;
+}
+
 .toolbar {
+  width: 100%;
+  margin-bottom: 2px;
   &__title {
+    display: block;
   }
   &__separator {
     width: 100%;
   }
   &__print-button {
+    display: block;
   }
   &__theme-button {
     margin-left: 10px;
   }
 }
 
-// Selects each grid tile
 .input-tile,
 .output-tile,
 .graph-tile {
@@ -31,34 +45,39 @@ mat-grid-list {
   border-style: solid;
   border-color: #3f51b5;
   border-radius: 2px;
-  //background-color: #dadada;
-  // display: flex;
-  // flex-direction: column;
-  // justify-content: flex-start;
+  box-shadow: 3px 3px 3px #b2b2b2;
 
   &__output-select,
   &__input-select {
-    position: absolute;
-    top: 20px;
-    left: 20px;
     display: flex;
+    position: absolute;
+    justify-content: space-around;
+    top: 10%;
+    left: 20px;
+    width: 90%;
   }
-
-  &__input_lrv-urv,
-  &__output_lrv-urv {
-  }
-
+  
   &__select--margin-left {
     margin-left: $inputMargin;
   }
-
-  //Selects all number input boxes
+  
   &__input,
   &__output,
   &__select {
     justify-content: space-between;
     height: 100%;
   }
+  
+    &__input_lrv-urv,
+    &__output_lrv-urv {
+      display: flex;
+      position: absolute;
+      justify-content: space-around;
+      width: 90%;
+      top: 50%;
+      left: 20px;
+      right: 50%;
+    }
 
   &__lrv {
     width: $lrvUrvW;
@@ -70,12 +89,12 @@ mat-grid-list {
   }
 
   &__slider {
+    display: flex;
+    position: absolute;
+    justify-content: center;
     left: 25px;
     right: 25px;
-    bottom: 10px;
-    display: flex;
-    justify-content: center;
-    position: absolute;
+    bottom: 10%;
 
     &--wide {
       width: 100%;
@@ -83,20 +102,12 @@ mat-grid-list {
   }
 }
 
-// @media print {
-//   .input-tile{
-//     //display: none;
-//     //border: none;
-//   }
-//   .output-tile {
-//     //display: none;
-//     //border: none;
-//   }
-//   .graph-tile {
-//     //border: none;
-//   }
-//   .toolbar {
-//     //display: none;
-//   }
+.input-tile, .output-tile{
+  min-width: $inputOutputTileMinW;
+  max-width: $inputOutputTileMaxW;
+}
+.graph-tile {
+  min-width: $graphTileMinW;
+  max-width: $graphTileMaxW;
+}
 
-// }

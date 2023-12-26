@@ -1,13 +1,15 @@
-$chartW: 100vh;
-$chartH: 50vh;
+// $chartW: 90vw;
+// $chartH: 50vh;
 
 .span-calc-output {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
   &__span-plot {
-    width: $chartW;
-    height: $chartH;
-  }
-  &__input {
-    width: $chartW;
+    width: 95%;
+    height: 95%;
   }
 
 }
