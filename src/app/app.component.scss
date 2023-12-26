@@ -39,7 +39,7 @@ app-span-graph {
 
 .input-tile,
 .output-tile,
-.graph-tile {
+.span-calc-output-tile {
   left: 40px;
   border-width: 4px;
   border-style: solid;
@@ -106,8 +106,22 @@ app-span-graph {
   min-width: $inputOutputTileMinW;
   max-width: $inputOutputTileMaxW;
 }
-.graph-tile {
+.span-calc-output-tile {
   min-width: $graphTileMinW;
   max-width: $graphTileMaxW;
+  &__tab-group{
+    width: 100%;
+    height: 100%;
+
+    // &__graph-tab{
+
+    // };
+    // &__table-tab{
+
+    // };
+  };
 }
 
+:host ::ng-deep .mat-mdc-tab-body-wrapper {
+  height: 100%;
+}

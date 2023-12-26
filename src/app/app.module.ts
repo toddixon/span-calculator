@@ -9,6 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -45,6 +46,7 @@ import { GraphPrintComponent } from './graph-print/graph-print.component';
     MatSliderModule, 
     MatToolbarModule, 
     MatButtonModule, 
+    MatTabsModule,
     MatIconModule, 
     MatFormFieldModule, 
     MatGridListModule, 

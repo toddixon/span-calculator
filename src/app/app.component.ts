@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { FormControl, FormGroup, AbstractControl, Validators, ValidatorFn, ValidationErrors, Form } from '@angular/forms';
 import { Subject, debounceTime } from 'rxjs';
+import { MatTable } from '@angular/material/table';
 
 import { CalcSpanService } from './calc-span.service';
 //import { PrintService } from './print.service';
@@ -10,7 +11,6 @@ import { range } from './range';
 import { point, chartData } from './point';
 import { ChartService } from './chart.service';
 import { PrintService } from './print.service';
-
 
 @Component({
   selector: 'app-root',
@@ -33,35 +33,36 @@ export class AppComponent implements OnInit {
 
   spanTableCols: string[] = ['Input', 'Output']; // Dynamic names for mat-table columns
   spanTableDemoCols: string[] = ['Input', 'Output']; // Static names for mat-table columns
-
+  //@ViewChild(MatTable) table: MatTable<any>|null = null;
+  
   sigKeys: String[] = [];
-
+  
   spanCalcForm: FormGroup;
   inputRangesForm: FormGroup;
   outputRangesForm: FormGroup;
   selectPrimary: AbstractControl;
-
+  
   lrvLast: boolean;// whether the LRV input box/slider was the last control adjusted or one of the URV controls
-
+  
   private readonly debounceTime = 300;
   points: Array<point> = [];
   chartData: chartData = {points: this.points, unitsX: 'Output', unitsY: 'Input'};
-
+  
   updateSpan: Subject<void> = new Subject<void>();
-
+  
   constructor(
     private calcSpanService: CalcSpanService, 
     private printService: PrintService) {
-    // First form group for Input controls
-    this.inputRangesForm = new FormGroup({
-      input: new FormControl(''),
-      sigType: new FormControl(''),
-      lrv: new FormControl(this.inMin, Validators.required),
-      lrvSl: new FormControl(this.inMin, Validators.required),
-      urv: new FormControl(this.inMax, Validators.required),
-      urvSl: new FormControl(this.inMax, Validators.required),
-    }, this.checkRanges()),
-
+      // First form group for Input controls
+      this.inputRangesForm = new FormGroup({
+        input: new FormControl(''),
+        sigType: new FormControl(''),
+        lrv: new FormControl(this.inMin, Validators.required),
+        lrvSl: new FormControl(this.inMin, Validators.required),
+        urv: new FormControl(this.inMax, Validators.required),
+        urvSl: new FormControl(this.inMax, Validators.required),
+      }, this.checkRanges()),
+      
       // Second form group for Output controls
       this.outputRangesForm = new FormGroup({
         output: new FormControl(''),
@@ -267,6 +268,7 @@ export class AppComponent implements OnInit {
     let [prim, input, output] = this.getControlVals();
     this.spanTableCols = [this.outputSig.units, this.inputSig.units];
     this.chartData = {points: this.calcSpanService.calcSpan(input, output, prim), unitsX: this.outputSig.units, unitsY: this.inputSig.units};
+    //this.table!.renderRows();
   };
 
 };

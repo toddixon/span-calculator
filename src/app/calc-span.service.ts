@@ -44,7 +44,7 @@ export class CalcSpanService {
       let y = this.roundNum(secondaryPts[i]);
       return {x: x, y: y};
     })
-    console.log(points);
+    //console.log(points);
     return points;
   };
 

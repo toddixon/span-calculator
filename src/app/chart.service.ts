@@ -18,7 +18,7 @@ export class ChartService {
     this.addData(chart, chartDataSet);
     this.setOptions(chart, chartData.unitsX, chartData.unitsY);
 
-    this.chart.update(); // Update line chart with no animation
+    this.chart.update('none'); // Update line chart with no animation
   };
 
   private buildDataSet(points: point[]): ChartData<"line", point[], unknown> {
