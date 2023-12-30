@@ -1,0 +1,22 @@
+.span-result {
+  height: 100%;
+  width: 100%;
+  // &__graph-tab {
+
+  // }
+  // &__table-tab {
+
+  // }
+
+}
+
+.mat-mdc-row:hover .mat-mdc-cell {
+  border-top: 1px solid #ff6384;
+  border-bottom-color: #ff6384;
+
+}
+
+:host ::ng-deep .mat-mdc-tab-body-wrapper {
+  height: 100%;
+  width: 100%;
+}

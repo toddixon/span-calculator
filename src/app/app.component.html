@@ -1,6 +1,5 @@
 <!-- <div *ngIf="!printService.isPrinting" class="span-calc-form"> -->
 <div class="span-calc-form">
-
   <mat-toolbar class="toolbar" color="primary">
     <span class="toolbar__title">Span Calculator</span>
     <span class="toolbar__separator"></span>
@@ -21,7 +20,7 @@
       </button>
     </div>
   </mat-toolbar>
-  
+
   <mat-grid-list
     [gutterSize]="gutterSize_grid"
     cols="3"
@@ -29,101 +28,77 @@
   >
     <!-- Input ranges form group -->
     <mat-grid-tile class="input-tile" colspan="1" rowspan="1">
-        <form [formGroup]="inputRangesForm">
-          <!-- Select Input as Primary Signal -->
-          <div class="input-tile__input-select">
-            <form [formGroup]="spanCalcForm">
-              <mat-radio-group name="select" formControlName="selectPrimary">
-                <mat-radio-button
-                  class="input-tile__radio-button"
-                  [value]="true"
-                ></mat-radio-button>
-              </mat-radio-group>
-            </form>
-  
-            <!-- Input -->
-            <mat-form-field class="input-tile__input">
-              <mat-label>Input</mat-label>
-              <input matInput type="number" formControlName="input" />
-            </mat-form-field>
-  
-            <!-- Signal select -->
-            <mat-form-field
-              class="input-tile__select input-tile__select--margin-left"
-            >
-              <mat-label>Select Signal</mat-label>
-              <mat-select formControlName="sigType">
-                <mat-option *ngFor="let item of this.sigKeys" [value]="item">{{
-                  item
-                }}</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-  
-          <br />
-  
-          <div class="input-tile__input_lrv-urv">
-            <!-- LRV_in -->
-            <mat-form-field class="input-tile__lrv">
-              <mat-label>Lower Range Value</mat-label>
-              <input matInput type="number" formControlName="lrv" />
-            </mat-form-field>
-  
-            <!-- URV_in -->
-            <mat-form-field class="input-tile__urv">
-              <mat-label>Upper Range Value</mat-label>
-              <input matInput type="number" formControlName="urv" />
-            </mat-form-field>
-          </div>
-  
-          <!-- LRV_in - URV_in slider -->
-          <div class="input-tile__slider">
-            <mat-slider
-              class="input-tile__slider--wide"
-              [min]="inMin"
-              [max]="inMax"
-              showTickMarks
-              discrete
-            >
-              <input matSliderStartThumb formControlName="lrvSl" />
-              <input matSliderEndThumb formControlName="urvSl" />
-            </mat-slider>
-          </div>
-        </form>
+      <form [formGroup]="this.inputRangesForm">
+        <!-- Select Input as Primary Signal -->
+        <div class="input-tile__input-select">
+          <form [formGroup]="spanCalcForm">
+            <mat-radio-group name="select" formControlName="selectPrimary">
+              <mat-radio-button
+                class="input-tile__radio-button"
+                [value]="true"
+              ></mat-radio-button>
+            </mat-radio-group>
+          </form>
+
+          <!-- Input -->
+          <mat-form-field class="input-tile__input">
+            <mat-label>Input</mat-label>
+            <input matInput type="number" [step]="valBoxStep" formControlName="input" />
+          </mat-form-field>
+
+          <!-- Signal select -->
+          <mat-form-field
+            class="input-tile__select input-tile__select--margin-left"
+          >
+            <mat-label>Select Signal</mat-label>
+            <mat-select formControlName="sigType">
+              <mat-option *ngFor="let item of this.sigKeys" [value]="item">{{
+                item
+              }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <br />
+
+        <div class="input-tile__input_lrv-urv">
+          <!-- LRV_in -->
+          <mat-form-field class="input-tile__lrv">
+            <mat-label>Lower Range Value</mat-label>
+            <input matInput type="number" formControlName="lrv" />
+          </mat-form-field>
+
+          <!-- URV_in -->
+          <mat-form-field class="input-tile__urv">
+            <mat-label>Upper Range Value</mat-label>
+            <input matInput type="number" formControlName="urv" />
+          </mat-form-field>
+        </div>
+
+        <!-- LRV_in - URV_in slider -->
+        <div class="input-tile__slider">
+          <mat-slider
+            class="input-tile__slider--wide"
+            [min]="this.inputSig.range.lrv"
+            [max]="this.inputSig.range.urv"
+            showTickMarks
+            discrete
+          >
+            <input matSliderStartThumb formControlName="lrvSl" />
+            <input matSliderEndThumb formControlName="urvSl" />
+          </mat-slider>
+        </div>
+      </form>
     </mat-grid-tile>
-  
+
     <!-- Span calculation output form -->
-    <mat-grid-tile class="span-calc-output-tile" colspan="2" rowspan="2">
-      <mat-tab-group class="span-calc-output-tile__tab-group" color="accent" mat-stretch-tabs="true" mat-align-tabs="start">
-        <mat-tab label="Graph">
-          <ng-template matTabContent>
-            <app-span-graph class="span-calc-output-tile__tab-group__graph-tab" [chartData]="chartData"></app-span-graph>
-          </ng-template>
-        </mat-tab>
-        <mat-tab label="Table">
-          <div class="span-calc-output-tile__tab-group__table-tab" *ngIf="this.chartData.points.length > 1">
-            <table mat-table #table [dataSource]="chartData.points">
-              <!-- Input points column -->
-              <ng-container matColumnDef="Output">
-                <th mat-header-cell *matHeaderCellDef>{{chartData.unitsX}}</th>
-                <td mat-cell *matCellDef="let p">{{p.x}}</td>
-              </ng-container>
-              <!-- Output points column -->
-              <ng-container matColumnDef="Input">
-                <th mat-header-cell *matHeaderCellDef>{{chartData.unitsY}}</th>
-                <td mat-cell *matCellDef="let p">{{p.y}}</td>
-              </ng-container>
-              <tr mat-header-row *matHeaderRowDef="spanTableDemoCols"></tr>
-              <tr mat-row *matRowDef="let row; columns: spanTableDemoCols;"></tr>
-            </table>
-          </div>
-        </mat-tab>
-      </mat-tab-group>
+    <mat-grid-tile class="span-result-tile" colspan="2" rowspan="2">
+      <app-span-result class="span-result-tile__app" [chartData]="chartData"></app-span-result>
     </mat-grid-tile>
-  
+
     <!-- Output ranges form group -->
     <mat-grid-tile class="output-tile" colspan="1" rowspan="1">
-      <form [formGroup]="outputRangesForm">
+      <form [formGroup]="this.outputRangesForm">
         <div class="output-tile__output-select">
           <!-- Output Section Select -->
           <form [formGroup]="spanCalcForm">
@@ -134,13 +109,13 @@
               ></mat-radio-button>
             </mat-radio-group>
           </form>
-  
+
           <!-- Output -->
           <mat-form-field>
             <mat-label>Output</mat-label>
-            <input matInput type="number" formControlName="output" />
+            <input matInput type="number" [step]="valBoxStep" formControlName="output" />
           </mat-form-field>
-  
+
           <!-- Signal select -->
           <mat-form-field
             class="output-tile__select output-tile__select--margin-left"
@@ -154,28 +129,28 @@
           </mat-form-field>
         </div>
 
-        <br/>
-  
+        <br />
+
         <div class="output-tile__input_lrv-urv">
           <!-- LRV_in -->
           <mat-form-field class="output-tile__lrv">
             <mat-label>Lower Range Value</mat-label>
             <input matInput type="number" formControlName="lrv" />
           </mat-form-field>
-  
+
           <!-- URV_in -->
           <mat-form-field class="output-tile__urv">
             <mat-label>Upper Range Value</mat-label>
             <input matInput type="number" formControlName="urv" />
           </mat-form-field>
         </div>
-  
+
         <!-- LRV_in - URV_in slider -->
         <div class="output-tile__slider">
           <mat-slider
             class="output-tile__slider--wide"
-            [min]="outMin"
-            [max]="outMax"
+            [min]="this.outputSig.range.lrv"
+            [max]="this.outputSig.range.urv"
             showTickMarks
             discrete
           >
@@ -184,9 +159,8 @@
           </mat-slider>
         </div>
       </form>
-  
-      <!-- </div> -->
     </mat-grid-tile>
+    
   </mat-grid-list>
 
 </div>

@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { Chart } from 'chart.js';
+import { Chart } from 'chart.js/auto';
 
 import { ChartService } from '../chart.service';
 import { chartData } from '../point';
@@ -10,13 +10,12 @@ import { chartData } from '../point';
   styleUrls: ['./span-graph.component.scss']
 })
 export class SpanGraphComponent implements OnChanges, OnInit {
-
-  @Input() chartData: chartData = {points: [{x: 0, y: 0}], unitsX: '', unitsY: ''};
+  @Input() chartData: chartData = {points: [{x: 0, y: 0}], unitsX: '', unitsY: '', calcPoint: null};
 
   ngOnChanges(changes: SimpleChanges) {
     if (!changes['chartData'].isFirstChange()) {
       this.chartService.updateChart(this.chart, this.chartData!);
-    }
+    };
   };
 
   constructor(

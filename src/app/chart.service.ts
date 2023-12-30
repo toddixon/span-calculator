@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Chart, ChartData } from 'chart.js';
+import { Chart, ChartData, ChartDataset, ChartDatasetProperties } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { point, chartData } from './point';
+import { Anchor, Align, Font } from 'chartjs-plugin-datalabels/types/options';
+import { Context } from 'html2canvas/dist/types/core/context';
+import { DeclarationListEmitMode } from '@angular/compiler';
 
 // This service is in charge of managing the chart created in span-graph.component as the span values change.
 
@@ -14,14 +17,13 @@ export class ChartService {
 
   updateChart(chart: Chart, chartData: chartData) {
     this.removeData(chart);
-    let chartDataSet = this.buildDataSet(chartData.points);
+    let chartDataSet = this.buildDataSet(chartData.points, chartData.calcPoint);
     this.addData(chart, chartDataSet);
     this.setOptions(chart, chartData.unitsX, chartData.unitsY);
-
     this.chart.update('none'); // Update line chart with no animation
   };
 
-  private buildDataSet(points: point[]): ChartData<"line", point[], unknown> {
+  private buildDataSet(points: point[], calcPoint: point | null): ChartData<"line", point[], unknown> {
     let datasets: ChartData<'line', point[]> = {
       datasets: [{
         data: points,
@@ -29,33 +31,48 @@ export class ChartService {
           xAxisKey: 'x',
           yAxisKey: 'y',
         },
-  
+        pointRadius: 5,
+        //order: 1,
       }]
     };
+    if (calcPoint) {
+      let pseudoPts: point[] = [points[0], calcPoint, points[points.length - 1]];
+      let point: ChartDataset<'line', point[]> = {
+        data: pseudoPts,
+        pointRadius: [0, 7, 0],
+        pointBackgroundColor: '#3f51b5',
+        showLine: false,
+        order: 0,
+      }
+      datasets.datasets[0].order = 1;
+      datasets.datasets.push(point);
+    };
+
     return datasets;
   };
 
   // Removes dataset from previous span calculation
   removeData(chart: Chart<any>): void {
     chart.data.datasets.forEach((dataset) => {
-      dataset.data.pop()
+      dataset.data.pop();
     })
   };
 
   // Add new dataset 
   private addData(chart: Chart, newData: ChartData<'line', point[]>): void {
-    chart.data = newData
+    chart.data = newData;
   };
 
-  private setOptions(chart: Chart,  titleX: string = 'Output', titleY: string = 'Input', rot: number = 0, sizePts: number = 12, sizeTitle: number = 15): void {
+  private setOptions(chart: Chart, titleX: string = 'Output', titleY: string = 'Input', rot: number = 0, sizePts: number = 16, sizeTitle: number = 15): void {
     chart.options = {
       responsive: true,
       maintainAspectRatio: false,
       scales: {
         x: {
+          beginAtZero: false,
           title: {
             display: true,
-            text: titleX,
+            text: '(x) - ' + titleX,
             font: {
               size: sizeTitle,
               weight: 'bold'
@@ -63,15 +80,16 @@ export class ChartService {
           },
           display: true,
           type: 'linear',
-          //grace: '5%',
+          offset: true,
           grid: {
             drawTicks: true
           }
         },
         y: {
+          beginAtZero: false,
           title: {
             display: true,
-            text: titleY,
+            text: '(y) - ' + titleY,
             font: {
               size: sizeTitle,
               weight: 'bold',
@@ -79,6 +97,7 @@ export class ChartService {
           },
           display: true,
           type: 'linear',
+          offset: true,
           grid: {
             drawTicks: true
           }
@@ -91,32 +110,66 @@ export class ChartService {
         },
         datalabels: {
           display: true,
-          anchor: 'center',
-          align: 'top',
           formatter: (point, ctx) => {
             let idx = ctx.dataIndex;
-            return `${point.x}, ${point.y}`;
+            return `(${point.x}, ${point.y})`;
           },
-          rotation: (ctx) => {
-            return rot
+          align: (ctx) => {
+            let align: Align = 'top'
+            if (ctx.datasetIndex == 1){
+              align = 'right'
+            }
+
+            return align;
           },
+          offset: (ctx) => {
+            let offset: number = 5;
+            if (ctx.dataIndex == 0) {
+              offset = 10;
+            }
+            else if (ctx.dataIndex == ctx.dataset.data.length - 1) {
+              offset = -2;
+            };
+            return offset;
+          },
+          clamp: true,
+          clip: false,
+          rotation: rot,
           labels: {
             title: {
-              font: {
-                size: sizePts
+              display: (ctx) => {
+                let display: string | boolean = 'auto';
+                if (ctx.datasetIndex == 1) {
+                  switch(ctx.dataIndex) {
+                    case 0: display = false;
+                    break;
+                    case 1: display = true;
+                    break;
+                    case 2: display = false; 
+                    break;
+                  }
+                };
+                return display;
+              },
+              font: (ctx) => {
+                let font: Font = {};
+                if (ctx.datasetIndex == 0) {
+                  font.size = sizePts;
+                  font.weight = 'normal';
+                }
+                else {
+                  font.size = sizePts;
+                  font.weight = 'bold'
+                }
+                return font
               }
             }
-          }
-
+          },
         },
         tooltip: {
           enabled: false
         }
       },
-      // animation: {
-      // duration: 1000,
-      // easing: 'easeInCubic'
-      // }
     }
 
     return
@@ -124,14 +177,13 @@ export class ChartService {
 
   public chart: Chart = null!;
 
-  createChart(points: point[] | any, name: string = "MyChart"): Chart {
+  createChart(points: point[] | any, name: string = "myChart"): Chart {
     Chart.register(ChartDataLabels)
     this.chart = new Chart(name, {
       type: 'line',
-      data: this.buildDataSet(points),
+      data: this.buildDataSet(points, null),
     })
     this.setOptions(this.chart);
-    //this.chart.resize(900, 800)
     return this.chart
   };
 
@@ -139,7 +191,7 @@ export class ChartService {
     return this.chart;
   }
   getChartStr(): string {
-    return this.chart.toBase64Image(); 
+    return this.chart.toBase64Image();
   }
 
 }

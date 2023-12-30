@@ -1,0 +1,34 @@
+<mat-tab-group
+  class="span-result"
+  color="accent"
+  mat-stretch-tabs="true"
+>
+  <mat-tab label="Graph">
+    <div class="span-result__graph-tab">
+    <ng-template matTabContent>
+        <app-span-graph [chartData]="chartData"></app-span-graph>
+      </ng-template>
+    </div>
+  </mat-tab>
+  <mat-tab label="Table">
+    <div
+      class="span-result__table-tab"
+      *ngIf="this.chartData.points.length > 1"
+    >
+      <table mat-table #table [dataSource]="chartData.points">
+        <!-- Input points column -->
+        <ng-container [matColumnDef]="displayedCols[1]">
+          <th mat-header-cell *matHeaderCellDef>{{ chartData.unitsX }}</th>
+          <td mat-cell *matCellDef="let p">{{ p.x }}</td>
+        </ng-container>
+        <!-- Output points column -->
+        <ng-container [matColumnDef]="displayedCols[0]">
+          <th mat-header-cell *matHeaderCellDef>{{ chartData.unitsY }}</th>
+          <td mat-cell *matCellDef="let p">{{ p.y }}</td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedCols"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedCols"></tr>
+      </table>
+    </div>
+  </mat-tab>
+</mat-tab-group>
