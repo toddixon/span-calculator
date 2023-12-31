@@ -23,7 +23,7 @@
 
   <mat-grid-list
     [gutterSize]="gutterSize_grid"
-    cols="3"
+    [cols]="cols"
     [rowHeight]="rowHeight_grid"
   >
     <!-- Input ranges form group -->
@@ -84,7 +84,7 @@
             showTickMarks
             discrete
           >
-            <input matSliderStartThumb formControlName="lrvSl" />
+            <input matSliderStartThumb #lrvSlI formControlName="lrvSl" />
             <input matSliderEndThumb formControlName="urvSl" />
           </mat-slider>
         </div>
@@ -154,15 +154,20 @@
             showTickMarks
             discrete
           >
-            <input matSliderStartThumb formControlName="lrvSl" />
-            <input matSliderEndThumb formControlName="urvSl" />
+          <input matSliderStartThumb formControlName="lrvSl" [value]="this.outputRangesForm.controls['lrv'].value" />
+          <input matSliderEndThumb formControlName="urvSl" [value]="this.outputRangesForm.controls['urv'].value"  />
+          <!-- <input matSliderStartThumb formControlName="lrvSl" />
+          <input matSliderEndThumb formControlName="urvSl" /> -->
           </mat-slider>
         </div>
       </form>
     </mat-grid-tile>
     
   </mat-grid-list>
-
 </div>
+
+<!-- <hr/>
+<span>{{this.currentScreenSize}}</span> -->
+
 <!-- <router-outlet name="print"></router-outlet> -->
 <app-print-layout></app-print-layout>

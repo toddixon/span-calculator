@@ -29,6 +29,7 @@ import { PrintLayoutComponent } from './print-layout/print-layout.component';
 import { GraphPrintComponent } from './graph-print/graph-print.component';
 import { SpanResultComponent } from './span-result/span-result.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,7 +42,6 @@ import { SpanResultComponent } from './span-result/span-result.component';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-
     FormsModule,
     ReactiveFormsModule,
 
