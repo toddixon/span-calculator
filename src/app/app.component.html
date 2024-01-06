@@ -21,154 +21,143 @@
     </div>
   </mat-toolbar>
 
-  <mat-grid-list
-    [gutterSize]="gridStyle.gutterSize"
-    [cols]="gridRowsCols.colTot"
-    [rowHeight]="gridStyle.rowHeight"
-  >
-    <!-- Input ranges form group -->
-    <mat-grid-tile class="input-tile" colspan="1" rowspan="1">
-      <form [formGroup]="this.inputRangesForm">
-        <!-- Select Input as Primary Signal -->
-        <div class="input-tile__input-select">
-          <form [formGroup]="spanCalcForm">
-            <mat-radio-group name="select" formControlName="selectPrimary">
-              <mat-radio-button
-                class="input-tile__radio-button"
-                [value]="true"
-              ></mat-radio-button>
-            </mat-radio-group>
-          </form>
+    <div class="grid-wrapper">
+      <!-- Input ranges form group -->
 
-          <!-- Input -->
-          <mat-form-field class="input-tile__input">
-            <mat-label>Input</mat-label>
-            <input matInput type="number" [step]="valBoxStep" formControlName="input" />
-          </mat-form-field>
+        <form class="input-tile" [formGroup]="this.inputRangesForm">
+          <!-- Select Input as Primary Signal -->
+          <div class="input-tile__input-select">
+            <form [formGroup]="spanCalcForm">
+              <mat-radio-group name="select" formControlName="selectPrimary">
+                <mat-radio-button
+                  class="input-tile__radio-button"
+                  [value]="true"
+                ></mat-radio-button>
+              </mat-radio-group>
+            </form>
+  
+            <!-- Input -->
+            <mat-form-field class="input-tile__input">
+              <mat-label>Input</mat-label>
+              <input matInput type="number" [step]="valBoxStep" formControlName="input" />
+            </mat-form-field>
+  
+            <!-- Signal select -->
+            <mat-form-field
+              class="input-tile__select input-tile__select--margin-left"
+            >
+              <mat-label>Select Signal</mat-label>
+              <mat-select formControlName="sigType">
+                <mat-option *ngFor="let item of this.sigKeys" [value]="item">{{
+                  item
+                }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+  
+          <br />
+  
+          <div class="input-tile__input_lrv-urv">
+            <!-- LRV_in -->
+            <mat-form-field class="input-tile__lrv">
+              <mat-label>Lower Range Value</mat-label>
+              <input matInput type="number" formControlName="lrv" />
+            </mat-form-field>
+  
+            <!-- URV_in -->
+            <mat-form-field class="input-tile__urv">
+              <mat-label>Upper Range Value</mat-label>
+              <input matInput type="number" formControlName="urv" />
+            </mat-form-field>
+          </div>
+  
+          <!-- LRV_in - URV_in slider -->
+          <div class="input-tile__slider">
+            <mat-slider
+              class="input-tile__slider--wide"
+              [min]="this.inputSig.range.lrv"
+              [max]="this.inputSig.range.urv"
+              showTickMarks
+              discrete
+            >
+              <input matSliderStartThumb #lrvSlI formControlName="lrvSl" />
+              <input matSliderEndThumb formControlName="urvSl" />
+            </mat-slider>
+          </div>
+        </form>
 
-          <!-- Signal select -->
-          <mat-form-field
-            class="input-tile__select input-tile__select--margin-left"
-          >
-            <mat-label>Select Signal</mat-label>
-            <mat-select formControlName="sigType">
-              <mat-option *ngFor="let item of this.sigKeys" [value]="item">{{
-                item
-              }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-
-        <br />
-
-        <div class="input-tile__input_lrv-urv">
-          <!-- LRV_in -->
-          <mat-form-field class="input-tile__lrv">
-            <mat-label>Lower Range Value</mat-label>
-            <input matInput type="number" formControlName="lrv" />
-          </mat-form-field>
-
-          <!-- URV_in -->
-          <mat-form-field class="input-tile__urv">
-            <mat-label>Upper Range Value</mat-label>
-            <input matInput type="number" formControlName="urv" />
-          </mat-form-field>
-        </div>
-
-        <!-- LRV_in - URV_in slider -->
-        <div class="input-tile__slider">
-          <mat-slider
-            class="input-tile__slider--wide"
-            [min]="this.inputSig.range.lrv"
-            [max]="this.inputSig.range.urv"
-            showTickMarks
-            discrete
-          >
-            <input matSliderStartThumb #lrvSlI formControlName="lrvSl" />
+      <!-- Span calculation output form -->
+      <div class="span-result-tile">
+        <app-span-result class="span-result-tile__app" [chartData]="chartData"></app-span-result>
+      </div>
+  
+      <!-- Output ranges form group -->
+        <form class="output-tile" [formGroup]="this.outputRangesForm">
+          <div class="output-tile__output-select">
+            <!-- Output Section Select -->
+            <form [formGroup]="spanCalcForm">
+              <mat-radio-group name="select" formControlName="selectPrimary">
+                <mat-radio-button
+                  class="output-tile__radio-button"
+                  [value]="false"
+                ></mat-radio-button>
+              </mat-radio-group>
+            </form>
+  
+            <!-- Output -->
+            <mat-form-field>
+              <mat-label>Output</mat-label>
+              <input matInput type="number" [step]="valBoxStep" formControlName="output" />
+            </mat-form-field>
+  
+            <!-- Signal select -->
+            <mat-form-field
+              class="output-tile__select output-tile__select--margin-left"
+            >
+              <mat-label>Select Signal</mat-label>
+              <mat-select formControlName="sigType">
+                <mat-option *ngFor="let item of this.sigKeys" [value]="item">{{
+                  item
+                }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+  
+          <br />
+  
+          <div class="output-tile__input_lrv-urv">
+            <!-- LRV_in -->
+            <mat-form-field class="output-tile__lrv">
+              <mat-label>Lower Range Value</mat-label>
+              <input matInput type="number" formControlName="lrv" />
+            </mat-form-field>
+  
+            <!-- URV_in -->
+            <mat-form-field class="output-tile__urv">
+              <mat-label>Upper Range Value</mat-label>
+              <input matInput type="number" formControlName="urv" />
+            </mat-form-field>
+          </div>
+  
+          <!-- LRV_in - URV_in slider -->
+          <div class="output-tile__slider">
+            <mat-slider
+              class="output-tile__slider--wide"
+              [min]="this.outputSig.range.lrv"
+              [max]="this.outputSig.range.urv"
+              showTickMarks
+              discrete
+            >
+            <input matSliderStartThumb formControlName="lrvSl" />
             <input matSliderEndThumb formControlName="urvSl" />
-          </mat-slider>
-        </div>
-      </form>
-    </mat-grid-tile>
+            </mat-slider>
+          </div>
+        </form>
 
-    <!-- Span calculation output form -->
-    <mat-grid-tile *ngIf="!this.swLayout" class="span-result-tile"  [colspan]="this.resultTile.colSpan" [rowspan]="this.resultTile.rowSpan">
-      <app-span-result class="span-result-tile__app" [chartData]="chartData"></app-span-result>
-    </mat-grid-tile>
-
-    <!-- Output ranges form group -->
-    <mat-grid-tile class="output-tile" colspan="1" rowspan="1">
-      <form [formGroup]="this.outputRangesForm">
-        <div class="output-tile__output-select">
-          <!-- Output Section Select -->
-          <form [formGroup]="spanCalcForm">
-            <mat-radio-group name="select" formControlName="selectPrimary">
-              <mat-radio-button
-                class="output-tile__radio-button"
-                [value]="false"
-              ></mat-radio-button>
-            </mat-radio-group>
-          </form>
-
-          <!-- Output -->
-          <mat-form-field>
-            <mat-label>Output</mat-label>
-            <input matInput type="number" [step]="valBoxStep" formControlName="output" />
-          </mat-form-field>
-
-          <!-- Signal select -->
-          <mat-form-field
-            class="output-tile__select output-tile__select--margin-left"
-          >
-            <mat-label>Select Signal</mat-label>
-            <mat-select formControlName="sigType">
-              <mat-option *ngFor="let item of this.sigKeys" [value]="item">{{
-                item
-              }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-
-        <br />
-
-        <div class="output-tile__input_lrv-urv">
-          <!-- LRV_in -->
-          <mat-form-field class="output-tile__lrv">
-            <mat-label>Lower Range Value</mat-label>
-            <input matInput type="number" formControlName="lrv" />
-          </mat-form-field>
-
-          <!-- URV_in -->
-          <mat-form-field class="output-tile__urv">
-            <mat-label>Upper Range Value</mat-label>
-            <input matInput type="number" formControlName="urv" />
-          </mat-form-field>
-        </div>
-
-        <!-- LRV_in - URV_in slider -->
-        <div class="output-tile__slider">
-          <mat-slider
-            class="output-tile__slider--wide"
-            [min]="this.outputSig.range.lrv"
-            [max]="this.outputSig.range.urv"
-            showTickMarks
-            discrete
-          >
-          <input matSliderStartThumb formControlName="lrvSl" />
-          <input matSliderEndThumb formControlName="urvSl" />
-          </mat-slider>
-        </div>
-      </form>
-    </mat-grid-tile>
-    
-    <mat-grid-tile *ngIf="this.swLayout" class="span-result-tile" [colspan]="this.resultTile.colSpan" [rowspan]="this.resultTile.rowSpan">
-      <app-span-result class="span-result-tile__app" [chartData]="chartData"></app-span-result>
-    </mat-grid-tile>
-
-  </mat-grid-list>
+    </div>
 </div>
 
-<hr/>
+<!-- <hr/> -->
 <!-- <span>{{this.currentScreenSize}}</span> -->
 
 <!-- <router-outlet name="print"></router-outlet> -->

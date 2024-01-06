@@ -1,6 +1,6 @@
 import { AfterViewChecked, Component, Injector, OnDestroy, ViewChild } from '@angular/core';
 import { OnInit } from '@angular/core';
-import { FormControl, FormGroup, AbstractControl, Validators, ValidatorFn, ValidationErrors, Form, ControlValueAccessor, NG_VALIDATORS } from '@angular/forms';
+import { FormControl, FormGroup, AbstractControl, Validators, ValidatorFn, ValidationErrors } from '@angular/forms';
 import { Subject, debounceTime, pairwise, startWith, takeUntil, distinctUntilChanged } from 'rxjs';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import { CalcSpanService } from './calc-span.service';

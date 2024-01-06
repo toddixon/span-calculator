@@ -2,7 +2,7 @@ $sliderW_max: 500px;
 $sliderW_min: 80%;
 $fieldH: 90px;
 $gridRowH: 200px;
-$lrvUrvW: 200px;
+$lrvUrvW: 35%;
 $inputMargin: 10px;
 
 //Min and max widths for grid tiles
@@ -10,6 +10,10 @@ $inputOutputTileMinW: 300px;
 $inputOutputTileMaxW: 600px;
 $graphTileMinW: 600px;
 $graphTileMaxW: 1200px;
+
+// CSS grid variables
+$coltot: 2;
+
 
 mat-grid-list {
   height: 600px;
@@ -37,10 +41,16 @@ app-span-graph {
   }
 }
 
+.grid-wrapper {
+  display: grid;
+  grid-template-columns: repeat($coltot, 1fr);
+  gap: 5px;
+  grid-auto-rows: minmax(300px, auto);
+}
+
 .input-tile,
 .output-tile,
 .span-result-tile {
-  left: 40px;
   border-width: 4px;
   border-style: solid;
   border-color: #3f51b5;
@@ -49,11 +59,12 @@ app-span-graph {
 
   &__output-select,
   &__input-select {
+    align-items: center;
     display: flex;
-    position: absolute;
     justify-content: space-around;
-    top: 10%;
-    left: 20px;
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-top: 10px;
     width: 90%;
   }
   
@@ -71,9 +82,8 @@ app-span-graph {
     &__input_lrv-urv,
     &__output_lrv-urv {
       display: flex;
-      position: absolute;
       justify-content: space-around;
-      width: 90%;
+      width: 100%;
       top: 50%;
       left: 20px;
       right: 50%;
@@ -84,17 +94,18 @@ app-span-graph {
   }
 
   &__urv {
-    margin-left: $inputMargin;
+    //margin-left: $inputMargin;
     width: $lrvUrvW;
   }
 
   &__slider {
     display: flex;
-    position: absolute;
     justify-content: center;
-    left: 25px;
-    right: 25px;
-    bottom: 10%;
+    // left: 25px;
+    // right: 25px;
+    // bottom: 10%;
+    padding-right: 5%;
+    padding-left: 5%;
 
     &--wide {
       width: 100%;
@@ -104,11 +115,24 @@ app-span-graph {
 
 .input-tile, .output-tile {
   min-width: $inputOutputTileMinW;
-  max-width: $inputOutputTileMaxW;
+  // max-width: $inputOutputTileMaxW;
 }
+
+.input-tile {
+  grid-row: 3;
+  grid-column: 1;
+}
+
+.output-tile {
+  grid-row: 3;
+  grid-column: 2;
+}
+
 .span-result-tile {
+  grid-row: 1 / span 2;
+  grid-column: 1 / span 2;
   min-width: $graphTileMinW;
-  max-width: $graphTileMaxW;
+  // max-width: $graphTileMaxW;
   &__app {
     width: 100%;
     height: 100%;
