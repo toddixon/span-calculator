@@ -22,9 +22,9 @@
   </mat-toolbar>
 
   <mat-grid-list
-    [gutterSize]="gutterSize_grid"
-    [cols]="cols"
-    [rowHeight]="rowHeight_grid"
+    [gutterSize]="gridStyle.gutterSize"
+    [cols]="gridRowsCols.colTot"
+    [rowHeight]="gridStyle.rowHeight"
   >
     <!-- Input ranges form group -->
     <mat-grid-tile class="input-tile" colspan="1" rowspan="1">
@@ -92,7 +92,7 @@
     </mat-grid-tile>
 
     <!-- Span calculation output form -->
-    <mat-grid-tile class="span-result-tile" colspan="2" rowspan="2">
+    <mat-grid-tile *ngIf="!this.swLayout" class="span-result-tile"  [colspan]="this.resultTile.colSpan" [rowspan]="this.resultTile.rowSpan">
       <app-span-result class="span-result-tile__app" [chartData]="chartData"></app-span-result>
     </mat-grid-tile>
 
@@ -154,20 +154,22 @@
             showTickMarks
             discrete
           >
-          <input matSliderStartThumb formControlName="lrvSl" [value]="this.outputRangesForm.controls['lrv'].value" />
-          <input matSliderEndThumb formControlName="urvSl" [value]="this.outputRangesForm.controls['urv'].value"  />
-          <!-- <input matSliderStartThumb formControlName="lrvSl" />
-          <input matSliderEndThumb formControlName="urvSl" /> -->
+          <input matSliderStartThumb formControlName="lrvSl" />
+          <input matSliderEndThumb formControlName="urvSl" />
           </mat-slider>
         </div>
       </form>
     </mat-grid-tile>
     
+    <mat-grid-tile *ngIf="this.swLayout" class="span-result-tile" [colspan]="this.resultTile.colSpan" [rowspan]="this.resultTile.rowSpan">
+      <app-span-result class="span-result-tile__app" [chartData]="chartData"></app-span-result>
+    </mat-grid-tile>
+
   </mat-grid-list>
 </div>
 
-<!-- <hr/>
-<span>{{this.currentScreenSize}}</span> -->
+<hr/>
+<!-- <span>{{this.currentScreenSize}}</span> -->
 
 <!-- <router-outlet name="print"></router-outlet> -->
 <app-print-layout></app-print-layout>

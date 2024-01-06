@@ -20,7 +20,7 @@ export class ChartService {
     let chartDataSet = this.buildDataSet(chartData.points, chartData.calcPoint);
     this.addData(chart, chartDataSet);
     this.setOptions(chart, chartData.unitsX, chartData.unitsY);
-    this.chart.update('none'); // Update line chart with no animation
+    chart.update('none'); // Update line chart with no animation
   };
 
   private buildDataSet(points: point[], calcPoint: point | null): ChartData<"line", point[], unknown> {
@@ -179,10 +179,18 @@ export class ChartService {
 
   createChart(points: point[] | any, name: string = "myChart"): Chart {
     Chart.register(ChartDataLabels)
+    let dataset = this.buildDataSet(points, null);
+
+    if (this.chart != null) {
+      console.log('!null');
+      this.chart.destroy();
+    } 
+
     this.chart = new Chart(name, {
       type: 'line',
-      data: this.buildDataSet(points, null),
+      data: dataset,
     })
+
     this.setOptions(this.chart);
     return this.chart
   };

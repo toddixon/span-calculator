@@ -1,14 +1,14 @@
 import { AfterViewChecked, Component, Injector, OnDestroy, ViewChild } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { FormControl, FormGroup, AbstractControl, Validators, ValidatorFn, ValidationErrors, Form, ControlValueAccessor, NG_VALIDATORS } from '@angular/forms';
-import { Subject, debounceTime, pairwise, startWith, takeUntil } from 'rxjs';
+import { Subject, debounceTime, pairwise, startWith, takeUntil, distinctUntilChanged } from 'rxjs';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import { CalcSpanService } from './calc-span.service';
 
 import { range } from './range';
 import { point, chartData } from './point';
 import { PrintService } from './print.service';
-import { path } from 'd3';
+import { line, path } from 'd3';
 
 // Second form group for Output controls
 @Component({
@@ -21,10 +21,14 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   // Style settings for <mat-grid-list>
   cols: number = 3;
-  rowHeight_grid: string | number = "fit"; // Used in template for <mat-grid-list> element 
-  gutterSize_grid: string = "12px"; // Sets gutter size between neighboring <mat-grid-tile> elements
+  lrvTile: {rowSpan: number, colSpan: number} = {rowSpan: 1, colSpan: 1};
+  urvTile = this.lrvTile;
+  resultTile: typeof this.lrvTile = {rowSpan: 2, colSpan: 2};
+  gridRowsCols: {rowTot: number, colTot: number,} = {rowTot: 2, colTot: 3};
+  gridStyle: {rowHeight: string | number, gutterSize: string} = {rowHeight: "fit", gutterSize: "12px"};
+
   destroyed = new Subject<void>();
-  currentScreenSize: string | undefined;
+  swLayout: boolean = false;
   displayNameMap = new Map([
     [Breakpoints.XSmall, 'XSmall'],
     [Breakpoints.Small, 'Small'],
@@ -33,15 +37,12 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
     [Breakpoints.XLarge, 'XLarge'],
   ]);
 
-
-
   inputPrim: boolean = true;// Whether input is the primary signal else output
   inputSig: { units: string, range: range } = { units: 'Input', range: { lrv: 0, urv: 10 } };
   outputSig: { units: string, range: range } = { units: 'Output', range: { lrv: 0, urv: 10 } };
 
   spanTableCols: string[] = ['Input', 'Output']; // Dynamic names for mat-table columns
   spanTableDemoCols: string[] = ['Input', 'Output']; // Static names for mat-table columns
-
   sigKeys: String[] = [];
 
   spanCalcForm: FormGroup;
@@ -49,7 +50,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
   outputRangesForm: FormGroup;
   selectPrimary: AbstractControl;
 
-  //incriment: boolean | undefined = undefined;
   lrvLast: boolean = true;// whether the LRV input box/slider was the last control adjusted or one of the URV controls
   private readonly debounceTime = 300;
   points: Array<point> = [];
@@ -63,16 +63,35 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
     breakpointObserver: BreakpointObserver) {
       breakpointObserver.observe([
         Breakpoints.XSmall, // 599px-
-        Breakpoints.Small, // 600px
-        Breakpoints.Medium, // 960px
-        Breakpoints.Large, // 1280px
+        Breakpoints.Small, // 600px-959px //have it switch to one column when it gets below this
+        Breakpoints.Medium, // 960px-1279px 
+        Breakpoints.Large, // 1280px-1919px
         Breakpoints.XLarge, // 1920px+
       ])
       .pipe(takeUntil(this.destroyed))
       .subscribe(result => {
         for (const query of Object.keys(result.breakpoints)) {
           if (result.breakpoints[query]) {
-            this.currentScreenSize = this.displayNameMap.get(query) ?? 'Unknown';
+            let currentScreenSize = this.displayNameMap.get(query) ?? 'Unknown';
+            switch(currentScreenSize){
+              case 'Small': 
+              case 'XSmall': 
+                this.swLayout = true;
+                this.gridRowsCols.colTot = 2;
+                this.gridRowsCols.rowTot = 3;
+                break;
+              case 'Medium':
+              case 'Large':
+              case 'XLarge':
+                this.swLayout = false;
+                this.gridRowsCols.colTot = 3;
+                this.gridRowsCols.rowTot = 2;
+                break;
+              default: 
+                this.swLayout = false;
+                this.gridRowsCols.colTot = 3;
+                this.gridRowsCols.rowTot = 2;
+            }
           }
         }
       });
@@ -117,6 +136,11 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
       lSlIn?.setValue(v, { emitEvent: false });
       this.onSpanChange();
     });
+    lIn?.statusChanges.pipe(distinctUntilChanged()).subscribe((v) => {
+      if (v == 'VALID') {
+        uIn?.updateValueAndValidity({onlySelf: true, emitEvent: false});
+      }
+    });
     lSlIn?.valueChanges.pipe(startWith(this.inputSig.range.lrv), pairwise()).subscribe(([vPrev, v]) => {
       this.lrvLast = true;
       lIn?.setValue(v, { emitEvent: false });
@@ -126,6 +150,11 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
       uSlIn?.setValue(v, { emitEvent: false });
       this.onSpanChange();
       this.lrvLast = false;
+    });
+    uIn?.statusChanges.pipe(distinctUntilChanged()).subscribe((v) => {
+      if (v == 'VALID') {
+        lIn?.updateValueAndValidity({onlySelf: true, emitEvent: false});
+      }
     });
     uSlIn?.valueChanges.pipe(startWith(this.inputSig.range.urv), pairwise()).subscribe(([vPrev, v]) => {
       this.lrvLast = false;
@@ -142,21 +171,35 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.onSigTypeChange(this.outputSig, { input: lOut, slider: lSlOut }, { input: uOut, slider: uSlOut });
       this.onSpanChange();
     });
+    
     lOut?.valueChanges.pipe(startWith(this.outputSig.range.lrv), pairwise()).subscribe(([vPrev, v]) => {
       this.lrvLast = true;
       lSlOut?.setValue(v, { emitEvent: false });
       this.onSpanChange();
     });
+    lOut?.statusChanges.pipe(distinctUntilChanged()).subscribe((v) => {
+      if (v == 'VALID') {
+        uOut?.updateValueAndValidity({onlySelf: true, emitEvent: false});
+      }
+    });
+
     lSlOut?.valueChanges.pipe(startWith(this.outputSig.range.lrv), pairwise()).subscribe(([vPrev, v]) => {
       this.lrvLast = true;
       lOut?.setValue(v, { emitEvent: false });
       this.onSpanChange();
     });
+
     uOut?.valueChanges.pipe(startWith(this.outputSig.range.urv), pairwise()).subscribe(([vPrev, v]) => {
       this.lrvLast = false;
       uSlOut?.setValue(v, { emitEvent: false });
       this.onSpanChange();
     });
+    uOut?.statusChanges.pipe(distinctUntilChanged()).subscribe((v) => {
+      if (v == 'VALID') {
+        lOut?.updateValueAndValidity({onlySelf: true, emitEvent: false});
+      }
+    });
+
     uSlOut?.valueChanges.pipe(startWith(this.outputSig.range.urv), pairwise()).subscribe(([vPrev, v]) => {
       this.lrvLast = false;
       uOut?.setValue(v, { emitEvent: false });
@@ -199,8 +242,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
   };
 
   ngOnDestroy(): void {
-      //this.destro
-  }
+      this.destroyed.next()
+      this.destroyed.complete();
+  };
 
   // Have each form control call this function with the 
   private onSpanChange() {
@@ -272,6 +316,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
       }
       // Otherwise no errors
       else {
+
         return null;
       };
     };
