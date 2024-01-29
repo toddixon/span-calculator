@@ -1,10 +1,8 @@
-import { Injectable } from '@angular/core';
-import { Chart, ChartData, ChartDataset, ChartDatasetProperties } from 'chart.js';
+import { Injectable, afterRender } from '@angular/core';
+import { Chart, ChartData, ChartDataset, ChartDatasetProperties, ScriptableChartContext } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { point, chartData } from './point';
 import { Anchor, Align, Font } from 'chartjs-plugin-datalabels/types/options';
-import { Context } from 'html2canvas/dist/types/core/context';
-import { DeclarationListEmitMode } from '@angular/compiler';
 
 // This service is in charge of managing the chart created in span-graph.component as the span values change.
 
@@ -12,8 +10,6 @@ import { DeclarationListEmitMode } from '@angular/compiler';
   providedIn: 'root'
 })
 export class ChartService {
-
-  constructor() { }
 
   updateChart(chart: Chart, chartData: chartData) {
     this.removeData(chart);
@@ -63,10 +59,17 @@ export class ChartService {
     chart.data = newData;
   };
 
-  private setOptions(chart: Chart, titleX: string = 'Output', titleY: string = 'Input', rot: number = 0, sizePts: number = 16, sizeTitle: number = 15): void {
+  setOptions(chart: Chart, titleX: string = 'Output', titleY: string = 'Input', rot: number = 0, sizePts: number = 16, sizeTitle: number = 15, isPortrait: boolean = false) : void {
+
     chart.options = {
       responsive: true,
       maintainAspectRatio: false,
+      animation: {
+        duration: 0,
+        onComplete: function(event) {
+          chart.hide;
+        }
+      },
       scales: {
         x: {
           beginAtZero: false,
@@ -102,7 +105,7 @@ export class ChartService {
             drawTicks: true
           }
         }
-
+        
       },
       plugins: {
         legend: {
@@ -166,12 +169,12 @@ export class ChartService {
             }
           },
         },
+
         tooltip: {
           enabled: false
         }
       },
     }
-
     return
   };
 
@@ -181,8 +184,7 @@ export class ChartService {
     Chart.register(ChartDataLabels)
     let dataset = this.buildDataSet(points, null);
 
-    if (this.chart != null) {
-      console.log('!null');
+    if (this.chart) {
       this.chart.destroy();
     } 
 
@@ -193,6 +195,16 @@ export class ChartService {
 
     this.setOptions(this.chart);
     return this.chart
+  };
+
+  // Called whenever 'BreakpointObserver' detects a size change
+  redrawChart(): void {
+    if (this.chart) {
+      this.setOptions(this.chart)
+      this.chart.render() // Trigger redraw of all chart elements
+      this.chart.update('none')
+    }
+
   };
 
   getChart(): Chart {

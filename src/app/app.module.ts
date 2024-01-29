@@ -1,10 +1,10 @@
-import { NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MatSliderModule } from '@angular/material/slider';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -28,6 +28,10 @@ import { SpanGraphComponent } from './span-graph/span-graph.component';
 import { PrintLayoutComponent } from './print-layout/print-layout.component';
 import { GraphPrintComponent } from './graph-print/graph-print.component';
 import { SpanResultComponent } from './span-result/span-result.component';
+import { FooterComponent } from './footer/footer.component';
+import { SetMaxHeightDirective } from './set-max-height.directive';
+import { NumericInputFieldValidationDirective } from './numeric-input-field-validation.directive';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 
 @NgModule({
@@ -36,12 +40,15 @@ import { SpanResultComponent } from './span-result/span-result.component';
     SpanGraphComponent,
     PrintLayoutComponent,
     GraphPrintComponent,
-    SpanResultComponent
+    SpanResultComponent,
+    FooterComponent,
+    SetMaxHeightDirective,
+    NumericInputFieldValidationDirective
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     BrowserAnimationsModule,
+    AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
 
@@ -63,6 +70,12 @@ import { SpanResultComponent } from './span-result/span-result.component';
     MatSelectModule,
 
     NgChartsModule,
+     ServiceWorkerModule.register('ngsw-worker.js', {
+       enabled: !isDevMode(),
+       // Register the ServiceWorker as soon as the application is stable
+       // or after 30 seconds (whichever comes first).
+       registrationStrategy: 'registerWhenStable:30000'
+     }),
   ],
   providers: [],
   bootstrap: [AppComponent]

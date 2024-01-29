@@ -19,7 +19,7 @@ export class CalcSpanService {
     return signalPresets[key]
   };
 
-  calcSpan(input: range, output: range, inputPrim: boolean,  val: number | undefined = undefined, pointCount: number = 10,): [Array<point>, point] {
+  calcSpan(input: range, output: range, inputPrim: boolean,  val: string = '', pointCount: number = 10,): [Array<point>, point] {
     let primaryRng: range;
     let secondaryRng: range;
     let calcVal: point | undefined = undefined;
@@ -41,7 +41,7 @@ export class CalcSpanService {
         )
       };
     //primaryPts = this.calcPrimaryPoints(primaryRng, secondaryRng, secondaryPts, val);
-    if (typeof(val) === 'number'){
+    if (!isNaN(parseFloat(val))){
       calcVal = this.calcVal(primaryRng, secondaryRng, val, mPri, mSec);
     };
     
@@ -61,15 +61,15 @@ export class CalcSpanService {
 
   private calcPrimaryPoint(primaryRng: range, secondaryRng: range, secondaryPoint: number, mPri: number, mSec: number): number {
     let v = (((secondaryPoint - secondaryRng.lrv) / mSec) * mPri) + primaryRng.lrv;
-    //console.log(`(((${secondaryPoint} - ${secondaryRng.lrv}) / ${mSec}) * ${mPri}) + ${primaryRng.lrv} = ${v}`)
     return v;
   };
   // Calculates the secondary point value with a given primary point value 
-  private calcVal(primaryRng: range, secondaryRng: range, primaryPoint: number, mPri: number, mSec: number): point {
+  private calcVal(primaryRng: range, secondaryRng: range, val: string, mPri: number, mSec: number): point {
+    let valFl: number = parseFloat(val);
     let valPoint: point; 
-    let sec: number = (((primaryPoint - secondaryRng.lrv) / mSec) * mPri) + primaryRng.lrv; 
-    //let sec: number = (((primaryPoint - primaryRng.lrv) / mPri) * mSec) + secondaryRng.lrv; 
-    valPoint = {x: sec, y: primaryPoint};
+    let sec: number = (((valFl - primaryRng.lrv) / mPri) * mSec) + secondaryRng.lrv;
+    sec = this.roundNum(sec);
+    valPoint = {x: valFl, y: sec};
     return valPoint;
   };
 
