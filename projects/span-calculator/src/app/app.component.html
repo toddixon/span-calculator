@@ -1,4 +1,4 @@
-<div class="span-calc-form">
+<div class="span-calc-form" [ngClass]="{'dark-theme': isDarkMode}">
   <mat-toolbar class="toolbar" color="primary">
     <span class="toolbar__title">Span Calculator</span>
     <span class="toolbar__separator"></span>
@@ -19,9 +19,9 @@
       </button>
     </div>
     <div class="toolbar__theme-button">
-      <button mat-icon-button>
-        <mat-icon>light_mode</mat-icon>
-        <!-- <mat-icon>dark_mode</mat-icon> -->
+      <button mat-icon-button (click)="onThemeChange()">
+        <mat-icon *ngIf="!isDarkMode">light_mode</mat-icon>
+        <mat-icon *ngIf="isDarkMode">dark_mode</mat-icon>
       </button>
     </div>
   </mat-toolbar>

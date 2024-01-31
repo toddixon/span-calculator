@@ -42,9 +42,6 @@ export class FormControlService implements OnInit {
 
   }
 
-  // regEx: RegExp = /^-?\d*(\.\d{0,2})?$/;
-  // exp: RegExp = /(?<!\s|^)\-?[^\.\d]|\.(?=.*\..+)|(?<=\.\d{2}).+|\s/;
-  // exp: RegExp = /(?<!\s|^)\-?[^\.\d]|\.(?=.*\..+)|(?<=\.(?:\d{2}|\c{2})).+|\s/;
   exp: RegExp = /(?<=\.(?:\d{2})).+|[^\d\.\-]|(?<!\s|^)\-|\.(?=.*\..+)|\s/;
 
 

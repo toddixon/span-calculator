@@ -97,6 +97,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
   ]);
   currentScreenSize: string = 'medium';
   isPortrait: boolean = false;
+  isDarkMode: boolean = false;
   state: 'small' | 'medium' = 'small';
 
   sigKeys: String[] = [];
@@ -193,6 +194,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.chartData = { points: this.points, unitsX: data.units.x, unitsY: data.units.y, calcPoint: this.calcPoint };
   };
 
+  onThemeChange(): void {
+    this.isDarkMode = !this.isDarkMode;
+  }
   onLayoutSwitch(): void {
     this.state = this.state === 'medium' ? 'small' : 'medium';
   };
