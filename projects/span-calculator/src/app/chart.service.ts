@@ -61,6 +61,9 @@ export class ChartService {
 
   setOptions(chart: Chart, titleX: string = 'Output', titleY: string = 'Input', rot: number = 0, sizePts: number = 16, sizeTitle: number = 15, isPortrait: boolean = false) : void {
 
+    let colorGridLines: string = '#ececec';
+    // let colorGridLines: string = '#575757';
+
     chart.options = {
       responsive: true,
       maintainAspectRatio: false,
@@ -85,7 +88,8 @@ export class ChartService {
           type: 'linear',
           offset: true,
           grid: {
-            drawTicks: true
+            drawTicks: true,
+            color: colorGridLines,
           }
         },
         y: {
@@ -102,7 +106,8 @@ export class ChartService {
           type: 'linear',
           offset: true,
           grid: {
-            drawTicks: true
+            drawTicks: true,
+            color: colorGridLines,
           }
         }
         

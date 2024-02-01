@@ -9,6 +9,14 @@ app-span-graph {
   width: 100%;
 }
 
+.span-calc-form {
+
+  .dark-theme {
+    background-color: $pageColorDark !important;
+  }
+
+}
+
 .toolbar {
   width: 100%;
   margin-bottom: 5px;
@@ -23,6 +31,10 @@ app-span-graph {
   }
   &__theme-button {
     margin-left: 10px;
+  }
+  .dark-theme {
+    background-color: $toolbarColorDark;
+    color: white;
   }
 }
 
@@ -68,6 +80,11 @@ app-span-graph {
   border-color: #3f51b5;
   border-radius: 2px;
   box-shadow: 3px 3px 3px #b2b2b2;
+
+  .dark-theme {
+    background-color: $FormGroupColorDark;
+  }
+
 }
 
 // Grid styling for input elements

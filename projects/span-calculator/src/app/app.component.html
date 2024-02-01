@@ -1,5 +1,5 @@
 <div class="span-calc-form" [ngClass]="{'dark-theme': isDarkMode}">
-  <mat-toolbar class="toolbar" color="primary">
+  <mat-toolbar class="toolbar" color="primary" [ngClass]="{'dark-theme': isDarkMode}">
     <span class="toolbar__title">Span Calculator</span>
     <span class="toolbar__separator"></span>
     <div class="toolbar__print-button">
@@ -32,7 +32,7 @@
       <div class="grid" [ngClass]="{'is-portrait': isPortrait}" [@grid-wrapper]="state">
         <!-- Input ranges form group -->
     
-          <form class="input-tile" [@input]="state" [ngClass]="{'is-portrait': isPortrait}" [formGroup]="this.formService.inputRangesForm!">
+          <form class="input-tile" [@input]="state" [ngClass]="{'is-portrait': isPortrait}" [ngClass]="{'dark-theme': isDarkMode}" [formGroup]="this.formService.inputRangesForm!">
             
             <!-- Input: First row of elements -->
             <div class="input-tile__r1">
@@ -99,12 +99,12 @@
           </form>
     
         <!-- Span calculation output form -->
-        <div class="span-result-tile" [ngClass]="{'is-portrait': isPortrait}" [@result]="state">
+        <div class="span-result-tile" [ngClass]="{'is-portrait': isPortrait}" [ngClass]="{'dark-theme': isDarkMode}" [@result]="state">
           <app-span-result class="span-result-tile__app" [chartData]="chartData"></app-span-result>
         </div>
     
         <!-- Output ranges form group -->
-          <form class="output-tile" [@output]="state" [ngClass]="{'is-portrait': isPortrait}" [formGroup]="this.formService.outputRangesForm!">
+          <form class="output-tile" [@output]="state" [ngClass]="{'is-portrait': isPortrait}" [ngClass]="{'dark-theme': isDarkMode}" [formGroup]="this.formService.outputRangesForm!">
           
             <div class="output-tile__r1">
 
