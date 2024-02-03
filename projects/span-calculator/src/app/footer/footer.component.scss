@@ -4,5 +4,8 @@
   height: 40px;
   width: 100%;
   text-align: center;
-  margin-top: 10px;
+  // margin-top: 10px;
+  &.dark-theme {
+    background: #5b6c79;
+  }
 }

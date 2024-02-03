@@ -26,13 +26,13 @@
     </div>
   </mat-toolbar>
 
-  <div class="content-wrapper"> 
+  <div class="content-wrapper" [ngClass]="{'dark-theme': isDarkMode}"> 
     <div class="flex-l" [ngClass]="{'is-portrait': isPortrait}"></div>
 
       <div class="grid" [ngClass]="{'is-portrait': isPortrait}" [@grid-wrapper]="state">
         <!-- Input ranges form group -->
     
-          <form class="input-tile" [@input]="state" [ngClass]="{'is-portrait': isPortrait}" [ngClass]="{'dark-theme': isDarkMode}" [formGroup]="this.formService.inputRangesForm!">
+          <form class="input-tile" [@input]="state" [ngClass]="{'is-portrait': isPortrait, 'dark-theme': isDarkMode}" [formGroup]="this.formService.inputRangesForm!">
             
             <!-- Input: First row of elements -->
             <div class="input-tile__r1">
@@ -99,12 +99,12 @@
           </form>
     
         <!-- Span calculation output form -->
-        <div class="span-result-tile" [ngClass]="{'is-portrait': isPortrait}" [ngClass]="{'dark-theme': isDarkMode}" [@result]="state">
+        <div class="span-result-tile" [ngClass]="{'is-portrait': isPortrait, 'dark-theme': isDarkMode}" [@result]="state">
           <app-span-result class="span-result-tile__app" [chartData]="chartData"></app-span-result>
         </div>
     
         <!-- Output ranges form group -->
-          <form class="output-tile" [@output]="state" [ngClass]="{'is-portrait': isPortrait}" [ngClass]="{'dark-theme': isDarkMode}" [formGroup]="this.formService.outputRangesForm!">
+          <form class="output-tile" [@output]="state" [ngClass]="{'is-portrait': isPortrait, 'dark-theme': isDarkMode}" [formGroup]="this.formService.outputRangesForm!">
           
             <div class="output-tile__r1">
 
@@ -177,13 +177,13 @@
 
     </div>
     
-    <div>
+    <!-- <div>
       <hr/>
       <span>{{this.currentScreenSize}}</span>
-    </div>
+    </div> -->
 
 
-      <app-footer></app-footer>
+      <app-footer [isDarkMode]="isDarkMode"></app-footer>
 
 </div>
 
