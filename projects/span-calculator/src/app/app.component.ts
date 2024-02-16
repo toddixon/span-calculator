@@ -37,50 +37,6 @@ import { Chart } from 'chart.js';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  animations: [
-    trigger('grid-wrapper', [
-      // state('medium', style({  
-      //   'grid-template-columns': '1fr 5fr',
-      //   'grid-template-rows': '1fr 1fr'}
-      //   )),
-      // state('small', style({  
-      //   'grid-template-columns': '1fr 1fr',
-      //   'grid-template-rows': '3fr 1fr'}
-      //   )),
-      transition('medium => small', [
-        group([
-          query('@*', animateChild()),
-          animate('100ms ease'),
-        ]),
-
-      ]),
-      transition('small => medium', [
-        group([
-          query('@*', animateChild()),
-          animate('100ms ease'),
-        ]),
-
-      ]),
-    ]),
-    trigger('input', [
-      // state('medium', style({'grid-row': 1, 'grid-column': 1, })),
-      // state('small', style({'grid-row': 2, 'grid-column': 1})),
-      transition('medium => small', animate('100ms ease-in')),
-      transition('small => medium', animate('100ms ease-in'))
-    ]),
-    trigger('output', [
-      // state('medium', style({'grid-row': 2, 'grid-column': 1})),
-      // state('small', style({'grid-row': 2, 'grid-column': 2})),
-      transition('medium => small', animate('100ms ease-in')),
-      transition('small => medium', animate('100ms ease-in'))
-    ]),
-    trigger('result', [
-      // state('medium', style({'grid-row': '1 / span 2', 'grid-column': 2})),
-      // state('small', style({'grid-row': 1, 'grid-column': '1 / span 2'})),
-      transition('medium => small', animate('100ms ease-in')),
-      transition('small => medium', animate('100ms ease-in'))
-    ]),
-  ],
 })
 export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
   private readonly debounceTime = 300;
