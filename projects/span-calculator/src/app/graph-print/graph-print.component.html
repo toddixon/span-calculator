@@ -1,5 +1,21 @@
 <div class="print-output">
   <div class="print-output__span-plot">
-    <img id="span-plot" [src]="this.printService.chartImg">
+    <canvas class="print-output__span-plot__graph" width="1500" height="500" #chartCopy id="copy"></canvas>
+  </div>
+  <div class="print-output__table">
+    <table mat-table #table [dataSource]="chartData.points">
+      <!-- Input points column -->
+      <ng-container [matColumnDef]="displayedCols[1]">
+        <th mat-header-cell *matHeaderCellDef>{{ chartData.unitsY }}</th>
+        <td mat-cell *matCellDef="let p">{{ p.x }}</td>
+      </ng-container>
+      <!-- Output points column -->
+      <ng-container [matColumnDef]="displayedCols[0]">
+        <th mat-header-cell *matHeaderCellDef>{{ chartData.unitsX }}</th>
+        <td mat-cell *matCellDef="let p">{{ p.y }}</td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedCols"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedCols"></tr>
+    </table>
   </div>
 </div>

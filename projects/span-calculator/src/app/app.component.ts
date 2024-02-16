@@ -1,7 +1,9 @@
 import { AfterViewChecked, Component, Injector, OnDestroy, ViewChild } from '@angular/core';
+import { PrintLayoutComponent } from './print-layout/print-layout.component';
+import { GraphPrintComponent } from './graph-print/graph-print.component';
 import { OnInit } from '@angular/core';
 import { FormControl, FormGroup, AbstractControl, Validators, ValidatorFn, ValidationErrors } from '@angular/forms';
-import { Subject, debounceTime, pairwise, startWith, takeUntil, distinctUntilChanged } from 'rxjs';
+import { Subject, debounceTime, pairwise, startWith, takeUntil, distinctUntilChanged, Observable, Subscription } from 'rxjs';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { getSignalShort } from './signal-presets';
 import { FormControlService, data } from './form-control.service';
@@ -27,6 +29,7 @@ import { PrintService } from './print.service';
 
 import { range } from './range';
 import { point, chartData } from './point';
+import { Chart } from 'chart.js';
 // import { line, path } from 'd3';
 
 // Second form group for Output controls 
@@ -34,50 +37,6 @@ import { point, chartData } from './point';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  animations: [
-    trigger('grid-wrapper', [
-      // state('medium', style({  
-      //   'grid-template-columns': '1fr 5fr',
-      //   'grid-template-rows': '1fr 1fr'}
-      //   )),
-      // state('small', style({  
-      //   'grid-template-columns': '1fr 1fr',
-      //   'grid-template-rows': '3fr 1fr'}
-      //   )),
-      transition('medium => small', [
-        group([
-          query('@*', animateChild()),
-          animate('100ms ease'),
-        ]),
-
-      ]),
-      transition('small => medium', [
-        group([
-          query('@*', animateChild()),
-          animate('100ms ease'),
-        ]),
-
-      ]),
-    ]),
-    trigger('input', [
-      // state('medium', style({'grid-row': 1, 'grid-column': 1, })),
-      // state('small', style({'grid-row': 2, 'grid-column': 1})),
-      transition('medium => small', animate('100ms ease-in')),
-      transition('small => medium', animate('100ms ease-in'))
-    ]),
-    trigger('output', [
-      // state('medium', style({'grid-row': 2, 'grid-column': 1})),
-      // state('small', style({'grid-row': 2, 'grid-column': 2})),
-      transition('medium => small', animate('100ms ease-in')),
-      transition('small => medium', animate('100ms ease-in'))
-    ]),
-    trigger('result', [
-      // state('medium', style({'grid-row': '1 / span 2', 'grid-column': 2})),
-      // state('small', style({'grid-row': 1, 'grid-column': '1 / span 2'})),
-      transition('medium => small', animate('100ms ease-in')),
-      transition('small => medium', animate('100ms ease-in'))
-    ]),
-  ],
 })
 export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
   private readonly debounceTime = 300;
@@ -97,25 +56,24 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
   ]);
   currentScreenSize: string = 'medium';
   isPortrait: boolean = false;
+  isDarkTheme: boolean = false;
   state: 'small' | 'medium' = 'small';
+  matFieldAppearance: 'fill' | 'outline' = 'outline';
 
   sigKeys: String[] = [];
-
   spanCalcForm: FormGroup;
-  // inputRangesForm: FormGroup;
-  // outputRangesForm: FormGroup;
-
   lrvLast: boolean = true;// whether the LRV input box/slider was the last control adjusted or one of the URV controls
-  
+
   points: Array<point> = [];
   calcPoint: point | undefined = undefined; // point calculation based on the value the user has typed into either the input or output FormControl
   chartData: chartData = { points: this.points, unitsX: 'Output', unitsY: 'Input', calcPoint: null };
-  // updateSpan: Subject<void> = new Subject<void>();
+
+  // @ViewChild(PrintLayoutComponent) printLayoutComponent!: PrintLayoutComponent;
 
   constructor(
     private calcSpanService: CalcSpanService,
     private chartService: ChartService,
-    private printService: PrintService,
+    public printService: PrintService,
     public formService: FormControlService,
     breakpointObserver: BreakpointObserver) {
     breakpointObserver.observe([
@@ -134,31 +92,31 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
             this.currentScreenSize = this.displayNameMap.get(query) ?? 'Unknown';
             switch (this.currentScreenSize) {
               case 'Small':
-                this.chartService.redrawChart();
+                // this.chartService.redrawChart();
                 this.isPortrait = false;
                 break;
               case 'XSmall':
-                this.chartService.redrawChart();
+                // this.chartService.redrawChart();
                 this.isPortrait = false;
                 break;
               case 'Medium':
-                this.chartService.redrawChart();
+                // this.chartService.redrawChart();
                 this.isPortrait = false;
                 break;
               case 'Large':
-                this.chartService.redrawChart();
+                // this.chartService.redrawChart();
                 this.isPortrait = false;
                 break;
               case 'XLarge':
-                this.chartService.redrawChart();
+                // this.chartService.redrawChart();
                 this.isPortrait = false;
                 break;
               case 'HandsetPortrait':
-                this.chartService.redrawChart();
+                // this.chartService.redrawChart();
                 this.isPortrait = true;
                 break;
               case 'HandsetLandscape':
-                this.chartService.redrawChart();
+                // this.chartService.redrawChart();
                 this.isPortrait = false;
                 break;
               default:
@@ -177,12 +135,10 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
     );
     this.spanCalcForm.controls['selectPrimary'].setValue(true); // Set the Input signal as primary 
   };
-
   ngAfterViewChecked(): void {
     this.spanCalcForm.get('inputRangesForm')!.setValidators([this.formService.validateRanges()]);
     this.spanCalcForm.get('outputRangesForm')!.setValidators([this.formService.validateRanges()]);
   };
-
   ngOnDestroy(): void {
     this.destroyed.next();
     this.destroyed.complete();
@@ -193,15 +149,24 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.chartData = { points: this.points, unitsX: data.units.x, unitsY: data.units.y, calcPoint: this.calcPoint };
   };
 
-  onLayoutSwitch(): void {
-    this.state = this.state === 'medium' ? 'small' : 'medium';
+  onThemeChange(): void {
+    this.isDarkTheme = !this.isDarkTheme;
+    this.chartService.redrawChart(this.isDarkTheme);
   };
-  // When user clicks print button
+
   onPrintGraph() {
-    this.printService.printGraph();
+    // this.chartService.resizeChart();
+    if (this.isDarkTheme) {
+      this.chartService.redrawChart(false);
+      this.printService.sendData(null);
+      this.chartService.redrawChart(true);
+    }
+    else {
+      this.printService.sendData(null);
+    }
+    return
   };
-  // When user clicks download button
-  onSaveGraph() {
+  onSaveGraph(): void {
     this.printService.saveGraph();
   };
 

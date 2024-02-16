@@ -1,4 +1,5 @@
 @import "_var";
+@import "@angular/material/theming";
 
 mat-grid-list {
   height: 600px;
@@ -9,9 +10,11 @@ app-span-graph {
   width: 100%;
 }
 
+.span-calc-form {
+}
+
 .toolbar {
   width: 100%;
-  margin-bottom: 5px;
   &__title {
     display: block;
   }
@@ -29,13 +32,16 @@ app-span-graph {
 .content-wrapper {
   display: flex;
   justify-content: flex-start;
-  min-height: 100vh; // Keeps footer at bottom of page
+  min-height: 100vh;
   flex-direction: row;
   padding: 1rem;
   box-sizing: border-box;
+  &.dark-theme {
+    background-color: #202124;
+  }
 }
 
-.flex-l, 
+.flex-l,
 .flex-r {
   display: flex;
   flex: 1 1 200px;
@@ -68,6 +74,12 @@ app-span-graph {
   border-color: #3f51b5;
   border-radius: 2px;
   box-shadow: 3px 3px 3px #b2b2b2;
+
+  &.dark-theme {
+    background-color: $FormGroupColorDark;
+    border-color: $primaryColorDark;
+    box-shadow: $boxShadowDark;
+  }
 }
 
 // Grid styling for input elements
@@ -104,7 +116,7 @@ app-span-graph {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 0.5em;
+  padding: 1em 0.5em;
 
   &__r1,
   &__r2 {
@@ -115,36 +127,26 @@ app-span-graph {
       min-width: 2px;
       max-width: 0.5em;
     }
-
-  }
-
-  &__r1 > *,
-  &__r2 > * {
-    // padding-left: 0.5rem;
-    // padding-right: 0.5rem;
   }
 
   &__radio-button {
     flex: 0 2 auto;
-    max-width: 25%; // No need to have the radio-static button to expand and contract with our flex-box
-    padding-bottom: 25px; // We want the radio-static button to be vertically centered with the visible <mat-form-field> element, yet there is a hidden *hint* element below the visible box that skews our center by about 20-25px
+    max-width: 25%;
+    padding-bottom: 25px;
     align-self: center;
   }
 
   &__input {
     flex: 3 1 auto;
     min-width: $inputMinW;
-
   }
 
   &__select {
     flex: 4 1 auto;
-    // min-width: 15%;
   }
 
   &__lrv {
     flex: 1 1 auto;
-
   }
 
   &__urv {
@@ -157,5 +159,11 @@ app-span-graph {
     &--wide {
       width: 100%;
     }
+  }
+}
+
+app-footer {
+  &.dark-theme {
+    background: $primaryColorDark;
   }
 }

@@ -1,9 +1,10 @@
-import { Injectable, OnInit, OnDestroy, AfterViewChecked } from '@angular/core';
+import { Injectable, OnInit, OnDestroy, AfterViewChecked, EventEmitter } from '@angular/core';
 import { FormControl, FormGroup, AbstractControl, Validators, ValidatorFn, ValidationErrors } from '@angular/forms';
 import { Subject, debounceTime, pairwise, startWith, takeUntil, distinctUntilChanged, Observable } from 'rxjs';
 import { range } from './range';
 import { point, chartData } from './point';
 import { CalcSpanService } from './calc-span.service';
+import { MatSliderDragEvent } from '@angular/material/slider';
 
 export interface data {
   prim: boolean,
@@ -17,7 +18,6 @@ export interface data {
   providedIn: 'root'
 })
 export class FormControlService implements OnInit {
-
   spanCalcForm: FormGroup | null = null;
   inputRangesForm: FormGroup | null = null;
   outputRangesForm: FormGroup | null = null;
@@ -26,27 +26,17 @@ export class FormControlService implements OnInit {
   inputSig: { units: string, range: range } = { units: 'Input', range: { lrv: 0, urv: 10 } };
   outputSig: { units: string, range: range } = { units: 'Output', range: { lrv: 0, urv: 10 } };
 
-  lrvLast: boolean = true;// whether the LRV input box/slider was the last control adjusted or one of the URV controls
+  inputColor: 'primary' | 'warn' | 'accent' = 'primary';
   private readonly debounceTime = 300;
+  lrvLast: boolean = true;// whether the LRV input box/slider was the last control adjusted or one of the URV controls
   points: Array<point> = [];
   calcPoint: point | undefined = undefined; // point calculation based on the value the user has typed into either the input or output FormControl
   chartData: chartData = { points: this.points, unitsX: 'Output', unitsY: 'Input', calcPoint: null };
-  // data: {prim: range, input: range, output: range, val: number | undefined, units: {x: string, y: string}};
-
   updateSpan: Subject<data> = new Subject<data>();
 
+  constructor(private calcSpanService: CalcSpanService) {}
 
-  constructor(
-    private calcSpanService: CalcSpanService
-  ) {
-
-  }
-
-  // regEx: RegExp = /^-?\d*(\.\d{0,2})?$/;
-  // exp: RegExp = /(?<!\s|^)\-?[^\.\d]|\.(?=.*\..+)|(?<=\.\d{2}).+|\s/;
-  // exp: RegExp = /(?<!\s|^)\-?[^\.\d]|\.(?=.*\..+)|(?<=\.(?:\d{2}|\c{2})).+|\s/;
   exp: RegExp = /(?<=\.(?:\d{2})).+|[^\d\.\-]|(?<!\s|^)\-|\.(?=.*\..+)|\s/;
-
 
   buildForm(): FormGroup {
     this.inputRangesForm = new FormGroup({
@@ -87,7 +77,8 @@ export class FormControlService implements OnInit {
 
     inputForm['lrv']?.valueChanges.pipe(startWith(this.inputSig.range.lrv), pairwise()).subscribe(([vPrev, v]) => {
       this.lrvLast = true;
-      inputForm['lrvSl']?.setValue(v, { emitEvent: false });
+      this.validateSlider(inputForm['lrv'], inputForm['urv'].value, false);
+      inputForm['lrvSl']?.setValue(inputForm['lrv'].value, { emitEvent: false});
       this.onSpanChange();
     });
     inputForm['lrv']?.statusChanges.pipe(distinctUntilChanged()).subscribe((v) => {
@@ -98,10 +89,12 @@ export class FormControlService implements OnInit {
     inputForm['lrvSl']?.valueChanges.pipe(startWith(this.inputSig.range.lrv), pairwise()).subscribe(([vPrev, v]) => {
       this.lrvLast = true;
       inputForm['lrv']?.setValue(v, { emitEvent: false });
+      this.updateInputValidity(this.inputRangesForm!);
       this.onSpanChange();
     });
     inputForm['urv']?.valueChanges.pipe(startWith(this.inputSig.range.urv), pairwise()).subscribe(([vPrev, v]) => {
-      inputForm['urvSl']?.setValue(v, { emitEvent: false });
+      this.validateSlider(inputForm['urv'], inputForm['lrv'].value, true);
+      inputForm['urvSl']?.setValue(inputForm['urv'].value, { emitEvent: false });
       this.onSpanChange();
       this.lrvLast = false;
     });
@@ -113,9 +106,10 @@ export class FormControlService implements OnInit {
     inputForm['urvSl']?.valueChanges.pipe(startWith(this.inputSig.range.urv), pairwise()).subscribe(([vPrev, v]) => {
       this.lrvLast = false;
       inputForm['urv']?.setValue(v, { emitEvent: false });
+      this.updateInputValidity(this.inputRangesForm!);
       this.onSpanChange();
     });
-
+ 
     outputForm['output']?.valueChanges.subscribe((v) => {
       this.onSpanChange();
     });
@@ -127,7 +121,8 @@ export class FormControlService implements OnInit {
 
     outputForm['lrv']?.valueChanges.pipe(startWith(this.outputSig.range.lrv), pairwise()).subscribe(([vPrev, v]) => {
       this.lrvLast = true;
-      outputForm['lrvSl']?.setValue(v, { emitEvent: false });
+      this.validateSlider(outputForm['lrv'], outputForm['urv'].value, false);
+      outputForm['lrvSl']?.setValue(outputForm['lrv'].value, { emitEvent: false });
       this.onSpanChange();
     });
     outputForm['lrv']?.statusChanges.pipe(distinctUntilChanged()).subscribe((v) => {
@@ -139,12 +134,14 @@ export class FormControlService implements OnInit {
     outputForm['lrvSl']?.valueChanges.pipe(startWith(this.outputSig.range.lrv), pairwise()).subscribe(([vPrev, v]) => {
       this.lrvLast = true;
       outputForm['lrv']?.setValue(v, { emitEvent: false });
+      this.updateInputValidity(this.outputRangesForm!);
       this.onSpanChange();
     });
 
     outputForm['urv']?.valueChanges.pipe(startWith(this.outputSig.range.urv), pairwise()).subscribe(([vPrev, v]) => {
       this.lrvLast = false;
-      outputForm['urvSl']?.setValue(v, { emitEvent: false });
+      this.validateSlider(outputForm['urv'], outputForm['lrv'].value, true);
+      outputForm['urvSl']?.setValue(outputForm['urv'].value, { emitEvent: false });
       this.onSpanChange();
     });
     outputForm['urv']?.statusChanges.pipe(distinctUntilChanged()).subscribe((v) => {
@@ -156,6 +153,7 @@ export class FormControlService implements OnInit {
     outputForm['urvSl']?.valueChanges.pipe(startWith(this.outputSig.range.urv), pairwise()).subscribe(([vPrev, v]) => {
       this.lrvLast = false;
       outputForm['urv']?.setValue(v, { emitEvent: false });
+      this.updateInputValidity(this.outputRangesForm!);
       this.onSpanChange();
     });
 
@@ -177,16 +175,30 @@ export class FormControlService implements OnInit {
       this.onSpanChange();
     });
 
-    
-    // this.inputRangesForm.controls['input'].setValidators([this.validateInput(inputRegex)]);
-    // this.outputRangesForm.controls['output'].setValidators([this.validateInput(inputRegex)]);
-
     return this.spanCalcForm;
+  }
+
+  public validateSlider(slReleased: AbstractControl, slSecVal: number, add: boolean): void {
+    if (slReleased.value == slSecVal) {
+      let current: number = slReleased.value;
+      let val: number = 1;
+      if (!add){
+        val = -1;
+      }
+      slReleased.setValue(current + val);
+
+    }
+    return;
   }
 
   ngOnInit(): void {
     // this.spanCalcForm.controls['selectPrimary'].setValue(true);
     // this.updateSpan.next(this.getFormData());
+  }
+
+  updateInputValidity(formGroup: FormGroup): void {
+    formGroup.controls['urv']?.updateValueAndValidity({ onlySelf: true, emitEvent: false });
+    formGroup.controls['lrv']?.updateValueAndValidity({ onlySelf: true, emitEvent: false });
   }
 
   // Custom validator function for input and output formgroup controls
@@ -229,24 +241,24 @@ export class FormControlService implements OnInit {
       }
       // Error if LRV < inMin
       else if (lrvControls.input.value < sig!.range.lrv) {
-        //lrvControls.input.setValue(sig.range.lrv);
-        lrvControls.input.setErrors({ outRangeMin: true });
+        lrvControls.input.setValue(sig.range.lrv);
+        // lrvControls.input.setErrors({ outRangeMin: true });
         return { 'outRangeMin': true };
       }
       else if (lrvControls.input.value > sig!.range.urv) {
-        //lrvControls.input.setValue(sig.range.urv - 1);
-        lrvControls.input.setErrors({ outRangeMax: true });
+        lrvControls.input.setValue(sig.range.urv - 1);
+        // lrvControls.input.setErrors({ outRangeMax: true });
         return { 'outRangeMax': true };
       }
       // Error if URV > inMax
       else if (urvControls.input.value > sig!.range.urv) {
-        //urvControls.input.setValue(sig.range.urv);
-        urvControls.input.setErrors({ outRangeMax: true });
+        urvControls.input.setValue(sig.range.urv);
+        // urvControls.input.setErrors({ outRangeMax: true });
         return { 'outRangeMax': true };
       }
       else if (urvControls.input.value < sig!.range.lrv) {
-        // lrvControls.input.setValue(sig.range.lrv + 1);
-        urvControls.input.setErrors({ outRangeMin: true });
+        lrvControls.input.setValue(sig.range.lrv + 1);
+        // urvControls.input.setErrors({ outRangeMin: true });
         return { 'outRangeMin': true };
       }
       // Otherwise no errors

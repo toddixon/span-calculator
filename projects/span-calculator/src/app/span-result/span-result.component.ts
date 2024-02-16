@@ -9,13 +9,11 @@ import { MatTabChangeEvent } from '@angular/material/tabs';
 })
 export class SpanResultComponent {
   @Input() chartData: chartData = {points: [{x: 0, y: 0}], unitsX: '', unitsY: '', calcPoint: null};
+  @Input() isDarkTheme: boolean = false;
+
   chartRenderComplete: boolean = false;
+  displayedCols: string[] = ['Input', 'Output'];
 
   constructor() { }
-
-  displayedCols: string[] = ['Input', 'Output'];
-  onTabChange(event: MatTabChangeEvent) {
-
-  }
 
 };

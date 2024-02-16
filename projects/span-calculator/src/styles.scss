@@ -1,38 +1,34 @@
 /* You can add global styles to this file, and also import other style files */
-// @import '@angular/material/theming';
-// @include mat-core();
+@use "sass:map";
+@use '@angular/material' as mat;
+@import '@angular/material/theming';
 
-// $light-theme-primary: mat-palette($mat-indigo);
-// $light-theme-accent: mat-palette($mat-amber);
-// $light-theme-warn: mat-palette($mat-red);
+@include mat-core();
 
-// $light-theme: mat-light-theme($light-theme-primary, $light-theme-accent, $light-theme-warn);
+// Light theme
+$light-theme-primary: mat-palette($mat-indigo);
+$light-theme-accent: mat-palette($mat-pink);
+$light-theme-warn: mat-palette($mat-red);
+$light-theme: mat-light-theme($light-theme-primary, $light-theme-accent, $light-theme-warn);
 
-// @include angular-material-theme($light-theme);
+// Dark theme
+$dark-theme-primary: mat-palette($mat-blue-grey, 500);
+$dark-theme-accent: mat-palette($mat-pink);
+$dark-theme-warn: mat-palette($mat-deep-orange);
+$dark-theme: mat-dark-theme($dark-theme-primary, $dark-theme-accent, $dark-theme-warn);
 
-// // Dark Theme
+@include angular-material-theme($light-theme);
 
-// $dark-theme-primary: mat-palette($mat-grey);
-// $dark-theme-accent: mat-palette($mat-blue-grey);
-
-// $dark-theme: mat-dark-theme($dark-theme-primary, $dark-theme-accent);
-
-// .dark-theme{
-// 	@include angular-material-theme($dark-theme);
-// }
-
-html, body { 
-  // height: 100%;
-  // max-width: 1800px;
-  // min-width: 900px;
+.dark-theme{
+	@include angular-material-theme($dark-theme);
 }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+body { 
+  margin: 0; 
+  font-family: Roboto, "Helvetica Neue", sans-serif; 
+}
 
 @media print {
-  app-print-layout{
-    display: block;
-  }
-  .span-calc-form{
-    display: none;
-  }
+  app-root > * { display: none; }
+  app-root app-print-layout { display: block }
 }

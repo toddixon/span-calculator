@@ -8,21 +8,16 @@
     max-height: $resultMaxH;
     overflow-y: auto;
   }
-
 }
 
 .mat-mdc-row:hover .mat-mdc-cell {
   border-top: 1px solid #ff6384;
   border-bottom-color: #ff6384;
-
 }
 
-// :host ::ng-deep .mat-mdc-tab-body-wrapper {
-  // height: 100%;
-  // width: 100%;
-  // margin: 1rem;
-// }
-
-// :host ::ng-deep .mat-mdc-tab-header {
-//   position: sticky;
-// }
+//class="mat-mdc-table mdc-data-table__table cdk-table"
+:host ::ng-deep .mat-mdc-table {
+  &.dark-theme {
+    background-color: #212121;
+  }
+}
