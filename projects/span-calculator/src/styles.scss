@@ -12,8 +12,8 @@ $light-theme-warn: mat-palette($mat-red);
 $light-theme: mat-light-theme($light-theme-primary, $light-theme-accent, $light-theme-warn);
 
 // Dark theme
-$dark-theme-primary: mat-palette($mat-blue-grey, 600);
-$dark-theme-accent: mat-palette($mat-pink); // $dark-theme-accent: mat-palette($mat-amber, A200, A100, A400);
+$dark-theme-primary: mat-palette($mat-blue-grey, 500);
+$dark-theme-accent: mat-palette($mat-pink);
 $dark-theme-warn: mat-palette($mat-deep-orange);
 $dark-theme: mat-dark-theme($dark-theme-primary, $dark-theme-accent, $dark-theme-warn);
 
@@ -23,20 +23,12 @@ $dark-theme: mat-dark-theme($dark-theme-primary, $dark-theme-accent, $dark-theme
 	@include angular-material-theme($dark-theme);
 }
 
-// html, body {}
-
 body { 
   margin: 0; 
   font-family: Roboto, "Helvetica Neue", sans-serif; 
 }
 
-
-
 @media print {
-  app-print-layout{
-    display: block;
-  }
-  .span-calc-form{
-    display: none;
-  }
+  app-root > * { display: none; }
+  app-root app-print-layout { display: block }
 }

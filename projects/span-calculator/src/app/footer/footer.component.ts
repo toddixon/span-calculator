@@ -6,6 +6,6 @@ import { Component, Input} from '@angular/core';
   styleUrls: ['./footer.component.scss']
 })
 export class FooterComponent {
-  @Input() isDarkMode: boolean = false;
+  @Input() isDarkTheme: boolean = false;
 
 }

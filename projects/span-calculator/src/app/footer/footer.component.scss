@@ -1,11 +1,11 @@
+@import '../_var';
 
 .footer{
   background-color: #3f51b5;
   height: 40px;
   width: 100%;
   text-align: center;
-  // margin-top: 10px;
   &.dark-theme {
-    background: #5b6c79;
+    background: $primaryColorDark;
   }
 }

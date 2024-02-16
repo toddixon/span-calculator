@@ -1,5 +1,5 @@
-<div class="span-calc-form" [ngClass]="{'dark-theme': isDarkMode}">
-  <mat-toolbar class="toolbar" color="primary" [ngClass]="{'dark-theme': isDarkMode}">
+<div class="span-calc-form" id="span-calc-form" [ngClass]="{'dark-theme': isDarkTheme}">
+  <mat-toolbar class="toolbar" color="primary" [ngClass]="{'dark-theme': isDarkTheme}">
     <span class="toolbar__title">Span Calculator</span>
     <span class="toolbar__separator"></span>
     <div class="toolbar__print-button">
@@ -12,27 +12,21 @@
         <mat-icon>download</mat-icon>
       </button>
     </div>
-    <div class="toolbar__layout-button" (click)="this.onLayoutSwitch()">
-      <button mat-icon-button>
-        <mat-icon *ngIf="state=='small'">border_bottom</mat-icon>
-        <mat-icon *ngIf="state=='medium'">border_left</mat-icon>
-      </button>
-    </div>
     <div class="toolbar__theme-button">
       <button mat-icon-button (click)="onThemeChange()">
-        <mat-icon *ngIf="!isDarkMode">light_mode</mat-icon>
-        <mat-icon *ngIf="isDarkMode">dark_mode</mat-icon>
+        <mat-icon *ngIf="!isDarkTheme">light_mode</mat-icon>
+        <mat-icon *ngIf="isDarkTheme">dark_mode</mat-icon>
       </button>
     </div>
   </mat-toolbar>
 
-  <div class="content-wrapper" [ngClass]="{'dark-theme': isDarkMode}"> 
+  <div class="content-wrapper" id="content" [ngClass]="{'dark-theme': isDarkTheme}"> 
     <div class="flex-l" [ngClass]="{'is-portrait': isPortrait}"></div>
 
       <div class="grid" [ngClass]="{'is-portrait': isPortrait}" [@grid-wrapper]="state">
         <!-- Input ranges form group -->
     
-          <form class="input-tile" [@input]="state" [ngClass]="{'is-portrait': isPortrait, 'dark-theme': isDarkMode}" [formGroup]="this.formService.inputRangesForm!">
+          <form class="input-tile" [@input]="state" [ngClass]="{'is-portrait': isPortrait, 'dark-theme': isDarkTheme}" [formGroup]="this.formService.inputRangesForm!">
             
             <!-- Input: First row of elements -->
             <div class="input-tile__r1">
@@ -46,9 +40,9 @@
               </form>
     
               <!-- Input -->
-              <mat-form-field class="input-tile__input">
+              <mat-form-field class="input-tile__input" [color]="this.formService.inputColor" [appearance]="matFieldAppearance">
                 <mat-label>Input</mat-label>
-                <input matInput  [step]="valBoxStep" formControlName="input"/>
+                <input matInput [step]="valBoxStep" formControlName="input"/>
               </mat-form-field>
 
               <span></span>
@@ -56,6 +50,7 @@
               <!-- Signal select -->
               <mat-form-field
                 class="input-tile__select input-tile__select--margin-left"
+                [appearance]="matFieldAppearance"
               >
                 <mat-label>Select Signal</mat-label>
                 <mat-select formControlName="sigType">
@@ -69,7 +64,7 @@
     
             <!-- Input: Second row of elements -->
             <div class="input-tile__r2">
-              <mat-form-field class="input-tile__lrv">
+              <mat-form-field class="input-tile__lrv" [color]="this.formService.inputColor" [appearance]="matFieldAppearance">
                 <mat-label>Lower Range Value</mat-label>
                 <input matInput type="number" formControlName="lrv" />
                 <span matTextSuffix></span>
@@ -77,7 +72,7 @@
     
               <span></span>
 
-              <mat-form-field class="input-tile__urv">
+              <mat-form-field class="input-tile__urv" [color]="this.formService.inputColor" [appearance]="matFieldAppearance">
                 <mat-label>Upper Range Value</mat-label>
                 <input matInput type="number" formControlName="urv" />
               </mat-form-field>
@@ -92,19 +87,20 @@
                 showTickMarks
                 discrete
               >
-                <input matSliderStartThumb #lrvSlI formControlName="lrvSl" />
-                <input matSliderEndThumb formControlName="urvSl" />
+                <!-- <input matSliderStartThumb (dragEnd)="this.formService.validateSliderNew($event)" #lrvSlI formControlName="lrvSl" /> -->
+                <input matSliderStartThumb (dragEnd)="this.formService.validateSlider(this.formService.inputRangesForm!.controls['lrvSl'], this.formService.inputRangesForm!.controls['urvSl'].value, false)" #lrvSlI formControlName="lrvSl" />
+                <input matSliderEndThumb (dragEnd)="this.formService.validateSlider(this.formService.inputRangesForm!.controls['urvSl'], this.formService.inputRangesForm!.controls['lrvSl'].value, true)" formControlName="urvSl" />
               </mat-slider>
             </div>
           </form>
     
         <!-- Span calculation output form -->
-        <div class="span-result-tile" [ngClass]="{'is-portrait': isPortrait, 'dark-theme': isDarkMode}" [@result]="state">
-          <app-span-result class="span-result-tile__app" [chartData]="chartData"></app-span-result>
+        <div class="span-result-tile" [ngClass]="{'is-portrait': isPortrait, 'dark-theme': isDarkTheme}" [@result]="state">
+          <app-span-result class="span-result-tile__app" [chartData]="chartData" [isDarkTheme]="isDarkTheme"></app-span-result>
         </div>
     
         <!-- Output ranges form group -->
-          <form class="output-tile" [@output]="state" [ngClass]="{'is-portrait': isPortrait, 'dark-theme': isDarkMode}" [formGroup]="this.formService.outputRangesForm!">
+          <form class="output-tile" [@output]="state" [ngClass]="{'is-portrait': isPortrait, 'dark-theme': isDarkTheme}" [formGroup]="this.formService.outputRangesForm!">
           
             <div class="output-tile__r1">
 
@@ -119,7 +115,7 @@
               <span></span>
 
               <!-- Output -->
-              <mat-form-field class="output-tile__input">
+              <mat-form-field class="output-tile__input" [color]="this.formService.inputColor" [appearance]="matFieldAppearance">
                 <mat-label>Output</mat-label>
                 <input matInput [step]="valBoxStep" formControlName="output"/>
               </mat-form-field>
@@ -127,8 +123,9 @@
               <span></span>
 
               <!-- Signal select -->
-              <mat-form-field
-                class="output-tile__select output-tile__select--margin-left"
+              <mat-form-field 
+                class="output-tile__select output-tile__select--margin-left" 
+                [appearance]="matFieldAppearance"
               >
                 <mat-label>Select Signal</mat-label>
                 <mat-select formControlName="sigType">
@@ -143,7 +140,7 @@
             <div class="output-tile__r2">
 
               <!-- LRV_in -->
-              <mat-form-field class="output-tile__lrv">
+              <mat-form-field class="output-tile__lrv" [color]="this.formService.inputColor" [appearance]="matFieldAppearance">
                 <mat-label>Lower Range Value</mat-label>
                 <input matInput type="number" formControlName="lrv" />
               </mat-form-field>
@@ -151,7 +148,7 @@
               <span></span>
 
               <!-- URV_in -->
-              <mat-form-field class="output-tile__urv">
+              <mat-form-field class="output-tile__urv" [color]="this.formService.inputColor" [appearance]="matFieldAppearance">
                 <mat-label>Upper Range Value</mat-label>
                 <input matInput type="number" formControlName="urv" />
               </mat-form-field>
@@ -166,8 +163,8 @@
                 showTickMarks
                 discrete
               >
-              <input matSliderStartThumb formControlName="lrvSl" />
-              <input matSliderEndThumb formControlName="urvSl" />
+              <input matSliderStartThumb (dragEnd)="this.formService.validateSlider(this.formService.outputRangesForm!.controls['lrvSl'], this.formService.outputRangesForm!.controls['urvSl'].value, false)" formControlName="lrvSl" />
+              <input matSliderEndThumb (dragEnd)="this.formService.validateSlider(this.formService.outputRangesForm!.controls['urvSl'], this.formService.outputRangesForm!.controls['lrvSl'].value, true)" formControlName="urvSl" />
               </mat-slider>
             </div>
           </form>
@@ -176,17 +173,8 @@
       <div class="flex-r" [ngClass]="{'is-portrait': isPortrait}"></div>
 
     </div>
-    
-    <!-- <div>
-      <hr/>
-      <span>{{this.currentScreenSize}}</span>
-    </div> -->
 
-
-      <app-footer [isDarkMode]="isDarkMode"></app-footer>
-
+      <app-footer [isDarkTheme]="isDarkTheme"></app-footer>
 </div>
 
-
-<!-- <router-outlet name="print"></router-outlet> -->
-<app-print-layout></app-print-layout>
+<app-print-layout [ngClass]="{'isPrinting': printService.isPrinting}" [chartData]="chartData"></app-print-layout>

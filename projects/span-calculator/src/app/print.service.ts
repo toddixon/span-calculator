@@ -1,13 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { BehaviorSubject, Subject } from 'rxjs';
-import { Chart } from 'chart.js';
-
+import { Subject } from 'rxjs';
 import {jsPDF} from 'jspdf';
 import html2canvas from 'html2canvas';
-
-import { chartImg } from './chartImg';
-import { ChartService } from './chart.service';
 
 
 @Injectable({
@@ -15,48 +9,60 @@ import { ChartService } from './chart.service';
 })
 export class PrintService {
   isPrinting: boolean = false;
-  chart?: Chart;
-  chartCopy?: Chart<any>;
-  chartStr: string = '';
-  chartImg: string = chartImg;
 
-  private graphData = new BehaviorSubject<Chart|null>(null);
-  graphData$ = this.graphData.asObservable();  
+  private graphData = new Subject<HTMLCanvasElement|null>;
+  public graphData$ = this.graphData.asObservable();
 
-  constructor(
-    private router: Router,
-    private chartService: ChartService) { }
-
-  //@HostListener('window:onbeforeprint', ['$event'])
+  constructor() { }
 
   // Called when user clicks print button in the app.component template. 
-  printGraph() {
+  printGraph(canvasCopy: HTMLCanvasElement, canvasOriginal: HTMLCanvasElement) {
     this.isPrinting = true;
-    this.chartStr = this.chartService.getChartStr();
-    this.onDataReady();    
-
+    this.setCanvas(canvasCopy, canvasOriginal);
+    this.onDataReady();
   };
+
   saveGraph(){
-    let data: HTMLElement = document.getElementById('MyChart')!;
+    // let data: HTMLElement = document.getElementById('myChart')!;
+    let data: HTMLElement = document.getElementById('content')!;    
     html2canvas(data).then(canvas => {
       const contentDataURL = canvas.toDataURL('image/png');
-      let pdf: jsPDF = this.gneeratePdf(); // pass in "p" for portrait mode
+      let pdf: jsPDF = this.generatePdf(); // pass in "p" for portrait mode
       pdf.addImage(contentDataURL, 'PNG', 0, 0, 29.7, 21.0);
       pdf.save('filename.pdf');
     })
-
-
   }
 
-  gneeratePdf(orentation: "l" | "p" | "portrait" | "landscape" | undefined = 'l', ): jsPDF {
+  sendData(data: HTMLCanvasElement | null): void {
+    this.graphData.next(data);
+  };
+
+  generatePdf(orentation: "l" | "p" | "portrait" | "landscape" | undefined = 'l', ): jsPDF {
     return new jsPDF(orentation, 'cm', 'a4');
-  }
+  };
 
   onDataReady() {
     window.print();
     this.isPrinting = false;
-
   };
+
+  setCanvas(canvasCopy: HTMLCanvasElement, canvasOriginal: HTMLCanvasElement): void {
+    let dWidth: number = canvasCopy.width; // Horizontal scaling of printed canvas
+    let dHeight = this.scaleH(dWidth, canvasCopy); // Vertical scaling of printed canvas
+    let ctx = canvasCopy.getContext('2d')!;
+
+    ctx.clearRect(0, 0, canvasCopy.width, canvasCopy.height);
+    ctx.drawImage(canvasOriginal, 0, 0, dWidth, dHeight);
+    return
+  }
+
+  scaleH(dWidth: number, canvas: HTMLCanvasElement): number {
+    let dHeight: number;
+    let height: number = canvas.height;
+    let width: number = canvas.width;
+    dHeight = dWidth * height / width;
+    return dHeight;
+  }
 
 
 }

@@ -4,22 +4,23 @@
   dynamicHeight="false"
   disablePagination="true"
   mat-stretch-tabs="true"
+  preserveContent="true"
 >
   <mat-tab label="Graph">
     <div class="span-result__graph-tab">
     <ng-template matTabContent>
-        <app-span-graph  [chartData]="chartData"></app-span-graph>
+        <app-span-graph  [chartData]="chartData" [isDarkTheme]="isDarkTheme"></app-span-graph>
       </ng-template>
     </div>
   </mat-tab>
-  <mat-tab label="Table">
+  <mat-tab label="Table" id="table">
     <div
       appSetMaxHeight
       [chartRenderComplete]="this.chartRenderComplete"
       class="span-result__table-tab"
       *ngIf="this.chartData.points.length > 1"
     >
-      <table mat-table #table [dataSource]="chartData.points">
+      <table mat-table [ngClass]="{'dark-theme': isDarkTheme}" #table [dataSource]="chartData.points">
         <!-- Input points column -->
         <ng-container [matColumnDef]="displayedCols[1]">
           <th mat-header-cell *matHeaderCellDef>{{ chartData.unitsY }}</th>

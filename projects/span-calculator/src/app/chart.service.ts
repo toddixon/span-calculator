@@ -1,5 +1,5 @@
 import { Injectable, afterRender } from '@angular/core';
-import { Chart, ChartData, ChartDataset, ChartDatasetProperties, ScriptableChartContext } from 'chart.js';
+import { Chart, ChartData, ChartDataset, ChartDatasetProperties, ChartOptions, ScriptableChartContext } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { point, chartData } from './point';
 import { Anchor, Align, Font } from 'chartjs-plugin-datalabels/types/options';
@@ -10,13 +10,14 @@ import { Anchor, Align, Font } from 'chartjs-plugin-datalabels/types/options';
   providedIn: 'root'
 })
 export class ChartService {
+  charStr: string = '';
 
-  updateChart(chart: Chart, chartData: chartData) {
+  updateChart(chart: Chart, chartData: chartData, isDarkTheme: boolean) {
     this.removeData(chart);
     let chartDataSet = this.buildDataSet(chartData.points, chartData.calcPoint);
     this.addData(chart, chartDataSet);
-    this.setOptions(chart, chartData.unitsX, chartData.unitsY);
-    chart.update('none'); // Update line chart with no animation
+    this.setOptions(chart, isDarkTheme, chartData.unitsX, chartData.unitsY);
+    chart.update('none');
   };
 
   private buildDataSet(points: point[], calcPoint: point | null): ChartData<"line", point[], unknown> {
@@ -59,26 +60,52 @@ export class ChartService {
     chart.data = newData;
   };
 
-  setOptions(chart: Chart, titleX: string = 'Output', titleY: string = 'Input', rot: number = 0, sizePts: number = 16, sizeTitle: number = 15, isPortrait: boolean = false) : void {
 
-    let colorGridLines: string = '#ececec';
-    // let colorGridLines: string = '#575757';
+  setOptions(chart: Chart, isDarkTheme: boolean, titleX?: string, titleY?: string, rot: number = 0, sizePts: number = 16, sizeTitle: number = 15, isPortrait: boolean = false) : string {
+    this.titleX = titleX!;
+    this.titleY = titleY!;
+    let fontColor: string;
+    let fontColorActive: string;
+    let gridColor: string;
+    let charStr: string = '';
+
+    let themeColors = {
+      light: {
+        grid: '#d8d8d8',
+        text: '#0a0a0a',
+        textActive: '#191919'
+      }, 
+      dark: {
+        text: '#cccccc',
+        textActive: '#ffffff',
+        grid: '#3d3d3d',
+      }
+    }
+
+    if (isDarkTheme){
+      fontColor = themeColors.dark.text;
+      fontColorActive = themeColors.dark.textActive
+      gridColor = themeColors.dark.grid;
+    }
+    else {
+      fontColor = themeColors.light.text;
+      fontColorActive = themeColors.light.textActive;
+      gridColor = themeColors.light.grid;
+    }
 
     chart.options = {
       responsive: true,
       maintainAspectRatio: false,
       animation: {
         duration: 0,
-        onComplete: function(event) {
-          chart.hide;
-        }
       },
       scales: {
         x: {
           beginAtZero: false,
           title: {
             display: true,
-            text: '(x) - ' + titleX,
+            color: fontColor,
+            text: titleX,
             font: {
               size: sizeTitle,
               weight: 'bold'
@@ -87,16 +114,23 @@ export class ChartService {
           display: true,
           type: 'linear',
           offset: true,
+          ticks: {
+            color: fontColor,
+          },
+          border: {
+            color: gridColor,
+          },
           grid: {
             drawTicks: true,
-            color: colorGridLines,
-          }
+            color: gridColor,
+          },
         },
         y: {
           beginAtZero: false,
           title: {
             display: true,
-            text: '(y) - ' + titleY,
+            color: fontColor,
+            text: titleY,
             font: {
               size: sizeTitle,
               weight: 'bold',
@@ -105,10 +139,16 @@ export class ChartService {
           display: true,
           type: 'linear',
           offset: true,
+          ticks: {
+            color: fontColor,
+          },
+          border: {
+            color: gridColor,
+          },
           grid: {
             drawTicks: true,
-            color: colorGridLines,
-          }
+            color: gridColor,
+          },
         }
         
       },
@@ -127,7 +167,6 @@ export class ChartService {
             if (ctx.datasetIndex == 1){
               align = 'right'
             }
-
             return align;
           },
           offset: (ctx) => {
@@ -159,6 +198,9 @@ export class ChartService {
                 };
                 return display;
               },
+              color: function(ctx) {
+                 return ctx.active ?  fontColorActive : fontColor;
+              },
               font: (ctx) => {
                 let font: Font = {};
                 if (ctx.datasetIndex == 0) {
@@ -173,6 +215,16 @@ export class ChartService {
               }
             }
           },
+          listeners: {
+            enter: function(ctx, event) {
+              ctx.active = true;
+              return true;
+            },
+            leave: function(ctx, event) {
+              ctx.active = false;
+              return true;
+            }
+          }
         },
 
         tooltip: {
@@ -180,12 +232,14 @@ export class ChartService {
         }
       },
     }
-    return
+    return charStr;
   };
 
   public chart: Chart = null!;
+  public titleX: string = 'Output';
+  public titleY: string = 'Input';
 
-  createChart(points: point[] | any, name: string = "myChart"): Chart {
+  createChart(points: point[] | any, isDarkTheme: boolean, name: string = "myChart"): Chart {
     Chart.register(ChartDataLabels)
     let dataset = this.buildDataSet(points, null);
 
@@ -198,25 +252,25 @@ export class ChartService {
       data: dataset,
     })
 
-    this.setOptions(this.chart);
-    return this.chart
+    this.setOptions(this.chart, isDarkTheme, 'Output', 'Input');
+    return this.chart;
   };
 
   // Called whenever 'BreakpointObserver' detects a size change
-  redrawChart(): void {
+  redrawChart(isDarkTheme: boolean): void {
     if (this.chart) {
-      this.setOptions(this.chart)
-      this.chart.render() // Trigger redraw of all chart elements
-      this.chart.update('none')
+      this.setOptions(this.chart, isDarkTheme, this.titleX, this.titleY);
+      this.chart.update('none');
     }
-
+    return
   };
 
   getChart(): Chart {
     return this.chart;
   }
-  getChartStr(): string {
-    return this.chart.toBase64Image();
+
+  resizeChart(width: number = 100, height: number = 500): void {
+    this.chart.resize(this.chart.width, this.chart.height + height);
   }
 
 }

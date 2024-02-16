@@ -1,16 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { GraphPrintComponent } from '../graph-print/graph-print.component';
+import { chartData } from '../point';
 
-// Route: `/(print:print)`
 @Component({
   selector: 'app-print-layout',
   templateUrl: './print-layout.component.html',
   styleUrls: ['./print-layout.component.scss']
 })
 export class PrintLayoutComponent implements OnInit {
+  @Input() chartData: chartData = {points: [{x: 0, y: 0}], unitsX: '', unitsY: '', calcPoint: null};
+
   constructor() {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
+  
 
 }
   
