@@ -1,36 +1,15 @@
 import { AfterViewChecked, Component, Injector, OnDestroy, ViewChild } from '@angular/core';
-import { PrintLayoutComponent } from './print-layout/print-layout.component';
-import { GraphPrintComponent } from './graph-print/graph-print.component';
 import { OnInit } from '@angular/core';
-import { FormControl, FormGroup, AbstractControl, Validators, ValidatorFn, ValidationErrors } from '@angular/forms';
-import { Subject, debounceTime, pairwise, startWith, takeUntil, distinctUntilChanged, Observable, Subscription } from 'rxjs';
+import {FormGroup} from '@angular/forms';
+import { Subject, debounceTime, takeUntil } from 'rxjs';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { getSignalShort } from './signal-presets';
 import { FormControlService, data } from './form-control.service';
-
-import {
-  trigger,
-  state,
-  group,
-  style,
-  animate,
-  transition,
-  query,
-  stagger,
-  animateChild,
-  AnimationTriggerMetadata,
-  animation,
-  AnimationReferenceMetadata
-} from '@angular/animations';
 
 import { CalcSpanService } from './calc-span.service';
 import { ChartService } from './chart.service';
 import { PrintService } from './print.service';
-
-import { range } from './range';
 import { point, chartData } from './point';
-import { Chart } from 'chart.js';
-// import { line, path } from 'd3';
+// const ipc = require('electron').ipcRenderer;
 
 // Second form group for Output controls 
 @Component({

@@ -24,7 +24,7 @@ export class PrintService {
 
   saveGraph(){
     // let data: HTMLElement = document.getElementById('myChart')!;
-    let data: HTMLElement = document.getElementById('content')!;    
+    let data: HTMLElement = document.getElementById('print')!;    
     html2canvas(data).then(canvas => {
       const contentDataURL = canvas.toDataURL('image/png');
       let pdf: jsPDF = this.generatePdf(); // pass in "p" for portrait mode
@@ -42,7 +42,9 @@ export class PrintService {
   };
 
   onDataReady() {
-    window.print();
+    setTimeout(() => {
+      window.print();
+    }, 2000)
     this.isPrinting = false;
   };
 

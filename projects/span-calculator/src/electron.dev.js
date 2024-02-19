@@ -16,13 +16,15 @@ const createWindow = () => {
             height: 600,
             icon: './src/favicon.ico'
         });
-
-        // and load the app.
-        win.loadURL(url.format({
-            pathname: 'localhost:4200',
-            protocol: 'http:',
-            slashes: true
-        }));
+        
+        setTimeout(() => {
+            // and load the app.
+            win.loadURL(url.format({
+                pathname: 'localhost:4200',
+                protocol: 'http:',
+                slashes: true
+            }));
+        }, 3000);
 
         win.webContents.openDevTools();
 

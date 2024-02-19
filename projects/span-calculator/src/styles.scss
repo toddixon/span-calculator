@@ -29,6 +29,6 @@ body {
 }
 
 @media print {
-  app-root > * { display: none; }
-  app-root app-print-layout { display: block }
+  app-root > * { display: none; };
+  app-root app-print-layout { display: block };
 }
