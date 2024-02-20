@@ -9,7 +9,7 @@ import { CalcSpanService } from './calc-span.service';
 import { ChartService } from './chart.service';
 import { PrintService } from './print.service';
 import { point, chartData } from './point';
-// const ipc = require('electron').ipcRenderer;
+import { FileService } from './file-service.service';
 
 // Second form group for Output controls 
 @Component({
@@ -54,6 +54,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
     private chartService: ChartService,
     public printService: PrintService,
     public formService: FormControlService,
+    private fileService: FileService,
     breakpointObserver: BreakpointObserver) {
     breakpointObserver.observe([
       Breakpoints.XSmall, // 599px-
@@ -105,6 +106,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
         }
       });
     this.spanCalcForm = this.formService.buildForm();
+    
   };
 
   ngOnInit(): void {
@@ -134,7 +136,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
   };
 
   onPrintGraph() {
-    // this.chartService.resizeChart();
+    this.fileService.getFiles().then(console.log);
     if (this.isDarkTheme) {
       this.chartService.redrawChart(false);
       this.printService.sendData(null);
