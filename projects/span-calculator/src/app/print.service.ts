@@ -66,5 +66,4 @@ export class PrintService {
     return dHeight;
   }
 
-
 }

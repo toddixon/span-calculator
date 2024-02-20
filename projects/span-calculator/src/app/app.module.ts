@@ -23,6 +23,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
 
+import { PrintService } from './print.service';
 import { NgChartsModule } from 'ng2-charts';
 import { SpanGraphComponent } from './span-graph/span-graph.component';
 import { PrintLayoutComponent } from './print-layout/print-layout.component';
@@ -32,7 +33,6 @@ import { FooterComponent } from './footer/footer.component';
 import { SetMaxHeightDirective } from './set-max-height.directive';
 import { NumericInputFieldValidationDirective } from './numeric-input-field-validation.directive';
 import { ServiceWorkerModule } from '@angular/service-worker';
-
 
 @NgModule({
   declarations: [
@@ -77,7 +77,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
        registrationStrategy: 'registerWhenStable:30000'
      }),
   ],
-  providers: [],
+  providers: [PrintService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

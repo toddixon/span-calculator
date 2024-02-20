@@ -1,9 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var electron_1 = require("electron");
+var path = require("path");
 var url = require("url");
 var fs = require("fs");
 var win;
+var browserPath = 'localhost:4200';
+var browserProto = 'http:';
+var distPath = '../../../dist/span-calculator/index.html';
+var distProto = 'file:';
 function createWindow() {
     // set timeout to render the window not until the Angular 
     // compiler is ready to show the project
@@ -12,16 +17,18 @@ function createWindow() {
         win = new electron_1.BrowserWindow({
             width: 800,
             height: 600,
-            icon: './src/favicon.ico'
+            icon: './src/favicon.ico',
+            webPreferences: {
+                nodeIntegration: true,
+                contextIsolation: false,
+                preload: path.join(__dirname, "preload.js")
+            }
         });
-        setTimeout(function () {
-            // and load the app.
-            win.loadURL(url.format({
-                pathname: 'localhost:4200',
-                protocol: 'http:',
-                slashes: true
-            }));
-        }, 3000);
+        win.loadURL(url.format({
+            pathname: distPath,
+            protocol: distProto,
+            slashes: true
+        }));
         win.webContents.openDevTools();
         // Emitted when the window is closed.
         win.on('closed', function () {
