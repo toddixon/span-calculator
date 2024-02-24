@@ -35,7 +35,7 @@
               "projects/span-calculator/src/styles.scss"
             ],
             "scripts": [],
-            "serviceWorker": true,
+            "serviceWorker": false,
             "ngswConfigPath": "projects/span-calculator/ngsw-config.json"
           },
           "configurations": {

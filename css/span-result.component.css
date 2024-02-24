@@ -1,0 +1,16 @@
+.span-result__graph-tab {
+  max-height: 50vh;
+}
+.span-result__table-tab {
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
+.mat-mdc-row:hover .mat-mdc-cell {
+  border-top: 1px solid #ff6384;
+  border-bottom-color: #ff6384;
+}
+
+:host ::ng-deep .mat-mdc-table.dark-theme {
+  background-color: #212121;
+}

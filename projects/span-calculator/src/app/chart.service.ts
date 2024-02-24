@@ -61,7 +61,7 @@ export class ChartService {
   };
 
 
-  setOptions(chart: Chart, isDarkTheme: boolean, titleX?: string, titleY?: string, rot: number = 0, sizePts: number = 16, sizeTitle: number = 15, isPortrait: boolean = false) : string {
+  setOptions(chart: Chart, isDarkTheme: boolean, titleX?: string, titleY?: string, rot: number = 0, sizePts: number = 16, sizeTitle: number = 15, isPortrait: boolean = false): string {
     this.titleX = titleX!;
     this.titleY = titleY!;
     let fontColor: string;
@@ -74,7 +74,7 @@ export class ChartService {
         grid: '#d8d8d8',
         text: '#0a0a0a',
         textActive: '#191919'
-      }, 
+      },
       dark: {
         text: '#cccccc',
         textActive: '#ffffff',
@@ -82,7 +82,7 @@ export class ChartService {
       }
     }
 
-    if (isDarkTheme){
+    if (isDarkTheme) {
       fontColor = themeColors.dark.text;
       fontColorActive = themeColors.dark.textActive
       gridColor = themeColors.dark.grid;
@@ -150,7 +150,7 @@ export class ChartService {
             color: gridColor,
           },
         }
-        
+
       },
       plugins: {
         legend: {
@@ -164,7 +164,7 @@ export class ChartService {
           },
           align: (ctx) => {
             let align: Align = 'top'
-            if (ctx.datasetIndex == 1){
+            if (ctx.datasetIndex == 1) {
               align = 'right'
             }
             return align;
@@ -187,19 +187,19 @@ export class ChartService {
               display: (ctx) => {
                 let display: string | boolean = 'auto';
                 if (ctx.datasetIndex == 1) {
-                  switch(ctx.dataIndex) {
+                  switch (ctx.dataIndex) {
                     case 0: display = false;
-                    break;
+                      break;
                     case 1: display = true;
-                    break;
-                    case 2: display = false; 
-                    break;
+                      break;
+                    case 2: display = false;
+                      break;
                   }
                 };
                 return display;
               },
-              color: function(ctx) {
-                 return ctx.active ?  fontColorActive : fontColor;
+              color: function (ctx) {
+                return ctx.active ? fontColorActive : fontColor;
               },
               font: (ctx) => {
                 let font: Font = {};
@@ -216,11 +216,11 @@ export class ChartService {
             }
           },
           listeners: {
-            enter: function(ctx, event) {
+            enter: function (ctx, event) {
               ctx.active = true;
               return true;
             },
-            leave: function(ctx, event) {
+            leave: function (ctx, event) {
               ctx.active = false;
               return true;
             }
@@ -245,7 +245,7 @@ export class ChartService {
 
     if (this.chart) {
       this.chart.destroy();
-    } 
+    }
 
     this.chart = new Chart(name, {
       type: 'line',

@@ -32,8 +32,7 @@ import { SpanResultComponent } from './span-result/span-result.component';
 import { FooterComponent } from './footer/footer.component';
 import { SetMaxHeightDirective } from './set-max-height.directive';
 import { NumericInputFieldValidationDirective } from './numeric-input-field-validation.directive';
-import { ServiceWorkerModule } from '@angular/service-worker';
-import { WindowRefService } from './window-ref.service';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -71,14 +70,8 @@ import { WindowRefService } from './window-ref.service';
     MatSelectModule,
 
     NgChartsModule,
-     ServiceWorkerModule.register('ngsw-worker.js', {
-       enabled: !isDevMode(),
-       // Register the ServiceWorker as soon as the application is stable
-       // or after 30 seconds (whichever comes first).
-       registrationStrategy: 'registerWhenStable:30000'
-     }),
   ],
-  providers: [PrintService, WindowRefService],
+  providers: [PrintService, {provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

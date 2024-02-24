@@ -1,12 +1,12 @@
 {
   "name": "my-personal-projects-workspace",
   "version": "0.0.0", 
-  "main": "./dist/out-tsc/electron/main.js",
+  "main": "./electron/main.js",
   "scripts": {
     "ng": "ng",
     "start": "concurrently \"ng serve\" \"npm run electron\"",
-    "electron": "electron ./dist/out-tsc/electron/main.js",
-    "build": "tsc --project ./projects/span-calculator/electron/",
+    "electron": "electron ./electron/main.js",
+    "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },

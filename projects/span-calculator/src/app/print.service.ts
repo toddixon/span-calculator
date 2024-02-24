@@ -3,7 +3,6 @@ import { Subject } from 'rxjs';
 import {jsPDF} from 'jspdf';
 import html2canvas from 'html2canvas';
 
-
 @Injectable({
   providedIn: 'root'
 })

@@ -9,8 +9,6 @@ import { CalcSpanService } from './calc-span.service';
 import { ChartService } from './chart.service';
 import { PrintService } from './print.service';
 import { point, chartData } from './point';
-import { FileService } from './file-service.service';
-import { WindowRefService } from './window-ref.service';
 
 // Second form group for Output controls 
 @Component({
@@ -48,16 +46,11 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
   calcPoint: point | undefined = undefined; // point calculation based on the value the user has typed into either the input or output FormControl
   chartData: chartData = { points: this.points, unitsX: 'Output', unitsY: 'Input', calcPoint: null };
 
-  private _window: any;
-  // @ViewChild(PrintLayoutComponent) printLayoutComponent!: PrintLayoutComponent;
-  
   constructor(
     private calcSpanService: CalcSpanService,
     private chartService: ChartService,
     public printService: PrintService,
     public formService: FormControlService,
-    private fileService: FileService,
-    windowRef: WindowRefService,
     breakpointObserver: BreakpointObserver) {
     breakpointObserver.observe([
       Breakpoints.XSmall, // 599px-
@@ -75,31 +68,24 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
             this.currentScreenSize = this.displayNameMap.get(query) ?? 'Unknown';
             switch (this.currentScreenSize) {
               case 'Small':
-                // this.chartService.redrawChart();
                 this.isPortrait = false;
                 break;
               case 'XSmall':
-                // this.chartService.redrawChart();
                 this.isPortrait = false;
                 break;
               case 'Medium':
-                // this.chartService.redrawChart();
                 this.isPortrait = false;
                 break;
               case 'Large':
-                // this.chartService.redrawChart();
                 this.isPortrait = false;
                 break;
               case 'XLarge':
-                // this.chartService.redrawChart();
                 this.isPortrait = false;
                 break;
               case 'HandsetPortrait':
-                // this.chartService.redrawChart();
                 this.isPortrait = true;
                 break;
               case 'HandsetLandscape':
-                // this.chartService.redrawChart();
                 this.isPortrait = false;
                 break;
               default:
@@ -109,7 +95,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
         }
       });
     this.spanCalcForm = this.formService.buildForm();
-    this._window = windowRef.nativeWindow;
   };
 
   ngOnInit(): void {
@@ -118,7 +103,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
       (data) => { this.calculateSpan(data) }
     );
     this.spanCalcForm.controls['selectPrimary'].setValue(true); // Set the Input signal as primary 
-    this.openModal();
   };
   ngAfterViewChecked(): void {
     this.spanCalcForm.get('inputRangesForm')!.setValidators([this.formService.validateRanges()]);
@@ -140,7 +124,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
   };
 
   onPrintGraph() {
-    this.fileService.getFiles().then(console.log);
     if (this.isDarkTheme) {
       this.chartService.redrawChart(false);
       this.printService.sendData(null);
@@ -154,10 +137,5 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
   onSaveGraph(): void {
     this.printService.saveGraph();
   };
-
-  openModal() {
-    console.log("Open a modal");
-  this._window.api.send("openModal", 'IPC is working');
-  }
 
 }
