@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import {jsPDF} from 'jspdf';
+import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 
 @Injectable({
@@ -9,7 +9,7 @@ import html2canvas from 'html2canvas';
 export class PrintService {
   isPrinting: boolean = false;
 
-  private graphData = new Subject<HTMLCanvasElement|null>;
+  private graphData = new Subject<HTMLCanvasElement | null>;
   public graphData$ = this.graphData.asObservable();
 
   constructor() { }
@@ -21,9 +21,9 @@ export class PrintService {
     this.onDataReady();
   };
 
-  saveGraph(){
+  saveGraph() {
     // let data: HTMLElement = document.getElementById('myChart')!;
-    let data: HTMLElement = document.getElementById('print')!;    
+    let data: HTMLElement = document.getElementById('print')!;
     html2canvas(data).then(canvas => {
       const contentDataURL = canvas.toDataURL('image/png');
       let pdf: jsPDF = this.generatePdf(); // pass in "p" for portrait mode
@@ -36,14 +36,14 @@ export class PrintService {
     this.graphData.next(data);
   };
 
-  generatePdf(orentation: "l" | "p" | "portrait" | "landscape" | undefined = 'l', ): jsPDF {
+  generatePdf(orentation: "l" | "p" | "portrait" | "landscape" | undefined = 'l',): jsPDF {
     return new jsPDF(orentation, 'cm', 'a4');
   };
 
   onDataReady() {
-    setTimeout(() => {
-      window.print();
-    }, 2000)
+    // setTimeout(() => {
+    window.print();
+    // }, 2000)
     this.isPrinting = false;
   };
 

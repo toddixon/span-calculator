@@ -270,7 +270,7 @@ export class ChartService {
   }
 
   resizeChart(width: number = 100, height: number = 500): void {
-    this.chart.resize(this.chart.width, this.chart.height + height);
+    // this.chart.resize(this.chart.width, this.chart.height + height);
   }
 
 }

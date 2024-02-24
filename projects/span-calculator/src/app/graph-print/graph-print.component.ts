@@ -30,7 +30,6 @@ export class GraphPrintComponent implements OnDestroy {
   };
 
   onPrintGraph(canvasOriginal: HTMLCanvasElement){
-    this.chartService.resizeChart(1400, 1000);
     this.printService.printGraph(this.canvas.nativeElement, canvasOriginal);
   };
 

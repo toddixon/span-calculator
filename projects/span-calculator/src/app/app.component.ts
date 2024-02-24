@@ -126,6 +126,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
   onPrintGraph() {
     if (this.isDarkTheme) {
       this.chartService.redrawChart(false);
+
       this.printService.sendData(null);
       this.chartService.redrawChart(true);
     }
