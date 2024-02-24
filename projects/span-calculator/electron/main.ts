@@ -8,6 +8,7 @@ let browserPath: string = 'localhost:4200';
 let browserProto: string = 'http:';
 
 let distPath: string = '../../../dist/span-calculator/index.html';
+// let distPath: string = './dist/span-calculator/index.html';
 let distProto: string = 'file:';
 
 function createWindow(): void {
@@ -24,13 +25,16 @@ function createWindow(): void {
         contextIsolation: false,
         preload: path.join(__dirname, "preload.js")
       }
+
     });
+    // this.win.webPreferences.
 
     win!.loadURL(url.format({
       pathname: distPath,
       protocol: distProto,
       slashes: true
     }));
+
 
     win.webContents.openDevTools();
 

@@ -9,14 +9,14 @@ export class FileService {
 
   constructor() {
     if ((<any>window).require) {
-      try {
-        this.ipc = (<any>window).require('electron').ipcRenderer
-      } catch (error) {
-        throw error
-      }
+      // try {
+      //   this.ipc = (<any>window).require('electron').ipcRenderer
+      // } catch (error) {
+      //   throw error
+      // }
     }
     else {
-      console.warn('Could not load electron ipc')
+      // console.warn('Could not load electron ipc')
     }
    }
 
@@ -25,7 +25,7 @@ export class FileService {
       this.ipc.once("getFilesResponse", (event: any, arg: any) => {
         resolve(arg);
       });
-      this.ipc.send("getFiles")
+      this.ipc.send("getFiles");
     });
    }
 }

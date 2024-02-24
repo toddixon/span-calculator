@@ -33,6 +33,7 @@ import { FooterComponent } from './footer/footer.component';
 import { SetMaxHeightDirective } from './set-max-height.directive';
 import { NumericInputFieldValidationDirective } from './numeric-input-field-validation.directive';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { WindowRefService } from './window-ref.service';
 
 @NgModule({
   declarations: [
@@ -77,7 +78,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
        registrationStrategy: 'registerWhenStable:30000'
      }),
   ],
-  providers: [PrintService],
+  providers: [PrintService, WindowRefService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

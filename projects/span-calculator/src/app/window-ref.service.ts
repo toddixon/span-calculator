@@ -5,5 +5,12 @@ import { Injectable } from '@angular/core';
 })
 export class WindowRefService {
 
+  getWindow(): any {
+    return window;
+  }
   constructor() { }
+  get nativeWindow(): Window{
+    return this.getWindow();
+  }
+  
 }

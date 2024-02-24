@@ -12,40 +12,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#1976d2">
 </head>
-<!-- <% if (TARGET_DESKTOP) { %> 
-  
-<script>
-  console.log("Electron");
-  // System.set('electron', System.newModule('electron'));
-</script>
 
-<% } else { %>
-  <script>
-    console.log("No Electron!");
-    // System.set('electron', System.newModule({}));
-  </script>
-<% } %> -->
-
-<div *ngIf="TARGET_DESKTOP">
-  <script>
-    console.log("Electron");
-    // System.set('electron', System.newModule('electron'));
-  </script>
-</div>
-<!-- <ng-template #elseBlock>
-  <script>
-    console.log("No Electron")
-  </script>
-</ng-template> -->
-
-<!-- <script>
-  if(TARGET_DESKTOP){
-
-  }
-
-  
-</script> -->
-  
 <body class="mat-typography" [ngClass]="{'dark-theme': isDarkMode}">
   <app-root></app-root>
   <noscript>Please enable JavaScript to continue using this application.</noscript>
