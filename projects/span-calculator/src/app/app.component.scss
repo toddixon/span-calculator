@@ -10,9 +10,6 @@ app-span-graph {
   width: 100%;
 }
 
-.span-calc-form {
-}
-
 .toolbar {
   width: 100%;
   &__title {
@@ -162,8 +159,24 @@ app-span-graph {
   }
 }
 
+.copy-test {
+  display: flex;
+  justify-content: center;
+}
+
 app-footer {
   &.dark-theme {
     background: $primaryColorDark;
   }
+}
+
+app-print-layout {
+  // display: none;
+  &.isPrinting{
+    display: flex;
+  }
+  &.isSaving{
+    display: flex;
+  }
+
 }

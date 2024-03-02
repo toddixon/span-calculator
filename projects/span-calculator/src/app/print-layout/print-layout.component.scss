@@ -1,7 +1,11 @@
 
+*{
+  height: 100%;
+}
+
 @media screen {
 
-  :host {
+  #print {
     display: none;
   }
 }

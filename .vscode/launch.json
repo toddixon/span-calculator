@@ -42,6 +42,13 @@
         "url": "http://localhost:4200",
         "webRoot": "/home/dev/AngularProjects/span-calculator"
     },
+      {
+        "name": "chrome 4200, span-calculator",
+        "request": "launch",
+        "type": "chrome",
+        "url": "http://localhost:4200",
+        "webRoot": "/home/dev/AngularProjects/span-calculator"
+    },
   ],
   "compounds": [
       {

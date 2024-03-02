@@ -1,5 +1,6 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { chartData } from '../point';
+import { PrintService } from '../print.service';
 
 @Component({
   selector: 'app-print-layout',
@@ -9,7 +10,7 @@ import { chartData } from '../point';
 export class PrintLayoutComponent implements OnInit {
   @Input() chartData: chartData = {points: [{x: 0, y: 0}], unitsX: '', unitsY: '', calcPoint: null};
 
-  constructor() {}
+  constructor(public printService: PrintService) {}
 
   ngOnInit(): void {}
   

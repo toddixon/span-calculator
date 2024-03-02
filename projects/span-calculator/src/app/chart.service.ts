@@ -1,8 +1,9 @@
-import { Injectable, afterRender } from '@angular/core';
-import { Chart, ChartData, ChartDataset, ChartDatasetProperties, ChartOptions, ScriptableChartContext } from 'chart.js';
+import { Injectable } from '@angular/core';
+import { Chart, ChartData, ChartDataset } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { point, chartData } from './point';
-import { Anchor, Align, Font } from 'chartjs-plugin-datalabels/types/options';
+import { Align, Font } from 'chartjs-plugin-datalabels/types/options';
+
 
 // This service is in charge of managing the chart created in span-graph.component as the span values change.
 
@@ -29,7 +30,7 @@ export class ChartService {
           yAxisKey: 'y',
         },
         pointRadius: 5,
-        //order: 1,
+        order: 1,
       }]
     };
     if (calcPoint) {
@@ -61,36 +62,26 @@ export class ChartService {
   };
 
 
-  setOptions(chart: Chart, isDarkTheme: boolean, titleX?: string, titleY?: string, rot: number = 0, sizePts: number = 16, sizeTitle: number = 15, isPortrait: boolean = false): string {
+  setOptions(chart: Chart, isDarkTheme: boolean, titleX?: string, titleY?: string, rot: number = 0, sizePts: number = 12, sizeTitle: number = 15, isPortrait: boolean = false): string {
     this.titleX = titleX!;
     this.titleY = titleY!;
     let fontColor: string;
     let fontColorActive: string;
     let gridColor: string;
     let charStr: string = '';
-
-    let themeColors = {
-      light: {
-        grid: '#d8d8d8',
-        text: '#0a0a0a',
-        textActive: '#191919'
-      },
-      dark: {
-        text: '#cccccc',
-        textActive: '#ffffff',
-        grid: '#3d3d3d',
-      }
-    }
+    let backgroundColor: string;
 
     if (isDarkTheme) {
-      fontColor = themeColors.dark.text;
-      fontColorActive = themeColors.dark.textActive
-      gridColor = themeColors.dark.grid;
+      fontColor = '#cccccc';
+      fontColorActive = '#ffffff';
+      gridColor = '#3d3d3d';
+      backgroundColor = 'rgba(71, 71, 71, .5)';
     }
     else {
-      fontColor = themeColors.light.text;
-      fontColorActive = themeColors.light.textActive;
-      gridColor = themeColors.light.grid;
+      fontColor = '#0a0a0a';
+      fontColorActive = '#191919';
+      gridColor = '#d8d8d8';
+      backgroundColor = 'rgba(204, 204, 204, .5)';
     }
 
     chart.options = {
@@ -150,13 +141,17 @@ export class ChartService {
             color: gridColor,
           },
         }
-
       },
       plugins: {
         legend: {
           display: false
         },
+
         datalabels: {
+          borderRadius: 5,
+          backgroundColor: (ctx) => {
+            return backgroundColor;
+          },
           display: true,
           formatter: (point, ctx) => {
             let idx = ctx.dataIndex;
@@ -186,16 +181,9 @@ export class ChartService {
             title: {
               display: (ctx) => {
                 let display: string | boolean = 'auto';
-                if (ctx.datasetIndex == 1) {
-                  switch (ctx.dataIndex) {
-                    case 0: display = false;
-                      break;
-                    case 1: display = true;
-                      break;
-                    case 2: display = false;
-                      break;
-                  }
-                };
+                if (ctx.active) {
+                  display = true;
+                }
                 return display;
               },
               color: function (ctx) {
@@ -203,14 +191,9 @@ export class ChartService {
               },
               font: (ctx) => {
                 let font: Font = {};
-                if (ctx.datasetIndex == 0) {
-                  font.size = sizePts;
-                  font.weight = 'normal';
-                }
-                else {
-                  font.size = sizePts;
-                  font.weight = 'bold'
-                }
+                font.size = sizePts;
+                font.weight = 'normal';
+                font.size = ctx.active ? sizePts + 4 : sizePts;
                 return font
               }
             }
@@ -218,6 +201,7 @@ export class ChartService {
           listeners: {
             enter: function (ctx, event) {
               ctx.active = true;
+
               return true;
             },
             leave: function (ctx, event) {
@@ -228,7 +212,7 @@ export class ChartService {
         },
 
         tooltip: {
-          enabled: false
+          enabled: false,
         }
       },
     }
@@ -240,9 +224,9 @@ export class ChartService {
   public titleY: string = 'Input';
 
   createChart(points: point[] | any, isDarkTheme: boolean, name: string = "myChart"): Chart {
-    Chart.register(ChartDataLabels)
-    let dataset = this.buildDataSet(points, null);
+    Chart.register(ChartDataLabels);
 
+    let dataset = this.buildDataSet(points, null);
     if (this.chart) {
       this.chart.destroy();
     }
@@ -251,6 +235,7 @@ export class ChartService {
       type: 'line',
       data: dataset,
     })
+
 
     this.setOptions(this.chart, isDarkTheme, 'Output', 'Input');
     return this.chart;
@@ -261,6 +246,7 @@ export class ChartService {
     if (this.chart) {
       this.setOptions(this.chart, isDarkTheme, this.titleX, this.titleY);
       this.chart.update('none');
+      this.chart.render();
     }
     return
   };
@@ -269,8 +255,9 @@ export class ChartService {
     return this.chart;
   }
 
-  resizeChart(width: number = 100, height: number = 500): void {
-    // this.chart.resize(this.chart.width, this.chart.height + height);
+  resizeChart(width: number = 700, height: number = 400): void {
+    this.chart.resize(width, height);
+
   }
 
 }

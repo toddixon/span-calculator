@@ -21,7 +21,7 @@ export class GraphPrintComponent implements OnDestroy {
     public printService: PrintService,
     public chartService: ChartService,
   )  {
-    // Recieves HTMLCanvasElement data sent by span-graph.component
+    // Receives HTMLCanvasElement data sent by span-graph.component
     this.printService.graphData$.subscribe(data => {
       if (data) {
         this.onPrintGraph(data);
@@ -30,7 +30,12 @@ export class GraphPrintComponent implements OnDestroy {
   };
 
   onPrintGraph(canvasOriginal: HTMLCanvasElement){
-    this.printService.printGraph(this.canvas.nativeElement, canvasOriginal);
+    if (this.printService.isPrinting) {
+      this.printService.printGraph(this.canvas.nativeElement, canvasOriginal);
+    }
+    else {
+      this.printService.saveGraph(this.canvas.nativeElement, canvasOriginal);
+    }
   };
 
   ngOnDestroy(): void {

@@ -1,10 +1,9 @@
-import { Injectable, OnInit, OnDestroy, AfterViewChecked, EventEmitter } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { FormControl, FormGroup, AbstractControl, Validators, ValidatorFn, ValidationErrors } from '@angular/forms';
-import { Subject, debounceTime, pairwise, startWith, takeUntil, distinctUntilChanged, Observable } from 'rxjs';
+import { Subject, pairwise, startWith, distinctUntilChanged, Observable } from 'rxjs';
 import { range } from './range';
 import { point, chartData } from './point';
 import { CalcSpanService } from './calc-span.service';
-import { MatSliderDragEvent } from '@angular/material/slider';
 
 export interface data {
   prim: boolean,
@@ -27,7 +26,7 @@ export class FormControlService implements OnInit {
   outputSig: { units: string, range: range } = { units: 'Output', range: { lrv: 0, urv: 10 } };
 
   inputColor: 'primary' | 'warn' | 'accent' = 'primary';
-  private readonly debounceTime = 300;
+  // private readonly debounceTime = 300;
   lrvLast: boolean = true;// whether the LRV input box/slider was the last control adjusted or one of the URV controls
   points: Array<point> = [];
   calcPoint: point | undefined = undefined; // point calculation based on the value the user has typed into either the input or output FormControl
@@ -192,8 +191,6 @@ export class FormControlService implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.spanCalcForm.controls['selectPrimary'].setValue(true);
-    // this.updateSpan.next(this.getFormData());
   }
 
   updateInputValidity(formGroup: FormGroup): void {
@@ -242,23 +239,19 @@ export class FormControlService implements OnInit {
       // Error if LRV < inMin
       else if (lrvControls.input.value < sig!.range.lrv) {
         lrvControls.input.setValue(sig.range.lrv);
-        // lrvControls.input.setErrors({ outRangeMin: true });
         return { 'outRangeMin': true };
       }
       else if (lrvControls.input.value > sig!.range.urv) {
         lrvControls.input.setValue(sig.range.urv - 1);
-        // lrvControls.input.setErrors({ outRangeMax: true });
         return { 'outRangeMax': true };
       }
       // Error if URV > inMax
       else if (urvControls.input.value > sig!.range.urv) {
         urvControls.input.setValue(sig.range.urv);
-        // urvControls.input.setErrors({ outRangeMax: true });
         return { 'outRangeMax': true };
       }
       else if (urvControls.input.value < sig!.range.lrv) {
         lrvControls.input.setValue(sig.range.lrv + 1);
-        // urvControls.input.setErrors({ outRangeMin: true });
         return { 'outRangeMin': true };
       }
       // Otherwise no errors
@@ -315,7 +308,7 @@ export class FormControlService implements OnInit {
       urv: this.outputRangesForm!.controls['urv'].value
     };
     var units = this.getUnits();
-    dataObj = { prim: inputPrim, val: val, input: inputRng, output: outputRng, units: units }
+    dataObj = { prim: inputPrim, val: val, input: inputRng, output: outputRng, units: units };
     return dataObj;
   };
 

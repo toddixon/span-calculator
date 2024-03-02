@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
 import { chartData } from '../point';
-import { MatTabChangeEvent } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-span-result',

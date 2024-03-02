@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Renderer2, Input, OnChanges, SimpleChange, SimpleChanges } from '@angular/core';
+import { Directive, ElementRef, Renderer2, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 @Directive({
   selector: '[appSetMaxHeight]'

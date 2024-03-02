@@ -168,13 +168,12 @@
               </mat-slider>
             </div>
           </form>
-    
+        </div>
+        <div class="flex-r" [ngClass]="{'is-portrait': isPortrait}"></div>
+        
       </div>
-      <div class="flex-r" [ngClass]="{'is-portrait': isPortrait}"></div>
-
-    </div>
 
       <app-footer [isDarkTheme]="isDarkTheme"></app-footer>
 </div>
 
-<app-print-layout [ngClass]="{'isPrinting': printService.isPrinting}" [chartData]="chartData"></app-print-layout>
+<app-print-layout [chartData]="chartData"></app-print-layout>

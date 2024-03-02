@@ -1,6 +1,6 @@
-import { AfterViewChecked, Component, Injector, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, OnDestroy } from '@angular/core';
 import { OnInit } from '@angular/core';
-import {FormGroup} from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { FormControlService, data } from './form-control.service';
@@ -68,27 +68,20 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
             this.currentScreenSize = this.displayNameMap.get(query) ?? 'Unknown';
             switch (this.currentScreenSize) {
               case 'Small':
-                this.isPortrait = false;
-                break;
               case 'XSmall':
-                this.isPortrait = false;
-                break;
               case 'Medium':
-                this.isPortrait = false;
-                break;
               case 'Large':
-                this.isPortrait = false;
-                break;
               case 'XLarge':
+              case 'HandsetLandscape':
+                this.chartService.redrawChart(this.isDarkTheme);
                 this.isPortrait = false;
                 break;
               case 'HandsetPortrait':
+                this.chartService.redrawChart(this.isDarkTheme);
                 this.isPortrait = true;
                 break;
-              case 'HandsetLandscape':
-                this.isPortrait = false;
-                break;
               default:
+                this.chartService.redrawChart(this.isDarkTheme);
                 this.isPortrait = false;
             }
           }
@@ -123,20 +116,38 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.chartService.redrawChart(this.isDarkTheme);
   };
 
-  onPrintGraph() {
-    if (this.isDarkTheme) {
-      this.chartService.redrawChart(false);
+  setCopyCanvas(printSave: boolean): void {
+    let orig: HTMLElement = document.getElementById('myChart')!;
+    var origCanvas: HTMLCanvasElement;
+    if (orig instanceof HTMLCanvasElement) {
+      origCanvas = orig;
+      var origW: number = origCanvas.width;
+      var origH: number = origCanvas.height;
+      if (printSave){
+        this.printService.isPrinting = true;
+      }
+      if (this.isDarkTheme) {
+        this.chartService.redrawChart(false);
+        this.chartService.resizeChart();
+        this.printService.sendData(null);
+        this.chartService.redrawChart(true);
+      }
+      else {
+        this.chartService.resizeChart();
+        this.printService.sendData(null);
+      }
+      this.chartService.resizeChart(origW, origH);
+    }
+    return
+  }
 
-      this.printService.sendData(null);
-      this.chartService.redrawChart(true);
-    }
-    else {
-      this.printService.sendData(null);
-    }
+  onPrintGraph() {
+    this.setCopyCanvas(true);
     return
   };
   onSaveGraph(): void {
-    this.printService.saveGraph();
+    this.setCopyCanvas(false);
+
   };
 
 }

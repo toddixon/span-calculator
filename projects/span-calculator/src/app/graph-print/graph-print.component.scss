@@ -1,22 +1,23 @@
 $printWidth: 8in;
 
 .print-output{
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
   &__span-plot{
     margin: 1em;
-  &__graph {
-    padding: 1em;
-    width: $printWidth;
-  }
   }
   &__table {
     margin: 1em;
-    width: $printWidth;
+    width: 80%
   }
   tr {
     font-size: small;
+    &.mat-mdc-row {
+      height: 40px !important;
+    }
   }
   th {
     font-size: small;

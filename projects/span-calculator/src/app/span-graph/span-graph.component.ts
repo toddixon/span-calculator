@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges, Output, EventEmitter, SimpleChange, ViewChild, ElementRef, AfterViewInit} from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild, ElementRef } from '@angular/core';
 import { Chart } from 'chart.js/auto';
 import { ChartService } from '../chart.service';
 import { PrintService } from '../print.service';
@@ -47,5 +47,9 @@ export class SpanGraphComponent implements OnChanges, OnInit {
     this.chart = this.chartService.createChart(this.chartData!.points, this.isDarkTheme);
     this.chart.update();
   };
+
+  getCanvas(): HTMLCanvasElement {
+    return this.canvas.nativeElement;
+  }
 
 }
