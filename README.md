@@ -1,4 +1,4 @@
-# Introduction
+## Introduction
 
 `Span Calculator` is an interactive tool for calculating and visually representing the proportional/linear relationship between an input and output signal. When adjustments are made to the input or output upper or lower range values, the graph and table are updated accordingly. The application also allows for calculating a specific value's proportional response, by inputting the desired value into either the input or output boxes.
 
@@ -6,7 +6,7 @@
 <img src="./images/applicationD.png"/>
 </p>
 
-# Calculating Span
+## Calculating Span
 
 Uses the **slope intercept formula**:
 $$y=mx + b$$
