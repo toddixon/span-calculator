@@ -2,13 +2,14 @@
   "name": "span-calculator",
   "productName": "Span Calculator",
   "version": "0.0.0",
-  "main": "./electron/main.js",
+  "main": "./main.js",
+  "icon": "/projects/span-calculator/src/assets/win/icon.ico",
   "author": "TD",
   "scripts": {
     "ng": "ng",
     "start": "concurrently \"ng serve\" \"npm run electron\"",
     "serve": "ng serve --host=127.0.0.1",
-    "electron": "electron ./electron/main.js",
+    "electron": "electron ./main.js",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
