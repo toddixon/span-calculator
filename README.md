@@ -2,25 +2,22 @@
   <img class="title__icon" src="./images/SpanCalcIcon.png" width=12% style="position:relative; z-index:10; border-radius:20px;"/>
   <span class="title__text" style="font-size:40pt; font-weight:bold;">Span Calculator</span>
 <div>
- <a href="Introduction">Introduction</a>
+ <a href="Introduction">Introduction</a>&nbsp;&bull;&nbsp;
+ <a href="Usage">Usage</a>&nbsp;&bull;&nbsp;
 </div>
-
-<!-- <img src="./images/header.svg"> -->
 
 ## Introduction <a name="Introduction"></a>
 
 `Span Calculator` is an interactive tool for calculating and visually representing the proportional/linear relationship between an input and output signal. When adjustments are made to the input or output upper or lower range values, the graph and table are updated accordingly. The application also allows for calculating a specific value's proportional response, by inputting the desired value into either the input or output boxes.
 
 <p align="center">
+  <picture>
+    <source srcset="./images/applicationD.png" media="(prefers-color-scheme: dark)"/>
+    <img class="dashboard" src="./images/application.png"/>
+  </picture>
 </p>
 
-<picture>
-  <source srcset="./images/applicationD.png" media="(prefers-color-scheme: dark)"/>
-  <img class="dashboard" src="./images/application.png"/>
-</picture>
-
-
-## Calculating Span
+## Usage
 
 Uses the **slope intercept formula**:
 $$y=mx + b$$
@@ -51,13 +48,15 @@ $$
 
 ### Example problems
 
-1. **4-20mA** pressure sensor is giving us **8.5mA** back. If the pressure sensors range is **0-50psi**, what **pressure** is it reading?
+1. **4-20mA** pressure sensor is giving us **8.5mA** back. If the pressure sensor's range is **0-50psi**, what **pressure** is it reading?
 <div class=ex1a__wrapper>
 
-<picture>
-  <source srcset="./images/examples/ex1d.gif" media="(prefers-color-scheme: dark)"/>
-  <img class="dashboard" src="./images/examples/ex1.gif"/>
-</picture>
+<p align="center">
+  <picture align="center">
+    <source srcset="./images/examples/ex1d.gif" media="(prefers-color-scheme: dark)" width=60%/>
+    <img class="dashboard" src="./images/examples/ex1.gif" width=60%/>
+  </picture>
+</p>
 
 - Starting with the $\text{Input}$ equation:
 
@@ -83,11 +82,12 @@ $$
 
 2. The sensor is now reading **32psi**. What should the milliamp reading be?
 
-<picture width="50%">
-  <source srcset="./images/examples/ex2d.gif" media="(prefers-color-scheme: dark)">
-  <img src="./images/examples/ex2.gif"/>
-</picture>
-
+<p align="center">
+  <picture align=center>
+    <source srcset="./images/examples/ex2d.gif" media="(prefers-color-scheme: dark)" width=60%>
+    <img src="./images/examples/ex2.gif" width=60%/>
+  </picture>
+</p>
 
 - Starting with the $\text{Output}$ equation:
 
