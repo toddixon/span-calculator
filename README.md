@@ -44,9 +44,9 @@
 </style>
 
 
-<div class="title" style="display:flex;justify-content: center;align-items:center;column-gap:20px">
- <img class="title__icon" width=12.5% src="./images/SpanCalcIcon.png" style="background-color:red;position:relative;z-index: 10;border-radius: 20px;">
- <span class="title__text" style="font-size: 30pt;font-weight:bold;">Span Calculator</span>
+<div class="title" style="display:flex;justify-content:center;align-items:center;column-gap:20px;">
+ <img class="title__icon" width=12.5% src="./images/SpanCalcIcon.png" style="background-color:red;position:relative;z-index: 10;border-radius:20px;">
+ <span class="title__text" style="font-size:30pt;font-weight:bold;">Span Calculator</span>
 </div>
 
 <div>
