@@ -1,6 +1,7 @@
 
-  <img class="title__icon" src="./images/SpanCalcIcon.png" width=12% style="position:relative; z-index:10; border-radius:20px;"/>
-  <span class="title__text" style="font-size:40pt; font-weight:bold;">Span Calculator</span>
+  <img src="./images/SpanCalcIcon.png" width=12% style="position:relative; z-index:10; border-radius:20px;"/>
+  <span style="font-size:40pt; font-weight:bold;">Span Calculator</span>
+
 <div>
  <a href="#introduction-">Introduction</a>&nbsp;&bull;&nbsp;
  <a href="#usage-">Usage</a>&nbsp;&bull;&nbsp;
@@ -12,8 +13,8 @@
 
 <p align="center">
   <picture>
-    <source srcset="./images/applicationD.png" media="(prefers-color-scheme: dark)"/>
-    <img class="dashboard" src="./images/application.png"/>
+    <source srcset="./images/applicationD.png" media="(prefers-color-scheme: dark)" width=60%/>
+    <img class="dashboard" src="./images/application.png" width=60%/>
   </picture>
 </p>
 
@@ -49,7 +50,8 @@ $$
 ### Example problems
 
 1. **4-20mA** pressure sensor is giving us **8.5mA** back. If the pressure sensor's range is **0-50psi**, what **pressure** is it reading?
-<div class=ex1a__wrapper>
+
+Start by adjusting the input ranges to match the minimum and maximum of the 
 
 <p align="center">
   <picture align="center">
@@ -107,6 +109,9 @@ $$
 \text{Input} = 14.24\text{mA}
 \end{gather*}
 $$
+
+> [!NOTE]
+> In the examples above I have the input representing the range and feedback from the sensing device, and the output representing the range and measurement of the sensing device. Flipping these will cause no problems though.
 
 ## Creating the Plot
 
