@@ -17,7 +17,7 @@
   </picture>
 </p>
 
-## Usage
+## Usage <a name="Usage"></a>
 
 Uses the **slope intercept formula**:
 $$y=mx + b$$
