@@ -2,27 +2,26 @@
   <foreignObject width="100%" height="100%">
     <div xmlns="http://www.w3.org/1999/xhtml">
 
-      <style>
+<style>
 .title{
  display: flex;
  justify-content: center;
  align-items: center;
- column-gap: 20px 
+ column-gap: 20px;
  }
  .title__icon {
-  /* background-color: red;
+  background-color: red;
   position: relative;
   z-index: 10;
-  border-radius: 20px; */
+  border-radius: 20px;
  }
  .title__text{
-  /* font-size: 30pt;
-  font-weight: bold; */
+  font-size: 30pt;
+  font-weight: bold;
  }
  .dashboard {
- width:50%;
- }
-
+ width: 50%;
+ }    
  .ex1a__wrapper{
   display: flex;
   justify-content: center;
@@ -32,31 +31,29 @@
  grid-template-columns: repeat(2, 0.8fr);
  gap: 10px;
  grid-template-rows: repeat(2, 1fr);
- column-gap:0px;
- 
+ column-gap: 0px;
  }
 
- .ex1a__img-a{
-  /* display:none; */
+ .ex1a__img-a {
+  display: none;
  }
  .ex1a > img {
-  /* justify-content: center; */
-  /* align-items: center; */
-  /* max-height: 500px; */
-  /* row-gap:20px; */
+  justify-content: center;
+  align-items: center;
+  max-height: 500px;
+  row-gap:20px;
  }
-      </style>
+</style>
 
-      <!-- your HTML -->
+<div class="title">
+ <img class="title__icon" width=12.5%>
+ <span class="title__text">Span Calculator</span>
+</div>
 
-    </div>
+  </div>
   </foreignObject>
 </svg>
 
-<div class="title" style="display:flex;justify-content:center;align-items:center;column-gap:20px;">
- <img class="title__icon" width=12.5% src="./images/SpanCalcIcon.png" style="background-color:red;position:relative;z-index: 10;border-radius:20px;">
- <span class="title__text" style="font-size:30pt;font-weight:bold;">Span Calculator</span>
-</div>
 
 <div>
  <a href="Introduction">Introduction</a>
