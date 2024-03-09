@@ -4,8 +4,8 @@
 
 <p align="center">
   <picture align="center">
-    <source srcset="./images/examples/header.png" media="(prefers-color-scheme: dark)"/>
-    <img class="dashboard" src="./images/examples/ex1.gif" width=60%/>
+    <source srcset="./images/headerD.png" media="(prefers-color-scheme: dark)"/>
+    <img class="dashboard" src="./images/header.png" width=60%/>
   </picture>
 </p>
 
