@@ -54,13 +54,10 @@ $$
 1. **4-20mA** pressure sensor is giving us **8.5mA** back. If the pressure sensors range is **0-50psi**, what **pressure** is it reading?
 <div class=ex1a__wrapper>
 
-<div class="ex1a">
- <img class="ex1a__img-a" src="./images/examples/1a.png"/>
- <img class="ex1a__img-b" src="./images/examples/1b.png"/>
- <img class="ex1a__img-c" src="./images/examples/1c.png"/>
- <img class="ex1a__img-d" src="./images/examples/1d.png"/>
-</div>
-</div>
+<picture>
+  <source srcset="./images/examples/ex1d.gif" media="(prefers-color-scheme: dark)"/>
+  <img class="dashboard" src="./images/examples/ex1.gif"/>
+</picture>
 
 - Starting with the $\text{Input}$ equation:
 
@@ -85,6 +82,12 @@ $$
 ***
 
 2. The sensor is now reading **32psi**. What should the milliamp reading be?
+
+<picture width="50%">
+  <source srcset="./images/examples/ex2d.gif" media="(prefers-color-scheme: dark)">
+  <img src="./images/examples/ex2.gif"/>
+</picture>
+
 
 - Starting with the $\text{Output}$ equation:
 
