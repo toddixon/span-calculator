@@ -1,8 +1,11 @@
 
-
+  <img class="title__icon" src="./images/SpanCalcIcon.png" width=12% style="position:relative; z-index:10; border-radius:20px;"/>
+  <span class="title__text" style="font-size:40pt; font-weight:bold;">Span Calculator</span>
 <div>
  <a href="Introduction">Introduction</a>
 </div>
+
+<!-- <img src="./images/header.svg"> -->
 
 ## Introduction <a name="Introduction"></a>
 
