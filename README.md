@@ -12,8 +12,12 @@
 `Span Calculator` is an interactive tool for calculating and visually representing the proportional/linear relationship between an input and output signal. When adjustments are made to the input or output upper or lower range values, the graph and table are updated accordingly. The application also allows for calculating a specific value's proportional response, by inputting the desired value into either the input or output boxes.
 
 <p align="center">
-<img class="dashboard" src="./images/applicationD.png"/>
 </p>
+
+<picture>
+  <source media="(prefers-color-sceme: light)">
+<img class="dashboard" src="./images/applicationD.png">
+</picture>
 
 ## Calculating Span
 
