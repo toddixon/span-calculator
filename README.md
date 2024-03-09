@@ -15,14 +15,10 @@
 </p>
 
 <picture>
-  <source media="(prefers-color-sceme: dark)">
-<img class="dashboard" src="./images/applicationD.png">
+  <source srcset="./images/applicationD.png" media="(prefers-color-scheme: dark)"/>
+  <img class="dashboard" src="./images/application.png"/>
 </picture>
 
-<picture>
-  <source media="(prefers-color-sceme: light)">
-<img class="dashboard" src="./images/application.png">
-</picture>
 
 ## Calculating Span
 
