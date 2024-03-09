@@ -1,3 +1,57 @@
+<svg fill="none" viewBox="0 0 800 400" width="800" height="400" xmlns="http://www.w3.org/2000/svg">
+  <foreignObject width="100%" height="100%">
+    <div xmlns="http://www.w3.org/1999/xhtml">
+
+      <style>
+.title{
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ column-gap: 20px 
+ }
+ .title__icon {
+  /* background-color: red;
+  position: relative;
+  z-index: 10;
+  border-radius: 20px; */
+ }
+ .title__text{
+  /* font-size: 30pt;
+  font-weight: bold; */
+ }
+ .dashboard {
+ width:50%;
+ }
+
+ .ex1a__wrapper{
+  display: flex;
+  justify-content: center;
+ }
+ .ex1a {
+ display: grid;
+ grid-template-columns: repeat(2, 0.8fr);
+ gap: 10px;
+ grid-template-rows: repeat(2, 1fr);
+ column-gap:0px;
+ 
+ }
+
+ .ex1a__img-a{
+  /* display:none; */
+ }
+ .ex1a > img {
+  /* justify-content: center; */
+  /* align-items: center; */
+  /* max-height: 500px; */
+  /* row-gap:20px; */
+ }
+      </style>
+
+      <!-- your HTML -->
+
+    </div>
+  </foreignObject>
+</svg>
 
 <div class="title" style="display:flex;justify-content:center;align-items:center;column-gap:20px;">
  <img class="title__icon" width=12.5% src="./images/SpanCalcIcon.png" style="background-color:red;position:relative;z-index: 10;border-radius:20px;">
