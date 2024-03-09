@@ -1,19 +1,19 @@
 <style>
  .title{
- display:flex;
+ /* display:flex;
  justify-content: center;
  align-items:center;
- column-gap:20px
+ column-gap:20px */
  }
  .title__icon {
-  background-color: red;
+  /* background-color: red;
   position: relative;
   z-index: 10;
-  border-radius: 20px;
+  border-radius: 20px; */
  }
  .title__text{
-  font-size: 30pt;
-  font-weight:bold;
+  /* font-size: 30pt;
+  font-weight:bold; */
  }
  .dashboard {
  width:50%;
@@ -44,10 +44,9 @@
 </style>
 
 
-
-<div class="title">
- <img class="title__icon" width=12.5% src="./images/SpanCalcIcon.png">
- <span class="title__text">Span Calculator</span>
+<div class="title" style="display:flex;justify-content: center;align-items:center;column-gap:20px">
+ <img class="title__icon" width=12.5% src="./images/SpanCalcIcon.png" style="background-color:red;position:relative;z-index: 10;border-radius: 20px;">
+ <span class="title__text" style="font-size: 30pt;font-weight:bold;">Span Calculator</span>
 </div>
 
 <div>
@@ -108,8 +107,8 @@ $$
 
 $$
 \begin{gather*}
-8.5 = (20-4)\cdot x + 4\\
-4.5 = 16\cdot x\\
+8.5 = (20-4) \cdot x + 4\\
+4.5 = 16 \cdot x\\
 x = 0.28125=\%28.13\\
 \end{gather*}
 $$
@@ -118,7 +117,7 @@ $$
 
 $$
 \begin{gather*}
-\text{Output} = (50-0)\cdot(0.28125) + 0\\
+\text{Output} = (50-0) \cdot (0.28125) + 0\\
 \text{Output} = 50 \cdot (0.28125)\\
 \text{Output} = 14.1\text{psi}
 \end{gather*}
@@ -132,8 +131,8 @@ $$
 
 $$
 \begin{gather*}
-32 = (50-0)\cdot x + (0)\\
-32 = 50\cdot x\\
+32 = (50-0) \cdot x + (0)\\
+32 = 50 \cdot x\\
 x=0.64=64\%
 \end{gather*}
 $$
@@ -142,7 +141,7 @@ $$
 
 $$
 \begin{gather*}
-\text{Input} = (20-4)\cdot(0.64)+ 4\\
+\text{Input} = (20-4) \cdot (0.64)+ 4\\
 \text{Input} = 14.24\text{mA}
 \end{gather*}
 $$
