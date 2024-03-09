@@ -1,6 +1,17 @@
 
-  <img src="./images/SpanCalcIcon.png" width=12% style="position:relative; z-index:10; border-radius:20px;"/>
+  <img src="./images/SpanCalcIcon.png" width=12% style="position:relative; z-index:10; border-radius:20%;overflow:hidden;"/>
   <span style="font-size:40pt; font-weight:bold;">Span Calculator</span>
+
+<p align="center">
+  <picture align="center">
+    <source srcset="./images/examples/ex1d.gif" media="(prefers-color-scheme: dark)" width=60%/>
+    <img class="dashboard" src="./images/examples/ex1.gif" width=60%/>
+  </picture>
+</p>
+
+<span class="image-rounded" style="background: [url] no-repeat 0 0;">
+	<img src="[url]" />
+</span>
 
 <div>
  <a href="#introduction-">Introduction</a>&nbsp;&bull;&nbsp;
