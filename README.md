@@ -26,11 +26,12 @@
 
 ## Usage <a name="Usage"></a>
 
-1. **4-20mA** pressure sensor is giving us **8.5mA** back. If the pressure sensor's range is **0-50psi**, what **pressure** is it reading?
+1. A **4-20mA** pressure sensor is giving us **8.5mA** back. If the pressure sensor's range is **0-50psi**, what **pressure** is it reading?
 
-- Start by clicking the signal type drop-down to select the desired signal type. 
-- Next, set up the input and output parameters by adjusting the range sliders or input boxes accordingly. 
-- Finally, select the radio static button for the milliamp signal and input the given value (**8.5ma**). After you add the value to the input box a new point is created on the graph with 
+- Solving with application 
+  - Start by clicking the signal type drop-down to select the desired signal type. 
+  - Next, set up the input and output parameters by adjusting the range sliders or input boxes accordingly. 
+  - Finally, select the radio static button for the milliamp signal and input the given value (**8.5ma**). After you add the value to the input box a new point is created on the graph. The answer is the y coordinate: **14.06psi**.
 
 <p align="center">
   <picture align="center">
