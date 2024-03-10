@@ -10,6 +10,7 @@
 <div align="center">
  <a href="#introduction-">Introduction</a>&nbsp;&bull;&nbsp;
  <a href="#usage-">Usage</a>&nbsp;&bull;&nbsp;
+ <a href="#calculating-span-">Calculating Span</a>&nbsp;&bull;&nbsp;
 </div>
 
 ## Introduction <a name="Introduction"></a>
@@ -24,35 +25,6 @@
 </p>
 
 ## Usage <a name="Usage"></a>
-
-Uses the **slope intercept formula**:
-$$y=mx + b$$
-
-$$
-\begin{gather*}
-\frac{\text{Input}-LRV_{in}}{URV_{in}-LRV_{in}}=\frac{\text{Output}-LRV_{out}}{URV_{out}-LRV_{out}} = \text{per-unit ratio (x)}
-\end{gather*}
-$$
-Solving for $\text{Input}$ and $\text{Output}$, we get two equations:
-$$
-\begin{gather*}
-\text{Input}=(URV_{in}-LRV_{in})\cdot\text{x}+LRV_{in}\\
-\text{or}\\
-\text{Output}=(URV_{out}-LRV_{out})\cdot\text{x}+LRV_{out}
-\end{gather*}
-$$
-
-- $URV_{in}$
-  - The output range **high** feedback/response of the sensing device
-- $LRV_{in}$
-  - The output range **low** feedback/response of the sensing device
-
-- $URV_{out}$
-  - The unit output range **high** of the sensing device
-- $LRV_{out}$
-  - The unit output range **low** of the sensing device
-
-### Example problems
 
 1. **4-20mA** pressure sensor is giving us **8.5mA** back. If the pressure sensor's range is **0-50psi**, what **pressure** is it reading?
 
@@ -122,11 +94,35 @@ $$
 \end{gather*}
 $$
 
+## Calculating Span <a name="Calculating Span"></a>
 
+Uses the **slope intercept formula**:
+$$y=mx + b$$
 
-## Creating the Plot
+$$
+\begin{gather*}
+\frac{\text{Input}-LRV_{in}}{URV_{in}-LRV_{in}}=\frac{\text{Output}-LRV_{out}}{URV_{out}-LRV_{out}} = \text{per-unit ratio (x)}
+\end{gather*}
+$$
+Solving for $\text{Input}$ and $\text{Output}$, we get two equations:
+$$
+\begin{gather*}
+\text{Input}=(URV_{in}-LRV_{in})\cdot\text{x}+LRV_{in}\\
+\text{or}\\
+\text{Output}=(URV_{out}-LRV_{out})\cdot\text{x}+LRV_{out}
+\end{gather*}
+$$
 
-Once we have calculated our primary signals slope intercept formula, the application uses **linear interpolation** to calculate a total of 10 points from
+- $URV_{in}$
+  - The output range **high** feedback/response of the sensing device
+- $LRV_{in}$
+  - The output range **low** feedback/response of the sensing device
+
+- $URV_{out}$
+  - The unit output range **high** of the sensing device
+- $LRV_{out}$
+  - The unit output range **low** of the sensing device
+
 
 ## Build
 
