@@ -1,11 +1,12 @@
-
-<p align="center">
-  <picture align="center">
-    <source srcset="./images/headerD.png" media="(prefers-color-scheme: dark)"/>
-    <img class="dashboard" src="./images/header.png" width=60%/>
-  </picture>
-</p>
-<br>
+<h1>
+  <p align="center">
+    <picture align="center">
+      <source srcset="./images/headerD.png" media="(prefers-color-scheme: dark)"/>
+      <img class="dashboard" src="./images/header.png" width=60%/>
+    </picture>
+  </p>
+  <br>
+</h1>
 
 <div align="center">
  <a href="#introduction-">Introduction</a>&nbsp;&bull;&nbsp;
@@ -25,6 +26,8 @@
 </p>
 
 ## Usage <a name="Usage"></a>
+
+This section covers 2 example problems.  
 
 1. A **4-20mA** pressure sensor is giving us **8.5mA** back. If the pressure sensor's range is **0-50psi**, what **pressure** is it reading?
 
