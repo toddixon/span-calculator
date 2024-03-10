@@ -17,7 +17,7 @@
 
 `Span Calculator` is an interactive tool for calculating and visually representing the proportional/linear relationship between an input and output signal. When adjustments are made to the input or output upper or lower range values, the graph and table are updated accordingly. The application also allows for calculating a specific value's proportional response, by inputting the desired value into either the input or output boxes.
 
-<p align="center">
+<p align="center"> <a name="Introduction"></a>
   <picture>
     <source srcset="./images/applicationD.png" media="(prefers-color-scheme: dark)" width=60%/>
     <img class="dashboard" src="./images/application.png" width=60%/>
@@ -28,8 +28,9 @@
 
 1. **4-20mA** pressure sensor is giving us **8.5mA** back. If the pressure sensor's range is **0-50psi**, what **pressure** is it reading?
 
-The first step is to switch to the desired signal type. 
-set up the input and output parameters by adjusting the range sliders or input boxes accordingly. 
+- Start by clicking the signal type drop-down to select the desired signal type. 
+- Next, set up the input and output parameters by adjusting the range sliders or input boxes accordingly. 
+- Finally, select the radio static button for the milliamp signal and input the given value (**8.5ma**). After you add the value to the input box a new point is created on the graph with 
 
 <p align="center">
   <picture align="center">
@@ -50,7 +51,7 @@ $$
 \begin{gather*}
 8.5 = (20-4) \cdot x + 4\\
 4.5 = 16 \cdot x\\
-x = 0.28125=\%28.13\\
+x = 0.28125\\
 \end{gather*}
 $$
 
