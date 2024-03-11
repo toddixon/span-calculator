@@ -45,7 +45,7 @@ This section covers 2 example problems.
 > In this example I have the input representing the range and feedback from the sensing device, and the output representing the range and measurement of the sensing device. Flipping these will cause no problems though.
 
 > [!NOTE]
-> If the `Signal Type` drop-down doesn't include the desired signal, you can select `Custom` which will give you a range from [-100, 100]
+> If the `Signal Type` drop-down doesn't include the desired signal, you can select `Custom` which will give you a range from `[-100, 100]`
 
 - Starting with the <a href="#input">Input</a> equation
 
@@ -80,7 +80,8 @@ $$
 </p>
 
 - Solving by hand
-  - Starting with the <a href="#output">Output</a> equation
+
+Starting with the <a href="#output">Output</a> equation
 
 $$
 \begin{gather*}
@@ -90,7 +91,7 @@ x=0.64=64\%
 \end{gather*}
 $$
 
-- Now calculate the current
+Now calculate the current
 
 $$
 \begin{gather*}
