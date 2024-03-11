@@ -80,7 +80,7 @@ $$
 </p>
 
 - Solving by hand
-  - Starting with the $\text{Output}$ equation:
+  - Starting with the $\text{Output}$ equation: <a href="#output">output</a>
 
 $$
 \begin{gather*}
@@ -102,6 +102,7 @@ $$
 ## Calculating Span <a name="Calculating Span"></a>
 
 Uses the **slope intercept formula**:
+
 $$y=mx + b$$
 
 $$
@@ -109,11 +110,23 @@ $$
 \frac{\text{Input}-LRV_{in}}{URV_{in}-LRV_{in}}=\frac{\text{Output}-LRV_{out}}{URV_{out}-LRV_{out}} = \text{per-unit ratio (x)}
 \end{gather*}
 $$
+
 Solving for $\text{Input}$ and $\text{Output}$, we get two equations:
+
+<a name="output"></a>
+
 $$
 \begin{gather*}
-\text{Input}=(URV_{in}-LRV_{in})\cdot\text{x}+LRV_{in}\\
+\text{Input}=(URV_{in}-LRV_{in})\cdot\text{x}+LRV_{in}
+\end{gather*}
+$$
+
+$$
 \text{or}\\
+$$
+
+$$
+\begin{gather*}
 \text{Output}=(URV_{out}-LRV_{out})\cdot\text{x}+LRV_{out}
 \end{gather*}
 $$
