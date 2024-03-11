@@ -2,7 +2,7 @@
   <p align="center">
     <picture align="center">
       <source srcset="./images/headerD.png" media="(prefers-color-scheme: dark)"/>
-      <img class="dashboard" src="./images/header.png" width=60%/>
+      <img class="dashboard" src="./images/header.png" width=50%/>
     </picture>
   </p>
   <br>
@@ -29,12 +29,10 @@
 
 This section covers 2 example problems.  
 
-1. A **4-20mA** pressure sensor is giving us **8.5mA** back. If the pressure sensor's range is **0-50psi**, what **pressure** is it reading?
-
-- Solving with application 
-  - Start by clicking the signal type drop-down to select the desired signal type. 
-  - Next, set up the input and output parameters by adjusting the range sliders or input boxes accordingly. 
-  - Finally, select the radio static button for the milliamp signal and input the given value (**8.5ma**). After you add the value to the input box a new point is created on the graph. The answer is the y coordinate: **14.06psi**.
+1. A **4-20mA** pressure sensor is returning **8.5mA**. If the pressure sensor's range is **0-50psi**, what **pressure** is it reading?
+    - Start by clicking the signal type drop-down to select the desired signal type. 
+    - Next, set up the input and output parameters by adjusting the range sliders or input boxes accordingly. 
+    - Finally, select the radio static button for the milliamp signal and input the given value (**8.5ma**). After you add the value to the input box a new point is created on the graph. The answer is the y coordinate: **14.06psi**.
 
 <p align="center">
   <picture align="center">
@@ -65,14 +63,15 @@ $$
 \begin{gather*}
 \text{Output} = (50-0) \cdot (0.28125) + 0\\
 \text{Output} = 50 \cdot (0.28125)\\
-\text{Output} = 14.1\text{psi}
+\text{Output} = 14.1\text{psi} 
 \end{gather*}
 $$
 
 ***
 
 2. The sensor is now reading **32psi**. What should the milliamp reading be?
-
+    - Sticking with the same parameters from the previous example, just select the output radio-static button and enter **32psi** in the numeric input box. The final answer should be **14.24ma**
+  
 <p align="center">
   <picture align=center>
     <source srcset="./images/examples/ex2d.gif" media="(prefers-color-scheme: dark)" width=60%>
@@ -80,7 +79,8 @@ $$
   </picture>
 </p>
 
-- Starting with the $\text{Output}$ equation:
+- Solving by hand
+  - Starting with the $\text{Output}$ equation:
 
 $$
 \begin{gather*}
@@ -133,13 +133,7 @@ $$
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
-## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
 
 ## Further help
 
