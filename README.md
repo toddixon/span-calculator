@@ -11,7 +11,7 @@
 <div align="center">
  <a href="#introduction-">Introduction</a>&nbsp;&bull;&nbsp;
  <a href="#usage-">Usage</a>&nbsp;&bull;&nbsp;
- <a href="#calculating-span-">Calculating Span</a>&nbsp;&bull;&nbsp;
+ <a href="#calculating-span-">Calculating Span</a>
 </div>
 
 ## Introduction <a name="Introduction"></a>
