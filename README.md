@@ -47,7 +47,7 @@ This section covers 2 example problems.
 > [!NOTE]
 > If the `Signal Type` drop-down doesn't include the desired signal, you can select `Custom` which will give you a range from [-100, 100]
 
-- Starting with the $\text{Input}$ equation:
+- Starting with the <a href="#input">Input</a> equation
 
 $$
 \begin{gather*}
@@ -70,7 +70,7 @@ $$
 ***
 
 2. The sensor is now reading **32psi**. What should the milliamp reading be?
-    - Sticking with the same parameters from the previous example, just select the output radio-static button and enter **32psi** in the numeric input box. The final answer should be **14.24ma**
+    - Sticking with the same parameters from the previous example, just select the output radio-static button and enter **32psi** in the numeric input box. The final answer should be **14.24mA**
   
 <p align="center">
   <picture align=center>
@@ -80,7 +80,7 @@ $$
 </p>
 
 - Solving by hand
-  - Starting with the $\text{Output}$ equation: <a href="#output">output</a>
+  - Starting with the <a href="#output">Output</a> equation
 
 $$
 \begin{gather*}
@@ -113,7 +113,7 @@ $$
 
 Solving for $\text{Input}$ and $\text{Output}$, we get two equations:
 
-<a name="output"></a>
+<a name="input"></a>
 
 $$
 \begin{gather*}
@@ -125,6 +125,8 @@ $$
 \text{or}\\
 $$
 
+<a name="output"></a>
+
 $$
 \begin{gather*}
 \text{Output}=(URV_{out}-LRV_{out})\cdot\text{x}+LRV_{out}
@@ -135,7 +137,6 @@ $$
   - The output range **high** feedback/response of the sensing device
 - $LRV_{in}$
   - The output range **low** feedback/response of the sensing device
-
 - $URV_{out}$
   - The unit output range **high** of the sensing device
 - $LRV_{out}$
