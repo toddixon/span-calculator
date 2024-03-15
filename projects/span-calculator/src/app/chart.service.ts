@@ -11,18 +11,18 @@ import { Align, Font } from 'chartjs-plugin-datalabels/types/options';
   providedIn: 'root'
 })
 export class ChartService {
-  charStr: string = '';
+  charStr = '';
 
   updateChart(chart: Chart, chartData: chartData, isDarkTheme: boolean) {
     this.removeData(chart);
-    let chartDataSet = this.buildDataSet(chartData.points, chartData.calcPoint);
+    const chartDataSet = this.buildDataSet(chartData.points, chartData.calcPoint);
     this.addData(chart, chartDataSet);
     this.setOptions(chart, isDarkTheme, chartData.unitsX, chartData.unitsY);
     chart.update('none');
-  };
+  }
 
   private buildDataSet(points: point[], calcPoint: point | null): ChartData<"line", point[], unknown> {
-    let datasets: ChartData<'line', point[]> = {
+    const datasets: ChartData<'line', point[]> = {
       datasets: [{
         data: points,
         parsing: {
@@ -34,8 +34,8 @@ export class ChartService {
       }]
     };
     if (calcPoint) {
-      let pseudoPts: point[] = [points[0], calcPoint, points[points.length - 1]];
-      let point: ChartDataset<'line', point[]> = {
+      const pseudoPts: point[] = [points[0], calcPoint, points[points.length - 1]];
+      const point: ChartDataset<'line', point[]> = {
         data: pseudoPts,
         pointRadius: [0, 7, 0],
         pointBackgroundColor: '#3f51b5',
@@ -44,31 +44,31 @@ export class ChartService {
       }
       datasets.datasets[0].order = 1;
       datasets.datasets.push(point);
-    };
+    }
 
     return datasets;
-  };
+  }
 
   // Removes dataset from previous span calculation
   removeData(chart: Chart<any>): void {
     chart.data.datasets.forEach((dataset) => {
       dataset.data.pop();
     })
-  };
+  }
 
   // Add new dataset 
   private addData(chart: Chart, newData: ChartData<'line', point[]>): void {
     chart.data = newData;
-  };
+  }
 
 
-  setOptions(chart: Chart, isDarkTheme: boolean, titleX?: string, titleY?: string, rot: number = 0, sizePts: number = 12, sizeTitle: number = 15, isPortrait: boolean = false): string {
+  setOptions(chart: Chart, isDarkTheme: boolean, titleX?: string, titleY?: string, rot = 0, sizePts = 12, sizeTitle = 15, isPortrait = false): string {
     this.titleX = titleX!;
     this.titleY = titleY!;
     let fontColor: string;
     let fontColorActive: string;
     let gridColor: string;
-    let charStr: string = '';
+    const charStr = '';
     let backgroundColor: string;
 
     if (isDarkTheme) {
@@ -154,7 +154,7 @@ export class ChartService {
           },
           display: true,
           formatter: (point, ctx) => {
-            let idx = ctx.dataIndex;
+            const idx = ctx.dataIndex;
             return `(${point.x}, ${point.y})`;
           },
           align: (ctx) => {
@@ -165,13 +165,13 @@ export class ChartService {
             return align;
           },
           offset: (ctx) => {
-            let offset: number = 5;
+            let offset = 5;
             if (ctx.dataIndex == 0) {
               offset = 10;
             }
             else if (ctx.dataIndex == ctx.dataset.data.length - 1) {
               offset = -2;
-            };
+            }
             return offset;
           },
           clamp: true,
@@ -190,7 +190,7 @@ export class ChartService {
                 return ctx.active ? fontColorActive : fontColor;
               },
               font: (ctx) => {
-                let font: Font = {};
+                const font: Font = {};
                 font.size = sizePts;
                 font.weight = 'normal';
                 font.size = ctx.active ? sizePts + 4 : sizePts;
@@ -217,16 +217,16 @@ export class ChartService {
       },
     }
     return charStr;
-  };
+  }
 
   public chart: Chart = null!;
-  public titleX: string = 'Output';
-  public titleY: string = 'Input';
+  public titleX = 'Output';
+  public titleY = 'Input';
 
-  createChart(points: point[] | any, isDarkTheme: boolean, name: string = "myChart"): Chart {
+  createChart(points: point[] | any, isDarkTheme: boolean, name = "myChart"): Chart {
     Chart.register(ChartDataLabels);
 
-    let dataset = this.buildDataSet(points, null);
+    const dataset = this.buildDataSet(points, null);
     if (this.chart) {
       this.chart.destroy();
     }
@@ -239,7 +239,7 @@ export class ChartService {
 
     this.setOptions(this.chart, isDarkTheme, 'Output', 'Input');
     return this.chart;
-  };
+  }
 
   // Called whenever 'BreakpointObserver' detects a size change
   redrawChart(isDarkTheme: boolean): void {
@@ -249,13 +249,13 @@ export class ChartService {
       this.chart.render();
     }
     return
-  };
+  }
 
   getChart(): Chart {
     return this.chart;
   }
 
-  resizeChart(width: number = 700, height: number = 400): void {
+  resizeChart(width = 700, height = 400): void {
     this.chart.resize(width, height);
 
   }

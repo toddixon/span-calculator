@@ -4,7 +4,7 @@ import { Directive, ElementRef, HostListener } from '@angular/core';
   selector: '[appNumericInputFieldValidation]'
 })
 export class NumericInputFieldValidationDirective {
-  private regex1: RegExp = /^-?\d*(\.\d{0,2})?$/;
+  private regex1 = /^-?\d*(\.\d{0,2})?$/;
 
   constructor(private el: ElementRef) {}
 

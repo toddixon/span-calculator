@@ -4,14 +4,14 @@ import { Directive, ElementRef, Renderer2, Input, OnChanges, SimpleChanges } fro
   selector: '[appSetMaxHeight]'
 })
 export class SetMaxHeightDirective implements OnChanges {
-  @Input() chartRenderComplete: boolean = false;
+  @Input() chartRenderComplete = false;
 
   constructor(private el: ElementRef, private renderer: Renderer2) { }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (!changes['this.chartService.renderComplete'] && this.chartRenderComplete == true) {
       this.setMaxHeight();
-    };
+    }
   }
 
   setMaxHeight(): void {

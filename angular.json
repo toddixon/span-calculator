@@ -46,6 +46,11 @@
           },
           "configurations": {
             "production": {
+              "optimization": true,
+              "sourceMap": false,
+              "aot": true,
+              "buildOptimizer": true,
+              "vendorChunk": false,
               "budgets": [
                 {
                   "type": "initial",

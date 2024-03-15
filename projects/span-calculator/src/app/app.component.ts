@@ -17,10 +17,10 @@ import { point, chartData } from './point';
 })
 export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
   private readonly debounceTime = 300;
-  valBoxStep: number = 0.10;
+  valBoxStep = 0.10;
 
   destroyed = new Subject<void>();
-  swLayout: boolean = false;
+  swLayout = false;
   displayNameMap = new Map([
     [Breakpoints.XSmall, 'XSmall'],
     [Breakpoints.Small, 'Small'],
@@ -31,15 +31,15 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
     [Breakpoints.HandsetLandscape, 'HandsetLandscape']
 
   ]);
-  currentScreenSize: string = 'medium';
-  isPortrait: boolean = false;
-  isDarkTheme: boolean = false;
+  currentScreenSize = 'medium';
+  isPortrait = false;
+  isDarkTheme = false;
   state: 'small' | 'medium' = 'small';
   matFieldAppearance: 'fill' | 'outline' = 'outline';
 
-  sigKeys: String[] = [];
+  sigKeys: string[] = [];
   spanCalcForm: FormGroup;
-  lrvLast: boolean = true;// whether the LRV input box/slider was the last control adjusted or one of the URV controls
+  lrvLast = true;// whether the LRV input box/slider was the last control adjusted or one of the URV controls
 
   points: Array<point> = [];
   calcPoint: point | undefined = undefined; // point calculation based on the value the user has typed into either the input or output FormControl
@@ -87,7 +87,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
         }
       });
     this.spanCalcForm = this.formService.buildForm();
-  };
+  }
 
   ngOnInit(): void {
     this.sigKeys = this.calcSpanService.getSigTypes();// Get signal presets used in both Input and Output Form select boxes
@@ -95,33 +95,33 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
       (data) => { this.calculateSpan(data) }
     );
     this.spanCalcForm.controls['selectPrimary'].setValue(true); // Set the Input signal as primary 
-  };
+  }
   ngAfterViewChecked(): void {
     this.spanCalcForm.get('inputRangesForm')!.setValidators([this.formService.validateRanges()]);
     this.spanCalcForm.get('outputRangesForm')!.setValidators([this.formService.validateRanges()]);
-  };
+  }
   ngOnDestroy(): void {
     this.destroyed.next();
     this.destroyed.complete();
-  };
+  }
 
   calculateSpan(data: data): void {
     [this.points, this.calcPoint] = this.calcSpanService.calcSpan(data.input, data.output, data.prim, data.val);
     this.chartData = { points: this.points, unitsX: data.units.x, unitsY: data.units.y, calcPoint: this.calcPoint };
-  };
+  }
 
   onThemeChange(): void {
     this.isDarkTheme = !this.isDarkTheme;
     this.chartService.redrawChart(this.isDarkTheme);
-  };
+  }
 
   setCopyCanvas(printSave: boolean): void {
-    let orig: HTMLElement = document.getElementById('myChart')!;
-    var origCanvas: HTMLCanvasElement;
+    const orig: HTMLElement = document.getElementById('myChart')!;
+    let origCanvas: HTMLCanvasElement;
     if (orig instanceof HTMLCanvasElement) {
       origCanvas = orig;
-      var origW: number = origCanvas.width;
-      var origH: number = origCanvas.height;
+      const origW: number = origCanvas.width;
+      const origH: number = origCanvas.height;
       if (printSave){
         this.printService.isPrinting = true;
       }
@@ -143,10 +143,10 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
   onPrintGraph() {
     this.setCopyCanvas(true);
     return
-  };
+  }
   onSaveGraph(): void {
     this.setCopyCanvas(false);
 
-  };
+  }
 
 }

@@ -7,7 +7,7 @@ signalPresets["Voltage"] = {lrv: 0, urv: 10};
 signalPresets["Pressure"] = {lrv: 0, urv: 100};
 
 export function getSignalShort(key: string): string {
-  let str: string = '';
+  let str = '';
   switch(key) {
     case 'Custom':
       str = '';

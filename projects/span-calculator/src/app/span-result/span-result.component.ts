@@ -8,11 +8,11 @@ import { chartData } from '../point';
 })
 export class SpanResultComponent {
   @Input() chartData: chartData = {points: [{x: 0, y: 0}], unitsX: '', unitsY: '', calcPoint: null};
-  @Input() isDarkTheme: boolean = false;
+  @Input() isDarkTheme = false;
 
-  chartRenderComplete: boolean = false;
+  chartRenderComplete = false;
   displayedCols: string[] = ['Input', 'Output'];
 
   constructor() { }
 
-};
+}

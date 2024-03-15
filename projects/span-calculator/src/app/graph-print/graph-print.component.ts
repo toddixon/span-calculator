@@ -27,7 +27,7 @@ export class GraphPrintComponent implements OnDestroy {
         this.onPrintGraph(data);
       }
     })
-  };
+  }
 
   onPrintGraph(canvasOriginal: HTMLCanvasElement){
     if (this.printService.isPrinting) {
@@ -36,7 +36,7 @@ export class GraphPrintComponent implements OnDestroy {
     else {
       this.printService.saveGraph(this.canvas.nativeElement, canvasOriginal);
     }
-  };
+  }
 
   ngOnDestroy(): void {
       

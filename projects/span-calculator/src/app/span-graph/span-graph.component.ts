@@ -19,7 +19,7 @@ export interface canvasData {
 })
 export class SpanGraphComponent implements OnChanges, OnInit {
   @Input() chartData: chartData = {points: [{x: 0, y: 0}], unitsX: '', unitsY: '', calcPoint: null};
-  @Input() isDarkTheme: boolean = false;
+  @Input() isDarkTheme = false;
   
   @ViewChild('chart')
   canvas!: ElementRef<HTMLCanvasElement>;
@@ -35,18 +35,18 @@ export class SpanGraphComponent implements OnChanges, OnInit {
           this.printService.sendData(this.canvas.nativeElement);
         }
       })
-    };
+    }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['chartData'] && !changes['chartData'].isFirstChange()) {
       this.chartService.updateChart(this.chart, this.chartData!, this.isDarkTheme);
     }
-  };
+  }
 
   ngOnInit() {
     this.chart = this.chartService.createChart(this.chartData!.points, this.isDarkTheme);
     this.chart.update();
-  };
+  }
 
   getCanvas(): HTMLCanvasElement {
     return this.canvas.nativeElement;

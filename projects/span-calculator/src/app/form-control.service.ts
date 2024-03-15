@@ -21,13 +21,13 @@ export class FormControlService implements OnInit {
   inputRangesForm: FormGroup | null = null;
   outputRangesForm: FormGroup | null = null;
 
-  inputPrim: boolean = true;// Whether input is the primary signal else output
+  inputPrim = true;// Whether input is the primary signal else output
   inputSig: { units: string, range: range } = { units: 'Input', range: { lrv: 0, urv: 10 } };
   outputSig: { units: string, range: range } = { units: 'Output', range: { lrv: 0, urv: 10 } };
 
   inputColor: 'primary' | 'warn' | 'accent' = 'primary';
   // private readonly debounceTime = 300;
-  lrvLast: boolean = true;// whether the LRV input box/slider was the last control adjusted or one of the URV controls
+  lrvLast = true;// whether the LRV input box/slider was the last control adjusted or one of the URV controls
   points: Array<point> = [];
   calcPoint: point | undefined = undefined; // point calculation based on the value the user has typed into either the input or output FormControl
   chartData: chartData = { points: this.points, unitsX: 'Output', unitsY: 'Input', calcPoint: null };
@@ -35,7 +35,7 @@ export class FormControlService implements OnInit {
 
   constructor(private calcSpanService: CalcSpanService) {}
 
-  exp: RegExp = /(?<=\.(?:\d{2})).+|[^\d\.\-]|(?<!\s|^)\-|\.(?=.*\..+)|\s/;
+  exp = /(?<=\.(?:\d{2})).+|[^\d\.\-]|(?<!\s|^)\-|\.(?=.*\..+)|\s/;
 
   buildForm(): FormGroup {
     this.inputRangesForm = new FormGroup({
@@ -170,7 +170,7 @@ export class FormControlService implements OnInit {
         inputForm['input'].disable({ emitEvent: false });
         outputForm['output'].enable({ emitEvent: false });
         inputForm['input'].setValue('', { emitEvent: false });
-      };
+      }
       this.onSpanChange();
     });
 
@@ -179,8 +179,8 @@ export class FormControlService implements OnInit {
 
   public validateSlider(slReleased: AbstractControl, slSecVal: number, add: boolean): void {
     if (slReleased.value == slSecVal) {
-      let current: number = slReleased.value;
-      let val: number = 1;
+      const current: number = slReleased.value;
+      let val = 1;
       if (!add){
         val = -1;
       }
@@ -215,7 +215,7 @@ export class FormControlService implements OnInit {
       else {
         sig = this.outputSig;
         input = control.get('output')!;
-      };
+      }
 
       // First check if enabled and for null
       if (input.enabled && input.value) {
@@ -257,14 +257,14 @@ export class FormControlService implements OnInit {
       // Otherwise no errors
       else {
         return null;
-      };
+      }
     };
-  };
+  }
 
   public validateInteger(exp: RegExp): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       let val: string = control.value;
-      let invalid: boolean = exp.test(val);
+      const invalid: boolean = exp.test(val);
 
       if (invalid) {
         val = val.replace(exp, '');
@@ -272,50 +272,50 @@ export class FormControlService implements OnInit {
       }
       return null;
     };
-  };
+  }
 
   // Have each form control call this function with the 
   private onSpanChange() {
     this.updateSpan.next(this.getFormData());
-  };
+  }
 
   private onSigTypeChange(sig: typeof this.inputSig, lrvControls: { input: AbstractControl, slider: AbstractControl }, urvControls: { input: AbstractControl, slider: AbstractControl }): void {
     if (lrvControls.input.value < sig.range.lrv || lrvControls.input.value > sig.range.urv) {
       lrvControls.input.setValue(sig.range.lrv);
-    };
+    }
     if (urvControls.input.value > sig.range.urv || urvControls.input.value < sig.range.lrv) {
       urvControls.input.setValue(sig.range.urv);
-    };
-  };
+    }
+  }
 
   getFormData(): data {
-    var dataObj: data;
-    var inputPrim: boolean = this.spanCalcForm!.controls['selectPrimary'].value;
-    var val: string = '';
+    let dataObj: data;
+    const inputPrim: boolean = this.spanCalcForm!.controls['selectPrimary'].value;
+    let val = '';
 
     if (inputPrim) {
       val = this.inputRangesForm!.controls['input'].value;
     }
     else {
       val = this.outputRangesForm!.controls['output'].value;
-    };
-    let inputRng: range = {
+    }
+    const inputRng: range = {
       lrv: this.inputRangesForm!.controls['lrv'].value,
       urv: this.inputRangesForm!.controls['urv'].value
     };
-    let outputRng: range = {
+    const outputRng: range = {
       lrv: this.outputRangesForm!.controls['lrv'].value,
       urv: this.outputRangesForm!.controls['urv'].value
     };
-    var units = this.getUnits();
+    const units = this.getUnits();
     dataObj = { prim: inputPrim, val: val, input: inputRng, output: outputRng, units: units };
     return dataObj;
-  };
+  }
 
   getUnits(): { x: string, y: string } {
-    let unitsX = this.spanCalcForm!.controls['selectPrimary'].value ? this.outputSig.units : this.inputSig.units;
-    let unitsY = this.spanCalcForm!.controls['selectPrimary'].value ? this.inputSig.units : this.outputSig.units;
-    let u: { x: string, y: string } = { x: unitsX, y: unitsY }
+    const unitsX = this.spanCalcForm!.controls['selectPrimary'].value ? this.outputSig.units : this.inputSig.units;
+    const unitsY = this.spanCalcForm!.controls['selectPrimary'].value ? this.inputSig.units : this.outputSig.units;
+    const u: { x: string, y: string } = { x: unitsX, y: unitsY }
     return u;
   }
 
