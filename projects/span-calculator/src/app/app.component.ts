@@ -4,7 +4,6 @@ import { FormGroup } from '@angular/forms';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { FormControlService, data } from './form-control.service';
-
 import { CalcSpanService } from './calc-span.service';
 import { ChartService } from './chart.service';
 import { PrintService } from './print.service';
