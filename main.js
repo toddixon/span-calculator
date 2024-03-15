@@ -5,6 +5,8 @@ const fs = require("fs");
 
 var win;
 
+if (require('electron-squirrel-startup')) app.quit();
+
 const createWindow = () => {
   // set timeout to render the window not until the Angular
   // compiler is ready to show the project
