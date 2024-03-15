@@ -9,9 +9,7 @@ module.exports = {
   makers: [
     {
       name: '@electron-forge/maker-squirrel',
-      config: {
-        name: 'span_calculator'
-      },
+      config: {},
     },
     {
       name: '@electron-forge/maker-zip',

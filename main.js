@@ -10,12 +10,12 @@ if (require('electron-squirrel-startup')) app.quit();
 const createWindow = () => {
   // set timeout to render the window not until the Angular
   // compiler is ready to show the project
-  // setTimeout(() => {
+  setTimeout(() => {
     win = new BrowserWindow({
       show: false,
       width: 1200,
       height: 1000,
-      icon: "./dist/span-calculator/assets/win/iconR.ico",
+      icon: "./src/favicon.ico",
     });
 
     win.loadFile('dist/span-calculator/index.html')
@@ -29,7 +29,7 @@ const createWindow = () => {
     win.once("ready-to-show", () => {
       win.show();
     });
-  // }, 4000);
+  }, 4000);
 };
 
 app.on("ready", createWindow);
