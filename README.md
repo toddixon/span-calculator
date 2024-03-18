@@ -30,8 +30,8 @@
 This section covers 2 example problems.  
 
 1. A **4-20mA** pressure sensor is returning **8.5mA**. If the pressure sensor's range is **0-50psi**, what **pressure** is it reading?
-    - Start by clicking the signal type drop-down to select the desired signal type. 
-    - Next, set up the input and output parameters by adjusting the range sliders or input boxes accordingly. 
+    - Start by clicking the signal type drop-down to select the desired signal type.
+    - Next, set up the input and output parameters by adjusting the range sliders or input boxes accordingly.
     - Finally, select the radio static button for the milliamp signal and input the given value (**8.5ma**). After you add the value to the input box a new point is created on the graph. The answer is the y coordinate: **14.06psi**.
 
 <p align="center">
@@ -63,7 +63,7 @@ $$
 \begin{gather*}
 \text{Output} = (50-0) \cdot (0.28125) + 0\\
 \text{Output} = 50 \cdot (0.28125)\\
-\text{Output} = 14.1\text{psi} 
+\text{Output} = 14.1\text{psi}
 \end{gather*}
 $$
 
@@ -143,16 +143,12 @@ $$
 - $LRV_{out}$
   - The unit output range **low** of the sensing device
 
-
 ## Build
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
-
-
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
-
 
 [Introduction](#Introduction)

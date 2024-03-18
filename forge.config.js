@@ -3,20 +3,28 @@ const { FuseV1Options, FuseVersion } = require('@electron/fuses');
 
 module.exports = {
   packagerConfig: {
+    icon:'./images/icons/iconR.ico',
     asar: true,
   },
   rebuildConfig: {},
   makers: [
     {
-      name: '@electron-forge/maker-squirrel',
+      name: '@rabbitholesyndrome/electron-forge-maker-portable',
       config: {
-        name: 'span_calculator'
-      },
+        appId: 'span.calculator.app',
+      }
+      
     },
     {
       name: '@electron-forge/maker-zip',
       platforms: ['darwin'],
     },
+    // {
+    //   name: '@electron-forge/maker-squirrel',
+    //   config: {
+    //     name: 'span_calculator'
+    //   },
+    // },
     {
       name: '@electron-forge/maker-deb',
       config: {},

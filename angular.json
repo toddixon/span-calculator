@@ -32,8 +32,6 @@
             "tsConfig": "projects/span-calculator/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              "projects/span-calculator/src/favicon.ico",
-              "projects/span-calculator/src/assets",
               "projects/span-calculator/src/manifest.webmanifest"
             ],
             "styles": [
@@ -104,8 +102,6 @@
             "tsConfig": "projects/span-calculator/tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              "projects/span-calculator/src/favicon.ico",
-              "projects/span-calculator/src/assets",
               "projects/span-calculator/src/manifest.webmanifest"
             ],
             "styles": [
@@ -126,8 +122,11 @@
         }
       }
     }
-  },
+  },  
   "cli": {
+    "cache": {
+      "enabled": false
+    },
     "analytics": false,
     "schematicCollections": [
       "@angular-eslint/schematics"

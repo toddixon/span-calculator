@@ -1,21 +1,14 @@
-const { app, BrowserWindow, ipcMain } = require("electron");
-const path = require("path");
-const url = require("url");
-const fs = require("fs");
-
+const { app, BrowserWindow } = require("electron");
 var win;
 
 if (require('electron-squirrel-startup')) app.quit();
 
 const createWindow = () => {
-  // set timeout to render the window not until the Angular
-  // compiler is ready to show the project
-  // setTimeout(() => {
     win = new BrowserWindow({
       show: false,
       width: 1200,
       height: 1000,
-      icon: "./dist/span-calculator/assets/win/iconR.ico",
+      icon: "./images/icons/iconR.ico",
     });
 
     win.loadFile('dist/span-calculator/index.html')
@@ -29,7 +22,6 @@ const createWindow = () => {
     win.once("ready-to-show", () => {
       win.show();
     });
-  // }, 4000);
 };
 
 app.on("ready", createWindow);
@@ -41,15 +33,8 @@ app.on("window-all-closed", () => {
   }
 });
 
-ipcMain.on("getFiles", () => {
-  const files = fs.readdirSync(__dirname);
-  win.webContents.send("getFilesResponse", files);
-});
-
 app.on("activate", () => {
   if (win === null) {
     createWindow();
   }
 });
-
-console.log(`Dirname: ${__dirname}\n`);
