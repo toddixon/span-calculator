@@ -12,8 +12,8 @@
  <a href="#introduction-">Introduction</a>&nbsp;&bull;&nbsp;
  <a href="#download-">Download</a>&nbsp;&bull;&nbsp;
  <a href="#usage-">Usage</a>&nbsp;&bull;&nbsp;
- <a href="#calculating-span-">Calculating Span</a>
- <a href="#credits-">Credits</a>&nbsp;&bull;&nbsp;
+ <a href="#calculating-span-">Calculating Span</a>&nbsp;&bull;&nbsp;
+ <a href="#credits-">Credits</a>
 </div>
 
 ## Introduction <a name="Introduction"></a>
