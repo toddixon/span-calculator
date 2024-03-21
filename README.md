@@ -10,13 +10,15 @@
 
 <div align="center">
  <a href="#introduction-">Introduction</a>&nbsp;&bull;&nbsp;
+ <a href="#download-">Download</a>&nbsp;&bull;&nbsp;
  <a href="#usage-">Usage</a>&nbsp;&bull;&nbsp;
+ <a href="#credits-">Credits</a>&nbsp;&bull;&nbsp;
  <a href="#calculating-span-">Calculating Span</a>
 </div>
 
 ## Introduction <a name="Introduction"></a>
 
-`Span Calculator` is an interactive tool for calculating and visually representing the proportional/linear relationship between an input and output signal. When adjustments are made to the input or output upper or lower range values, the graph and table are updated accordingly. The application also allows for calculating a specific value's proportional response, by inputting the desired value into either the input or output boxes.
+`Span Calculator` is an interactive tool for calculating and visually representing the proportional/linear relationship between an input and output signal. The graph and table are updated accordingly when adjustments are made to the input or output upper or lower range values. The application also allows for calculating a specific value's proportional response, by inputting the desired value into either the input or output boxes.
 
 <p align="center"> <a name="Introduction"></a>
   <picture>
@@ -47,7 +49,9 @@ This section covers 2 example problems.
 > [!NOTE]
 > If the `Signal Type` drop-down doesn't include the desired signal, you can select `Custom` which will give you a range from `[-100, 100]`
 
-- Starting with the <a href="#input">Input</a> equation
+### Solving by hand
+
+Starting with the <a href="#input">Input</a> equation:
 
 $$
 \begin{gather*}
@@ -57,7 +61,7 @@ x = 0.28125\\
 \end{gather*}
 $$
 
-- Now that we have the per-unit percentage of milliamp signal we can now calculate the pressure
+Now that we have the per-unit percentage of the milliamp signal we can now calculate the pressure.
 
 $$
 \begin{gather*}
@@ -79,9 +83,9 @@ $$
   </picture>
 </p>
 
-- Solving by hand
+### Solving by hand
 
-Starting with the <a href="#output">Output</a> equation
+Starting with the <a href="#output">Output</a> equation:
 
 $$
 \begin{gather*}
@@ -91,7 +95,7 @@ x=0.64=64\%
 \end{gather*}
 $$
 
-Now calculate the current
+Now calculate the current:
 
 $$
 \begin{gather*}
@@ -99,6 +103,9 @@ $$
 \text{Input} = 14.24\text{mA}
 \end{gather*}
 $$
+
+## Download <a name="Download"></a>
+You can [download](https://github.com/toddixon/span-calculator/releases/tag/v1.0.0) the latest version of Span Calculator for Windows.
 
 ## Calculating Span <a name="Calculating Span"></a>
 
@@ -143,12 +150,10 @@ $$
 - $LRV_{out}$
   - The unit output range **low** of the sensing device
 
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
-
-[Introduction](#Introduction)
+## Credits <a name="Credits"></a>
+This software uses the following open-source packages:
+- [Electron](https://www.electronjs.org/)
+- [Angular](https://angular.io/)
+- [node.js](https://nodejs.org/en)
+- [Chart.js](https://www.chartjs.org/)
+- [Angular Material](https://material.angular.io/)
