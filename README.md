@@ -157,6 +157,3 @@ This software uses the following open-source packages:
 - [node.js](https://nodejs.org/en)
 - [Chart.js](https://www.chartjs.org/)
 - [Angular Material](https://material.angular.io/)
-
-
-[Introduction](#Introduction)
