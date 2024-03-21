@@ -105,7 +105,7 @@ $$
 $$
 
 ## Download <a name="Download"></a>
-You can [https://github.com/toddixon/span-calculator/releases/tag/v1.0.0] 
+You can [download](https://github.com/toddixon/span-calculator/releases/tag/v1.0.0) the latest version of Span Calculator for Windows.
 
 ## Calculating Span <a name="Calculating Span"></a>
 
