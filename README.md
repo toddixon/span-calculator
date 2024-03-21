@@ -10,6 +10,7 @@
 
 <div align="center">
  <a href="#introduction-">Introduction</a>&nbsp;&bull;&nbsp;
+ <a href="#download-">Download</a>&nbsp;&bull;&nbsp;
  <a href="#usage-">Usage</a>&nbsp;&bull;&nbsp;
  <a href="#credits-">Credits</a>&nbsp;&bull;&nbsp;
  <a href="#calculating-span-">Calculating Span</a>
@@ -102,6 +103,9 @@ $$
 \text{Input} = 14.24\text{mA}
 \end{gather*}
 $$
+
+## Download <a name="Download"></a>
+You can [https://github.com/toddixon/span-calculator/releases/tag/v1.0.0] 
 
 ## Calculating Span <a name="Calculating Span"></a>
 
