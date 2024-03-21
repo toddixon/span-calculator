@@ -12,19 +12,18 @@ module.exports = {
       name: '@rabbitholesyndrome/electron-forge-maker-portable',
       config: {
         appId: 'span.calculator.app',
+        win: {
+          icon: 'C:/Users/trevo/Documents/dev/GitHub/span-calculator/images/icons/iconR.ico',
+          
+        },
+        fileAssociations: {
+            ext: 'ico',
+            icon: './images/icons/iconR.ico'
+          }
+        
       }
       
     },
-    {
-      name: '@electron-forge/maker-zip',
-      platforms: ['darwin'],
-    },
-    // {
-    //   name: '@electron-forge/maker-squirrel',
-    //   config: {
-    //     name: 'span_calculator'
-    //   },
-    // },
     {
       name: '@electron-forge/maker-deb',
       config: {},
